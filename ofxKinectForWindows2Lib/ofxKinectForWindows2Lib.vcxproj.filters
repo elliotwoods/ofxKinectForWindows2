@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{6233ced8-5481-4a0d-a271-976452c0370e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ofxKinectForWindows2">
+      <UniqueIdentifier>{86806939-f359-440c-b989-432997725320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ofxKinectForWindows2\Source">
+      <UniqueIdentifier>{ef038ac8-52e4-450d-b04c-489f6aba359a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\ofxKinectForWindows2.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Device.h">
+      <Filter>src\ofxKinectForWindows2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Utils.h">
+      <Filter>src\ofxKinectForWindows2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\Depth.h">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\Base.h">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\BaseImage.h">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\Infrared.h">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\LongExposureInfrared.h">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\BodyIndex.h">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\Color.h">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Device.cpp">
+      <Filter>src\ofxKinectForWindows2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Utils.cpp">
+      <Filter>src\ofxKinectForWindows2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Source\Depth.cpp">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Source\BaseImage.cpp">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Source\Infrared.cpp">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Source\LongExposureInfraRed.cpp">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Source\BodyIndex.cpp">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Source\Color.cpp">
+      <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

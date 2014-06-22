@@ -1,0 +1,20 @@
+#pragma once
+
+#include "BaseImage.h"
+#include "../Utils.h"
+
+#include "ofBaseTypes.h"
+#include "ofPixels.h"
+#include "ofTexture.h"
+
+namespace ofxKinectForWindows2 {
+	namespace Source {
+		class Color : public BaseImageSlim<unsigned char, IColorFrameReader, IColorFrame> {
+		public:
+			string getTypeName() const override;
+			void init(IKinectSensor *) override;
+			void update() override;
+		protected:
+		};
+	}
+}
