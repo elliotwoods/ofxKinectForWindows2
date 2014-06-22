@@ -5,6 +5,17 @@ ofxKinectForWindows2
 
 Implementation of Kinect For Windows v2 API using COM (not KinectCommonBridge)
 
+## Features
+
+Currently lets you grab all the image streams (color, depth, IR, long exposure IR, body index)
+
+Currently doesn't support:
+
+* Mapping between spaces (color<>depth etc)
+* Ground plane detection
+* Audio
+* Body tracking (skeleton tracking)
+
 ## License
 
 MIT License
