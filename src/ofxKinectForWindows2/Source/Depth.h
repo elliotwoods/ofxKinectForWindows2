@@ -4,7 +4,7 @@
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
-		class Depth : public BaseImage<unsigned short, IDepthFrameReader, IDepthFrame> {
+		class Depth : public BaseImageSimple<unsigned short, IDepthFrameReader, IDepthFrame> {
 		public:
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;

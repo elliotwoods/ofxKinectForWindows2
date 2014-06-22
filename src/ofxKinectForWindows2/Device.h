@@ -48,6 +48,8 @@ namespace ofxKinectForWindows2 {
 			return shared_ptr<SourceType>();
 		}
 
+		vector<shared_ptr<Source::Base>> getSources();
+
 		shared_ptr<Source::Depth> getDepth();
 		shared_ptr<Source::Color> getColor();
 		shared_ptr<Source::Infrared> getInfrared();

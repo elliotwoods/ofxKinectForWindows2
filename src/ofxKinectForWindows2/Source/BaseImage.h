@@ -9,14 +9,16 @@
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
-#define OFXKFW2_BASEIMAGE_TEMPLATE_ARGS <typename PixelType, typename ReaderType, typename FrameType>
-#define OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM <typename PixelType, typename ReaderType, typename FrameType>
+#define OFXKFW2_BaseImageSimple_TEMPLATE_ARGS <typename PixelType, typename ReaderType, typename FrameType>
+#define OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM <typename PixelType, typename ReaderType, typename FrameType>
 
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		class BaseImageSlim  : public Base, public ofBaseHasTexture, public ofBaseHasPixels_<PixelType>, public ofBaseDraws {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		class BaseImage  : public Base, public ofBaseHasTexture, public ofBaseHasPixels_<PixelType>, public ofBaseDraws {
 		public:
-			BaseImageSlim();
-			~BaseImageSlim();
+			BaseImage();
+			~BaseImage();
+
+			ReaderType * getReader();
 
 			//ofBaseHasTexture
 			ofTexture & getTextureReference() override;
@@ -31,15 +33,23 @@ namespace ofxKinectForWindows2 {
 			void draw(float, float, float, float) override;
 			float getWidth() override;
 			float getHeight() override;
+
+			float getDiagonalFieldOfView() const;
+			float getHorizontalFieldOfView() const;
+			float getVerticalFieldOfView() const;
 		protected:
 			ReaderType * reader;
 			bool useTexture;
 			ofTexture texture;
 			ofPixels_<PixelType> pixels;
+
+			float diagonalFieldOfView;
+			float horizontalFieldOfView;
+			float verticalFieldOfView;
 		};
 
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		class BaseImage : public BaseImageSlim<PixelType, ReaderType, FrameType> {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		class BaseImageSimple : public BaseImage<PixelType, ReaderType, FrameType> {
 		public:
 			void update() override;
 		};

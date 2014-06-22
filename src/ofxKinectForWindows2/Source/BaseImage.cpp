@@ -5,29 +5,38 @@
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
-#pragma mark BaseImageSlim
+#pragma mark BaseImage
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::BaseImageSlim() {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::BaseImage() {
 			this->reader = NULL;
 			this->useTexture = true;
+			this->diagonalFieldOfView = 0.0f;
+			this->horizontalFieldOfView = 0.0f;
+			this->verticalFieldOfView = 0.0f;
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::~BaseImageSlim() {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::~BaseImage() {
 			SafeRelease(this->reader);
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		ofTexture & BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::getTextureReference() {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		ReaderType * BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getReader() {
+			return this->reader;
+		}
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		ofTexture & BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getTextureReference() {
 			return this->texture;
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		void BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::setUseTexture(bool useTexture) {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::setUseTexture(bool useTexture) {
 			this->useTexture = useTexture;
 			if (!useTexture) {
 				this->texture.clear();
@@ -35,45 +44,63 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		PixelType * BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::getPixels() {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		PixelType * BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getPixels() {
 			return this->pixels.getPixels();
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		ofPixels_<PixelType> & BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::getPixelsRef() {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		ofPixels_<PixelType> & BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getPixelsRef() {
 			return this->pixels;
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		void BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::draw(float x, float y) {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::draw(float x, float y) {
 			this->texture.draw(x, y);
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		void BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::draw(float x, float y, float width, float height) {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::draw(float x, float y, float width, float height) {
 			this->texture.draw(x, y, width, height);
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		float BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::getWidth() {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getWidth() {
 			return this->pixels.getWidth();
 		}
 
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		float BaseImageSlim OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::getHeight() {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getHeight() {
 			return this->pixels.getHeight();
 		}
 
-#pragma mark BaseImage
 		//----------
-		template OFXKFW2_BASEIMAGE_TEMPLATE_ARGS
-		void BaseImage OFXKFW2_BASEIMAGE_TEMPLATE_ARGS_TRIM::update() {
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getDiagonalFieldOfView() const {
+			return this->diagonalFieldOfView;
+		}
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getHorizontalFieldOfView() const {
+			return this->horizontalFieldOfView;
+		}
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getVerticalFieldOfView() const {
+			return this->verticalFieldOfView;
+		}
+
+#pragma mark BaseImageSimple
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		void BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::update() {
 			CHECK_OPEN
 
 			FrameType * frame = NULL;
@@ -104,6 +131,17 @@ namespace ofxKinectForWindows2 {
 				if (this->useTexture) {
 					this->texture.loadData(this->pixels);
 				}
+
+				//update field of view
+				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
+					throw Exception("Failed to get diagonal field of view");
+				}
+				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
+					throw Exception("Failed to get diagonal field of view");
+				}
+				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
+					throw Exception("Failed to get diagonal field of view");
+				}
 			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
@@ -111,15 +149,15 @@ namespace ofxKinectForWindows2 {
 			SafeRelease(frame);
 		}
 
-		//----------
+		//---------
+		template class BaseImageSimple<unsigned short, IDepthFrameReader, IDepthFrame>;
+		template class BaseImageSimple<unsigned short, IInfraredFrameReader, IInfraredFrame>;
+		template class BaseImageSimple<unsigned short, ILongExposureInfraredFrameReader, ILongExposureInfraredFrame>;
+		template class BaseImageSimple<unsigned char, IBodyIndexFrameReader, IBodyIndexFrame>;
 		template class BaseImage<unsigned short, IDepthFrameReader, IDepthFrame>;
 		template class BaseImage<unsigned short, IInfraredFrameReader, IInfraredFrame>;
 		template class BaseImage<unsigned short, ILongExposureInfraredFrameReader, ILongExposureInfraredFrame>;
 		template class BaseImage<unsigned char, IBodyIndexFrameReader, IBodyIndexFrame>;
-		template class BaseImageSlim<unsigned short, IDepthFrameReader, IDepthFrame>;
-		template class BaseImageSlim<unsigned short, IInfraredFrameReader, IInfraredFrame>;
-		template class BaseImageSlim<unsigned short, ILongExposureInfraredFrameReader, ILongExposureInfraredFrame>;
-		template class BaseImageSlim<unsigned char, IBodyIndexFrameReader, IBodyIndexFrame>;
-		template class BaseImageSlim<unsigned char, IColorFrameReader, IColorFrame>;
+		template class BaseImage<unsigned char, IColorFrameReader, IColorFrame>;
 	}
 }

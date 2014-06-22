@@ -63,6 +63,17 @@ namespace ofxKinectForWindows2 {
 				if (this->useTexture) {
 					this->texture.loadData(this->pixels);
 				}
+
+				//update field of view
+				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
+					throw Exception("Failed to get diagonal field of view");
+				}
+				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
+					throw Exception("Failed to get diagonal field of view");
+				}
+				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
+					throw Exception("Failed to get diagonal field of view");
+				}
 			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}

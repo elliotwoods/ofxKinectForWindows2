@@ -102,6 +102,11 @@ namespace ofxKinectForWindows2 {
 	}
 
 	//----------
+	vector<shared_ptr<Source::Base>> Device::getSources() {
+		return this->sources;
+	}
+
+	//----------
 	shared_ptr<Source::Depth> Device::getDepth() {
 		return this->getSource<Source::Depth>();
 	}

@@ -9,7 +9,7 @@
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
-		class Color : public BaseImageSlim<unsigned char, IColorFrameReader, IColorFrame> {
+		class Color : public BaseImage<unsigned char, IColorFrameReader, IColorFrame> {
 		public:
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;

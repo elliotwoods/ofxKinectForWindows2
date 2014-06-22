@@ -8,20 +8,25 @@ void ofApp::setup(){
 	kinect.initInfrared();
 	kinect.initBodyIndex();
 
-	ofSetWindowShape(640 * 2, 480 * 2);
+	gui.init();
+
+	auto sources = kinect.getSources();
+	for(auto source : sources) {
+		auto drawingSource = dynamic_pointer_cast<ofBaseDraws>(source);
+		if (drawingSource) {
+			gui.add(*drawingSource, source->getTypeName());
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	this->kinect.update();
+	kinect.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	this->kinect.getDepth()->draw(0,0,640,480);
-	this->kinect.getColor()->draw(640,0,640,480);
-	this->kinect.getInfrared()->draw(0,480,640,480);
-	this->kinect.getBodyIndex()->draw(640,480,640,480);
+
 }
 
 //--------------------------------------------------------------
