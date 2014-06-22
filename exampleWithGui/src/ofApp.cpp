@@ -13,8 +13,20 @@ void ofApp::setup(){
 	auto sources = kinect.getSources();
 	for(auto source : sources) {
 		auto drawingSource = dynamic_pointer_cast<ofBaseDraws>(source);
+		ofxCvGui::PanelPtr panel;
 		if (drawingSource) {
-			gui.add(*drawingSource, source->getTypeName());
+			panel = gui.add(*drawingSource, source->getTypeName());
+			auto colorSource = dynamic_pointer_cast<ofxKFW2::Source::Color>(source);
+			if (colorSource) {
+				panel->onDraw += [colorSource] (ofxCvGui::DrawArguments &) {
+					stringstream message;
+					message << "Exposure : " << colorSource->getExposure() << "us" << endl;
+					message << "FrameInterval : " << colorSource->getFrameInterval() << "us" << endl;
+					message << "Gain : " << colorSource->getGain() << endl;
+					message << "Gamma : " << colorSource->getGamma() << endl;
+					ofxCvGui::Utils::drawText(message.str(), 20, 60);
+				};
+			}
 		}
 	}
 }

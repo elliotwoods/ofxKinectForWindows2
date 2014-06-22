@@ -6,6 +6,14 @@
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
+		Color::Color() {
+			this->exposure = 0;
+			this->frameInterval = 0;
+			this->gain = 0;
+			this->gamma = 0;
+		}
+
+		//----------
 		string Color::getTypeName() const {
 			return "Color";
 		}
@@ -47,6 +55,7 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(frame->get_FrameDescription(&frameDescription))) {
 					throw Exception("Failed to get frame description");
 				}
+
 				int width, height;
 				if (FAILED(frameDescription->get_Width(&width)) || FAILED(frameDescription->get_Height(&height))) {
 					throw Exception("Failed to get width and height of frame");
@@ -74,11 +83,40 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
 					throw Exception("Failed to get diagonal field of view");
 				}
+
+				IColorCameraSettings * cameraSettings;
+				if (FAILED(frame->get_ColorCameraSettings(&cameraSettings))) {
+					throw Exception("Failed to get color camera settings");
+				}
+				cameraSettings->get_ExposureTime(&this->exposure);
+				cameraSettings->get_FrameInterval(&this->frameInterval);
+				cameraSettings->get_Gain(&this->gain);
+				cameraSettings->get_Gamma(&this->gamma);
 			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(frameDescription);
 			SafeRelease(frame);
+		}
+		
+		//----------
+		long int Color::getExposure() const {
+			return this->exposure;
+		}
+
+		//----------
+		long int Color::getFrameInterval() const {
+			return this->frameInterval;
+		}
+
+		//----------
+		float Color::getGain() const {
+			return this->gain;
+		}
+
+		//----------
+		float Color::getGamma() const {
+			return this->gamma;
 		}
 	}
 }
