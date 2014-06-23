@@ -7,13 +7,17 @@ Implementation of Kinect For Windows v2 API using COM (not KinectCommonBridge)
 
 ## Features
 
-Currently lets you grab all the image streams (color, depth, IR, long exposure IR, body index)
+Currently lets you:
+
+* Grab all the image streams (color, depth, IR, long exposure IR, body index)
+* Generate an ofMesh (point cloud or stitched mesh) with texture coordinates
 
 Currently doesn't support:
 
 * Ground plane detection
 * Audio
 * Body tracking (skeleton tracking)
+* Expose remapping functions
 
 ## License
 
