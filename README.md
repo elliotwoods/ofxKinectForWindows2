@@ -11,7 +11,6 @@ Currently lets you grab all the image streams (color, depth, IR, long exposure I
 
 Currently doesn't support:
 
-* Mapping between spaces (color<>depth etc)
 * Ground plane detection
 * Audio
 * Body tracking (skeleton tracking)
