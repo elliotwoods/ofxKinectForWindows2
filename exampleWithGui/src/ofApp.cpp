@@ -29,11 +29,33 @@ void ofApp::setup(){
 			}
 		}
 	}
+
+	auto worldView = gui.addWorld();
+	worldView->onDrawWorld += [this] (ofCamera &) {
+		this->kinect.getColor()->getTextureReference().bind();
+		this->mesh.draw();
+		this->kinect.getColor()->getTextureReference().unbind();
+
+		ofPushStyle();
+		ofNoFill();
+		ofSetLineWidth(2.0f);
+		ofSetColor(100, 200, 100);
+		this->kinect.getDepth()->drawFrustum();
+		ofSetColor(200, 100, 100);
+		this->kinect.getColor()->drawFrustum();
+		ofPopStyle();
+	};
+	worldView->onKeyboard += [this, worldView] (ofxCvGui::KeyboardArguments & args) {
+		if (args.action == ofxCvGui::KeyboardArguments::Action::Pressed && args.key =='c') {
+			worldView->getCamera().toggleCursorDraw();
+		}
+	};
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 	kinect.update();
+	mesh = kinect.getDepth()->getMesh(true, ofxKinectForWindows2::Source::Depth::PointCloudOptions::TextureCoordinates::ColorCamera);
 }
 
 //--------------------------------------------------------------

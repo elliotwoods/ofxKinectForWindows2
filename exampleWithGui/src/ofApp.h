@@ -23,4 +23,5 @@ class ofApp : public ofBaseApp{
 
 		ofxKFW2::Device kinect;
 		ofxCvGui::Builder gui;
+		ofMesh mesh;
 };

@@ -56,6 +56,8 @@ namespace ofxKinectForWindows2 {
 		shared_ptr<Source::LongExposureInfrared> getLongExposureInfrared();
 		shared_ptr<Source::BodyIndex> getBodyIndex();
 
+		IKinectSensor * getSensor();
+
 	protected: 
 		IKinectSensor * sensor;
 		vector<shared_ptr<Source::Base>> sources;

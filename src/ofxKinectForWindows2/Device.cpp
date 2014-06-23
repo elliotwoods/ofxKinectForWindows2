@@ -25,7 +25,7 @@ namespace ofxKinectForWindows2 {
 				throw(Exception("Failed to open sensor"));
 			}
 		} catch (std::exception & e) {
-			ofLogError("ofxKFW2") << e.what();
+			OFXKINECTFORWINDOWS2_ERROR << e.what();
 			this->sensor = nullptr;
 		}
 	}
@@ -129,5 +129,10 @@ namespace ofxKinectForWindows2 {
 	//----------
 	shared_ptr<Source::BodyIndex> Device::getBodyIndex() {
 		return this->getSource<Source::BodyIndex>();
+	}
+
+	//----------
+	IKinectSensor * Device::getSensor() {
+		return this->sensor;
 	}
 }

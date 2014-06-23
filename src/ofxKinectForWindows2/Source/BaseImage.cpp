@@ -8,12 +8,27 @@ namespace ofxKinectForWindows2 {
 #pragma mark BaseImage
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		ofMesh BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::frustumMesh;
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::BaseImage() {
 			this->reader = NULL;
 			this->useTexture = true;
 			this->diagonalFieldOfView = 0.0f;
 			this->horizontalFieldOfView = 0.0f;
 			this->verticalFieldOfView = 0.0f;
+
+			if (this->frustumMesh.getVertices().empty()) {
+				this->frustumMesh.addVertex(ofVec3f(0.0f, 0.0f, 0.0f));
+				this->frustumMesh.addVertex(ofVec3f(-1.0f, -1.0f, 1.0f));
+				this->frustumMesh.addVertex(ofVec3f(-1.0f, +1.0f, 1.0f));
+				this->frustumMesh.addVertex(ofVec3f(+1.0f, +1.0f, 1.0f));
+				this->frustumMesh.addVertex(ofVec3f(+1.0f, -1.0f, 1.0f));
+				const ofIndexType indices[6] = {0, 1, 2, 3, 4, 1};
+				this->frustumMesh.addIndices(indices, 6);
+				this->frustumMesh.setMode(ofPrimitiveMode::OF_PRIMITIVE_TRIANGLE_FAN);
+			}
 		}
 
 		//----------
@@ -97,6 +112,19 @@ namespace ofxKinectForWindows2 {
 			return this->verticalFieldOfView;
 		}
 
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::drawFrustum() const {
+			ofPushMatrix();
+			ofScale(tan(DEG_TO_RAD * this->getHorizontalFieldOfView() / 2.0f), tan(DEG_TO_RAD * this->getVerticalFieldOfView() / 2.0f), 1.0f);
+			if (ofGetStyle().bFill) {
+				this->frustumMesh.drawFaces();
+			} else {
+				this->frustumMesh.drawWireframe();
+			}
+			ofPopMatrix();
+		}
+
 #pragma mark BaseImageSimple
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
@@ -133,11 +161,11 @@ namespace ofxKinectForWindows2 {
 				}
 
 				//update field of view
-				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
-					throw Exception("Failed to get diagonal field of view");
+				if (FAILED(frameDescription->get_HorizontalFieldOfView(&this->horizontalFieldOfView))) {
+					throw Exception("Failed to get horizonal field of view");
 				}
-				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
-					throw Exception("Failed to get diagonal field of view");
+				if (FAILED(frameDescription->get_VerticalFieldOfView(&this->verticalFieldOfView))) {
+					throw Exception("Failed to get vertical field of view");
 				}
 				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
 					throw Exception("Failed to get diagonal field of view");

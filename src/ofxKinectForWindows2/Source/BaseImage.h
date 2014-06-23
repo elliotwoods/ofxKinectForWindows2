@@ -37,7 +37,11 @@ namespace ofxKinectForWindows2 {
 			float getDiagonalFieldOfView() const;
 			float getHorizontalFieldOfView() const;
 			float getVerticalFieldOfView() const;
+
+			void drawFrustum() const;
 		protected:
+			static ofMesh frustumMesh;
+
 			ReaderType * reader;
 			bool useTexture;
 			ofTexture texture;

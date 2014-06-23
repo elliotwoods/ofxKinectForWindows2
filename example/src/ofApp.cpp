@@ -18,7 +18,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	this->kinect.getDepth()->draw(0,0,640,480);
+	this->kinect.getDepth()->draw(0,0,640,480); // note that the depth texture is RAW so may appear dark
 	this->kinect.getColor()->draw(640,0,640,480);
 	this->kinect.getInfrared()->draw(0,480,640,480);
 	this->kinect.getBodyIndex()->draw(640,480,640,480);

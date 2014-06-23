@@ -74,11 +74,11 @@ namespace ofxKinectForWindows2 {
 				}
 
 				//update field of view
-				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
-					throw Exception("Failed to get diagonal field of view");
+				if (FAILED(frameDescription->get_HorizontalFieldOfView(&this->horizontalFieldOfView))) {
+					throw Exception("Failed to get horizonal field of view");
 				}
-				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
-					throw Exception("Failed to get diagonal field of view");
+				if (FAILED(frameDescription->get_VerticalFieldOfView(&this->verticalFieldOfView))) {
+					throw Exception("Failed to get vertical field of view");
 				}
 				if (FAILED(frameDescription->get_DiagonalFieldOfView(&this->diagonalFieldOfView))) {
 					throw Exception("Failed to get diagonal field of view");
