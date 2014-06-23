@@ -28,5 +28,6 @@ http://en.wikipedia.org/wiki/MIT_License
 
 ## Notes
 
-1. This references external libraries (not internal libraries), so should work with VS2012, VS2013, etc
+0. The depth image comes in as RAW (i'm not rescaling it), so it may appear dark. Look closely :)
+1. This addon does not ship with any libraries, it'll look locally on your system for them (and hence should work with VS2012, VS2013, etc)
 2. You'll need to get a copy of the Kinect v2 SDK (i'm testing with v1404 April release)
