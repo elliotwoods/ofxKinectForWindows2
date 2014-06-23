@@ -30,7 +30,7 @@ void ofApp::setup(){
 		}
 	}
 
-	auto worldView = gui.addWorld();
+	auto worldView = gui.addWorld("World");
 	worldView->onDrawWorld += [this] (ofCamera &) {
 		this->kinect.getColor()->getTextureReference().bind();
 		this->mesh.draw();
