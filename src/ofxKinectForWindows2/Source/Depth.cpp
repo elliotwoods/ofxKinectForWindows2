@@ -52,6 +52,7 @@ namespace ofxKinectForWindows2 {
 			const int height = this->getHeight();
 
 			ofMesh mesh;
+			mesh.setMode(stitchFaces ? ofPrimitiveMode::OF_PRIMITIVE_TRIANGLES : ofPrimitiveMode::OF_PRIMITIVE_POINTS);
 			mesh.getVertices().resize(frameSize);
 			auto vertices = mesh.getVerticesPointer();
 			

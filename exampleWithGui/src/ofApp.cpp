@@ -10,6 +10,7 @@ void ofApp::setup(){
 
 	gui.init();
 
+	//setup a gui panel for every kinect source
 	auto sources = kinect.getSources();
 	for(auto source : sources) {
 		auto drawingSource = dynamic_pointer_cast<ofBaseDraws>(source);
@@ -32,10 +33,36 @@ void ofApp::setup(){
 
 	auto worldView = gui.addWorld("World");
 	worldView->onDrawWorld += [this] (ofCamera &) {
+		//setup some point cloud properties for kicks
+		glPushAttrib(GL_POINT_BIT);
+		glPointSize(5.0f);
+		glEnable(GL_POINT_SMOOTH);
+
+		ofPushStyle();
+
+		//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
 		this->kinect.getColor()->getTextureReference().bind();
-		this->mesh.draw();
+
+		//draw point cloud
+		this->mesh.drawVertices();
+		
+		//draw triangles
+		ofSetColor(255, 150);
+		this->mesh.drawWireframe();
+		
+		//draw fills faded
+		ofSetColor(255, 50);
+		this->mesh.drawFaces();
+
+		//unbind colour camera
 		this->kinect.getColor()->getTextureReference().unbind();
 
+		ofPopStyle();
+
+		//clear the point cloud drawing attributes
+		glPopAttrib();
+
+		//draw the view cones of depth and colour cameras
 		ofPushStyle();
 		ofNoFill();
 		ofSetLineWidth(2.0f);
@@ -45,6 +72,8 @@ void ofApp::setup(){
 		this->kinect.getColor()->drawFrustum();
 		ofPopStyle();
 	};
+
+	//if we press the 'c' key on the World panel, then toggle the camera's cursor. This works best when you fullscreen that panel
 	worldView->onKeyboard += [this, worldView] (ofxCvGui::KeyboardArguments & args) {
 		if (args.action == ofxCvGui::KeyboardArguments::Action::Pressed && args.key =='c') {
 			worldView->getCamera().toggleCursorDraw();
