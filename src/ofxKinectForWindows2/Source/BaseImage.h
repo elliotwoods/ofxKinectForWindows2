@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Base.h"
 #include "../Utils.h"
 
 #include "ofBaseTypes.h"
 #include "ofTexture.h"
 #include "ofPixels.h"
+
+#include "Base.h"
 
 namespace ofxKinectForWindows2 {
 	namespace Source {

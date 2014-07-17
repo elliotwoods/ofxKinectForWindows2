@@ -7,7 +7,6 @@
 #include "Source/LongExposureInfrared.h"
 #include "Source/BodyIndex.h"
 
-#include <Kinect.h>
 #include <memory>
 #include <vector>
 
