@@ -106,6 +106,12 @@ namespace ofxKinectForWindows2 {
 			const vector<Body> & getBodies() const;
 			const vector< pair<JointType, JointType> > & getBonesDef() const;
 
+			const Vector4 getFloorClipPlane() {
+				return floorClipPlane;
+			}
+
+			ofMatrix4x4 getFloorTransform();
+
 		protected:
 			void drawProjectedBone(map<JointType, Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
 			void drawProjectedHand(HandState handState, ofVec2f & handPos);
@@ -116,6 +122,8 @@ namespace ofxKinectForWindows2 {
 			ICoordinateMapper * coordinateMapper;
 
 			IBody* ppBodies[BODY_COUNT];
+
+			Vector4 floorClipPlane;
 
 			vector<Body> bodies;
 			vector< pair<JointType, JointType> > bonesDef;

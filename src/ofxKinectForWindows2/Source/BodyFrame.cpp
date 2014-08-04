@@ -19,6 +19,16 @@ namespace ofxKinectForWindows2 {
 		const vector< pair<JointType, JointType> > & BodyFrame::getBonesDef() const {
 			return bonesDef;
 		}
+
+		//----------
+		ofMatrix4x4 BodyFrame::getFloorTransform() {
+			ofNode helper;
+			helper.lookAt(ofVec3f(floorClipPlane.x, floorClipPlane.z, -floorClipPlane.y));
+			helper.boom(-floorClipPlane.w);
+			ofMatrix4x4 transform = helper.getGlobalTransformMatrix().getInverse();
+			return transform;
+		}
+
 		//----------
 		void BodyFrame::init(IKinectSensor * sensor) {
 			this->reader = NULL;
