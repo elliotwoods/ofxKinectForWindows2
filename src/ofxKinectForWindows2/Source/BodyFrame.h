@@ -103,11 +103,14 @@ namespace ofxKinectForWindows2 {
 			void drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj = ColorCamera);
 
 			IBodyFrameReader * getReader();
+			const vector<Body> & getBodies() const;
+			const vector< pair<JointType, JointType> > & getBonesDef() const;
 
 		protected:
-			void drawProjectedBody(map<JointType, Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints);
 			void drawProjectedBone(map<JointType, Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
 			void drawProjectedHand(HandState handState, ofVec2f & handPos);
+
+			void initBonesDefinition();
 
 			IBodyFrameReader * reader;
 			ICoordinateMapper * coordinateMapper;
@@ -115,6 +118,7 @@ namespace ofxKinectForWindows2 {
 			IBody* ppBodies[BODY_COUNT];
 
 			vector<Body> bodies;
+			vector< pair<JointType, JointType> > bonesDef;
 		};
 	}
 }

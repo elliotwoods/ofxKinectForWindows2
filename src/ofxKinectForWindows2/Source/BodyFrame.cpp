@@ -11,6 +11,15 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
+		const vector<Body> & BodyFrame::getBodies() const {
+			return bodies;
+		}
+
+		//----------
+		const vector< pair<JointType, JointType> > & BodyFrame::getBonesDef() const {
+			return bonesDef;
+		}
+		//----------
 		void BodyFrame::init(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
@@ -31,11 +40,51 @@ namespace ofxKinectForWindows2 {
 				}
 
 				bodies.resize(BODY_COUNT);
+				initBonesDefinition();
 			}
 			catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
+		}
+
+		//----------
+		void BodyFrame::initBonesDefinition() {
+#define BONEDEF_ADD(J1, J2) bonesDef.push_back( make_pair<JointType, JointType>(JointType_ ## J1, JointType_ ## J2) )
+			// Torso
+			BONEDEF_ADD	(Head,			Neck);
+			BONEDEF_ADD	(Neck,			SpineShoulder);
+			BONEDEF_ADD	(SpineShoulder,	SpineMid);
+			BONEDEF_ADD	(SpineMid,		SpineBase);
+			BONEDEF_ADD	(SpineShoulder,	ShoulderRight);
+			BONEDEF_ADD	(SpineShoulder,	ShoulderLeft);
+			BONEDEF_ADD	(SpineBase,		HipRight);
+			BONEDEF_ADD	(SpineBase,		HipLeft);
+
+			// Right Arm
+			BONEDEF_ADD	(ShoulderRight,	ElbowRight);
+			BONEDEF_ADD	(ElbowRight,	WristRight);
+			BONEDEF_ADD	(WristRight,	HandRight);
+			BONEDEF_ADD	(HandRight,		HandTipRight);
+			BONEDEF_ADD	(WristRight,	ThumbRight);
+
+			// Left Arm
+			BONEDEF_ADD	(ShoulderLeft,	ElbowLeft);
+			BONEDEF_ADD	(ElbowLeft,		WristLeft);
+			BONEDEF_ADD	(WristLeft,		HandLeft);
+			BONEDEF_ADD	(HandLeft,		HandTipLeft);
+			BONEDEF_ADD	(WristLeft,		ThumbLeft);
+
+			// Right Leg
+			BONEDEF_ADD	(HipRight,		KneeRight);
+			BONEDEF_ADD	(KneeRight,		AnkleRight);
+			BONEDEF_ADD	(AnkleRight,	FootRight);
+
+			// Left Leg
+			BONEDEF_ADD	(HipLeft,	KneeLeft);
+			BONEDEF_ADD	(KneeLeft,	AnkleLeft);
+			BONEDEF_ADD	(AnkleLeft,	FootLeft);
+#undef BONEDEF_ADD
 		}
 
 		//----------
@@ -53,7 +102,11 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(frame->get_RelativeTime(&nTime))) {
 					throw Exception("Failed to get relative time");
 				}
-				// = { 0 };
+				
+				if (FAILED(frame->get_FloorClipPlane(&floorClipPlane))){
+					throw(Exception("Failed to get floor clip plane"));
+				}
+
 				if (FAILED(frame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies))){
 					throw Exception("Failed to refresh body data");
 				}
@@ -97,7 +150,7 @@ namespace ofxKinectForWindows2 {
 							}
 
 							for (int j = 0; j < JointType_Count; ++j) {
-								body.joints[joints[j].JointType] = Joint(joints[j], jointsOrient[i]);
+								body.joints[joints[j].JointType] = Joint(joints[j], jointsOrient[j]);
 							}
 
 							// retrieve hand states
@@ -159,50 +212,15 @@ namespace ofxKinectForWindows2 {
 					ofCircle(p.x, p.y, radius);
 				}
 				
-				drawProjectedBody(body.joints, jntsProj);
+				for (auto & bone : bonesDef) {
+					drawProjectedBone(body.joints, jntsProj, bone.first, bone.second);
+				}
 
 				drawProjectedHand(body.leftHandState, jntsProj[JointType_HandLeft]);
 				drawProjectedHand(body.rightHandState, jntsProj[JointType_HandRight]);
 			}
 
 			ofPopStyle();
-		}
-
-		void BodyFrame::drawProjectedBody(map<JointType, Joint> & jnts, map<JointType, ofVec2f> & jntsProj){
-
-			// TORSO
-			drawProjectedBone(jnts, jntsProj, JointType_Head,			JointType_Neck);
-			drawProjectedBone(jnts, jntsProj, JointType_Neck,			JointType_SpineShoulder);
-			drawProjectedBone(jnts, jntsProj, JointType_SpineShoulder,	JointType_SpineMid);
-			drawProjectedBone(jnts, jntsProj, JointType_SpineMid,		JointType_SpineBase);
-			drawProjectedBone(jnts, jntsProj, JointType_SpineShoulder,	JointType_ShoulderRight);
-			drawProjectedBone(jnts, jntsProj, JointType_SpineShoulder,	JointType_ShoulderLeft);
-			drawProjectedBone(jnts, jntsProj, JointType_SpineBase,		JointType_HipRight);
-			drawProjectedBone(jnts, jntsProj, JointType_SpineBase,		JointType_HipLeft);
-
-			// Right Arm    
-			drawProjectedBone(jnts, jntsProj, JointType_ShoulderRight,	JointType_ElbowRight);
-			drawProjectedBone(jnts, jntsProj, JointType_ElbowRight,		JointType_WristRight);
-			drawProjectedBone(jnts, jntsProj, JointType_WristRight,		JointType_HandRight);
-			drawProjectedBone(jnts, jntsProj, JointType_HandRight,		JointType_HandTipRight);
-			drawProjectedBone(jnts, jntsProj, JointType_WristRight,		JointType_ThumbRight);
-
-			// Left Arm
-			drawProjectedBone(jnts, jntsProj, JointType_ShoulderLeft,	JointType_ElbowLeft);
-			drawProjectedBone(jnts, jntsProj, JointType_ElbowLeft,		JointType_WristLeft);
-			drawProjectedBone(jnts, jntsProj, JointType_WristLeft,		JointType_HandLeft);
-			drawProjectedBone(jnts, jntsProj, JointType_HandLeft,		JointType_HandTipLeft);
-			drawProjectedBone(jnts, jntsProj, JointType_WristLeft,		JointType_ThumbLeft);
-
-			// Right Leg
-			drawProjectedBone(jnts, jntsProj, JointType_HipRight,		JointType_KneeRight);
-			drawProjectedBone(jnts, jntsProj, JointType_KneeRight,		JointType_AnkleRight);
-			drawProjectedBone(jnts, jntsProj, JointType_AnkleRight,		JointType_FootRight);
-
-			// Left Leg
-			drawProjectedBone(jnts, jntsProj, JointType_HipLeft,		JointType_KneeLeft);
-			drawProjectedBone(jnts, jntsProj, JointType_KneeLeft,		JointType_AnkleLeft);
-			drawProjectedBone(jnts, jntsProj, JointType_AnkleLeft,		JointType_FootLeft);
 		}
 
 		void BodyFrame::drawProjectedBone( map<JointType, Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1){
