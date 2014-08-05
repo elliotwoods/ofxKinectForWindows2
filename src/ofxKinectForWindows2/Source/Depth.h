@@ -14,8 +14,9 @@ namespace ofxKinectForWindows2 {
 				};
 
 				PointCloudOptions();
-				PointCloudOptions(bool stitchFaces, bool useColor, TextureCoordinates textureCoordinates);
+				PointCloudOptions(bool stitchFaces, bool useColor, TextureCoordinates textureCoordinates, int steps=1);
 
+				int steps;
 				bool stitchFaces;
 				TextureCoordinates textureCoordinates;
 			};
@@ -23,7 +24,7 @@ namespace ofxKinectForWindows2 {
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;
 
-			ofMesh getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates);
+			ofMesh getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates, int step=1);
 			ofMesh getMesh(const PointCloudOptions & pointCloudOptions = PointCloudOptions());
 		protected:
 			ICoordinateMapper * coordinateMapper;
