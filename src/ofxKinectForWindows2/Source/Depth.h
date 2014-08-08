@@ -18,6 +18,7 @@ namespace ofxKinectForWindows2 {
 
 				int steps;
 				bool stitchFaces;
+				float facesMaxLength;
 				TextureCoordinates textureCoordinates;
 			};
 

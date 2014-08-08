@@ -8,6 +8,7 @@ namespace ofxKinectForWindows2 {
 			this->stitchFaces = true;
 			this->textureCoordinates = TextureCoordinates::None;
 			this->steps = 1;
+			this->facesMaxLength = 0.3;
 		}
 
 		//----------
@@ -68,14 +69,23 @@ namespace ofxKinectForWindows2 {
 						auto bottomLeft = topLeft + width * steps;
 						auto bottomRight = bottomLeft + steps;
 						
+						const ofVec3f & vTL = vertices[topLeft];
+						const ofVec3f & vTR = vertices[topRight];
+						const ofVec3f & vBL = vertices[bottomLeft];
+						const ofVec3f & vBR = vertices[bottomRight];
+
 						//upper left triangle
-						if (vertices[topLeft].z > 0 && vertices[topRight].z > 0 && vertices[bottomLeft].z > 0) {
+						if (vTL.z > 0 && vTR.z > 0 && vBL.z > 0
+							&& abs(vTL.z - vTR.z) < opts.facesMaxLength
+							&& abs(vTL.z - vBL.z) < opts.facesMaxLength) {
 							const ofIndexType indices[3] = {topLeft, bottomLeft, topRight};
 							mesh.addIndices(indices, 3);
 						}
 
 						//bottom right triangle
-						if (vertices[topRight].z > 0 && vertices[bottomRight].z > 0 && vertices[bottomLeft].z > 0) {
+						if (vBR.z > 0 && vTR.z > 0 && vBL.z > 0
+							&& abs(vBR.z - vTR.z) < opts.facesMaxLength
+							&& abs(vBR.z - vBL.z) < opts.facesMaxLength) {
 							const ofIndexType indices[3] = {topRight, bottomRight, bottomLeft};
 							mesh.addIndices(indices, 3);
 						}
