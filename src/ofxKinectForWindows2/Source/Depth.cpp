@@ -11,10 +11,9 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		Depth::PointCloudOptions::PointCloudOptions(bool stitchFaces, bool useColor, TextureCoordinates textureCoordinates, int steps) {
+		Depth::PointCloudOptions::PointCloudOptions(bool stitchFaces, TextureCoordinates textureCoordinates) {
 			this->stitchFaces = stitchFaces;
 			this->textureCoordinates = textureCoordinates;
-			this->steps = steps;
 		}
 
 		//----------
@@ -48,19 +47,20 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		ofMesh Depth::getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates, int steps) {
+		ofMesh Depth::getMesh(const PointCloudOptions &opts) {
 			const auto frameSize = this->pixels.size();
 			const int width = this->getWidth();
 			const int height = this->getHeight();
 
 			ofMesh mesh;
-			mesh.setMode(stitchFaces ? ofPrimitiveMode::OF_PRIMITIVE_TRIANGLES : ofPrimitiveMode::OF_PRIMITIVE_POINTS);
+			mesh.setMode(opts.stitchFaces ? ofPrimitiveMode::OF_PRIMITIVE_TRIANGLES : ofPrimitiveMode::OF_PRIMITIVE_POINTS);
 			mesh.getVertices().resize(frameSize);
 			auto vertices = mesh.getVerticesPointer();
 			
 			this->coordinateMapper->MapDepthFrameToCameraSpace(frameSize, this->pixels.getPixels(), frameSize, (CameraSpacePoint*) mesh.getVerticesPointer());
 
-			if (stitchFaces) {
+			if (opts.stitchFaces) {
+				int steps = opts.steps;
 				for(int i=0; i<width-steps; i+=steps) {
 					for(int j=0; j<height-steps; j+=steps) {
 						auto topLeft = width * j + i;
@@ -83,7 +83,7 @@ namespace ofxKinectForWindows2 {
 				}
 			}
 
-			switch(textureCoordinates) {
+			switch(opts.textureCoordinates) {
 			case PointCloudOptions::TextureCoordinates::ColorCamera:
 				{
 					mesh.getTexCoords().resize(frameSize);
@@ -108,8 +108,9 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		ofMesh Depth::getMesh(const PointCloudOptions & pointCloudOptions) {
-			return this->getMesh(pointCloudOptions.stitchFaces, pointCloudOptions.textureCoordinates, pointCloudOptions.steps);
+		ofMesh Depth::getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates) {
+			ofLogWarning() << "getMesh(bool, PointCloudOptions::TextureCoordinates) is deprecated, use getMesh(PointCloudOptions) instead!";
+			return this->getMesh();
 		}
 	}
 }
