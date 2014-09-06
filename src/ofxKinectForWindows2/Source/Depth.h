@@ -14,9 +14,11 @@ namespace ofxKinectForWindows2 {
 				};
 
 				PointCloudOptions();
-				PointCloudOptions(bool stitchFaces, bool useColor, TextureCoordinates textureCoordinates);
+				PointCloudOptions(bool stitchFaces, TextureCoordinates textureCoordinates);
 
+				int steps;
 				bool stitchFaces;
+				float facesMaxLength;
 				TextureCoordinates textureCoordinates;
 			};
 

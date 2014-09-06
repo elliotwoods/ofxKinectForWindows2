@@ -7,10 +7,12 @@ namespace ofxKinectForWindows2 {
 		Depth::PointCloudOptions::PointCloudOptions() {
 			this->stitchFaces = true;
 			this->textureCoordinates = TextureCoordinates::None;
+			this->steps = 1;
+			this->facesMaxLength = 0.3;
 		}
 
 		//----------
-		Depth::PointCloudOptions::PointCloudOptions(bool stitchFaces, bool useColor, TextureCoordinates textureCoordinates) {
+		Depth::PointCloudOptions::PointCloudOptions(bool stitchFaces, TextureCoordinates textureCoordinates) {
 			this->stitchFaces = stitchFaces;
 			this->textureCoordinates = textureCoordinates;
 		}
@@ -46,34 +48,44 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		ofMesh Depth::getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates) {
+		ofMesh Depth::getMesh(const PointCloudOptions &opts) {
 			const auto frameSize = this->pixels.size();
 			const int width = this->getWidth();
 			const int height = this->getHeight();
 
 			ofMesh mesh;
-			mesh.setMode(stitchFaces ? ofPrimitiveMode::OF_PRIMITIVE_TRIANGLES : ofPrimitiveMode::OF_PRIMITIVE_POINTS);
+			mesh.setMode(opts.stitchFaces ? ofPrimitiveMode::OF_PRIMITIVE_TRIANGLES : ofPrimitiveMode::OF_PRIMITIVE_POINTS);
 			mesh.getVertices().resize(frameSize);
 			auto vertices = mesh.getVerticesPointer();
 			
 			this->coordinateMapper->MapDepthFrameToCameraSpace(frameSize, this->pixels.getPixels(), frameSize, (CameraSpacePoint*) mesh.getVerticesPointer());
 
-			if (stitchFaces) {
-				for(int i=0; i<width-1; i++) {
-					for(int j=0; j<height-1; j++) {
+			if (opts.stitchFaces) {
+				int steps = opts.steps;
+				for(int i=0; i<width-steps; i+=steps) {
+					for(int j=0; j<height-steps; j+=steps) {
 						auto topLeft = width * j + i;
-						auto topRight = topLeft + 1;
-						auto bottomLeft = topLeft + width;
-						auto bottomRight = bottomLeft + 1;
+						auto topRight = topLeft + steps;
+						auto bottomLeft = topLeft + width * steps;
+						auto bottomRight = bottomLeft + steps;
 						
+						const ofVec3f & vTL = vertices[topLeft];
+						const ofVec3f & vTR = vertices[topRight];
+						const ofVec3f & vBL = vertices[bottomLeft];
+						const ofVec3f & vBR = vertices[bottomRight];
+
 						//upper left triangle
-						if (vertices[topLeft].z > 0 && vertices[topRight].z > 0 && vertices[bottomLeft].z > 0) {
+						if (vTL.z > 0 && vTR.z > 0 && vBL.z > 0
+							&& abs(vTL.z - vTR.z) < opts.facesMaxLength
+							&& abs(vTL.z - vBL.z) < opts.facesMaxLength) {
 							const ofIndexType indices[3] = {topLeft, bottomLeft, topRight};
 							mesh.addIndices(indices, 3);
 						}
 
 						//bottom right triangle
-						if (vertices[topRight].z > 0 && vertices[bottomRight].z > 0 && vertices[bottomLeft].z > 0) {
+						if (vBR.z > 0 && vTR.z > 0 && vBL.z > 0
+							&& abs(vBR.z - vTR.z) < opts.facesMaxLength
+							&& abs(vBR.z - vBL.z) < opts.facesMaxLength) {
 							const ofIndexType indices[3] = {topRight, bottomRight, bottomLeft};
 							mesh.addIndices(indices, 3);
 						}
@@ -81,7 +93,7 @@ namespace ofxKinectForWindows2 {
 				}
 			}
 
-			switch(textureCoordinates) {
+			switch(opts.textureCoordinates) {
 			case PointCloudOptions::TextureCoordinates::ColorCamera:
 				{
 					mesh.getTexCoords().resize(frameSize);
@@ -106,8 +118,9 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		ofMesh Depth::getMesh(const PointCloudOptions & pointCloudOptions) {
-			return this->getMesh(pointCloudOptions.stitchFaces, pointCloudOptions.textureCoordinates);
+		ofMesh Depth::getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates) {
+			ofLogWarning() << "getMesh(bool, PointCloudOptions::TextureCoordinates) is deprecated, use getMesh(PointCloudOptions) instead!";
+			return this->getMesh();
 		}
 	}
 }
