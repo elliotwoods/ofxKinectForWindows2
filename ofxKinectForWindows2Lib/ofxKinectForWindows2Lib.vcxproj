@@ -83,6 +83,7 @@
     <ClInclude Include="..\src\ofxKinectForWindows2\Device.h" />
     <ClInclude Include="..\src\ofxKinectForWindows2\Source\Base.h" />
     <ClInclude Include="..\src\ofxKinectForWindows2\Source\BaseImage.h" />
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\BodyFrame.h" />
     <ClInclude Include="..\src\ofxKinectForWindows2\Source\BodyIndex.h" />
     <ClInclude Include="..\src\ofxKinectForWindows2\Source\Color.h" />
     <ClInclude Include="..\src\ofxKinectForWindows2\Source\Depth.h" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ofxKinectForWindows2\Device.cpp" />
+    <ClCompile Include="..\src\ofxKinectForWindows2\Source\BodyFrame.cpp" />
     <ClCompile Include="..\src\ofxKinectForWindows2\Source\BodyIndex.cpp" />
     <ClCompile Include="..\src\ofxKinectForWindows2\Source\Color.cpp" />
     <ClCompile Include="..\src\ofxKinectForWindows2\Source\Depth.cpp" />

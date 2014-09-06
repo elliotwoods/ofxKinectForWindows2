@@ -6,6 +6,7 @@
 #include "Source/Infrared.h"
 #include "Source/LongExposureInfrared.h"
 #include "Source/BodyIndex.h"
+#include "Source/BodyFrame.h"
 
 #include <memory>
 #include <vector>
@@ -28,6 +29,7 @@ namespace ofxKinectForWindows2 {
 		shared_ptr<Source::Infrared> initInfrared();
 		shared_ptr<Source::LongExposureInfrared> initLongExposureInfrared();
 		shared_ptr<Source::BodyIndex> initBodyIndex();
+		shared_ptr<Source::BodyFrame> initBodyFrame();
 
 		void update();
 
@@ -54,6 +56,7 @@ namespace ofxKinectForWindows2 {
 		shared_ptr<Source::Infrared> getInfrared();
 		shared_ptr<Source::LongExposureInfrared> getLongExposureInfrared();
 		shared_ptr<Source::BodyIndex> getBodyIndex();
+		shared_ptr<Source::BodyFrame> getBodyFrame();
 
 		IKinectSensor * getSensor();
 

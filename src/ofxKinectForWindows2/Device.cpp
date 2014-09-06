@@ -95,6 +95,11 @@ namespace ofxKinectForWindows2 {
 	}
 
 	//----------
+	shared_ptr<Source::BodyFrame> Device::initBodyFrame() {
+		return this->initSource<Source::BodyFrame>();
+	}
+
+	//----------
 	void Device::update() {
 		for(auto source : this->sources) {
 			source->update();
@@ -129,6 +134,11 @@ namespace ofxKinectForWindows2 {
 	//----------
 	shared_ptr<Source::BodyIndex> Device::getBodyIndex() {
 		return this->getSource<Source::BodyIndex>();
+	}
+
+	//----------
+	shared_ptr<Source::BodyFrame> Device::getBodyFrame() {
+		return this->getSource<Source::BodyFrame>();
 	}
 
 	//----------
