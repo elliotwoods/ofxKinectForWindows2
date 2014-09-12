@@ -168,7 +168,8 @@ namespace ofxKinectForWindows2 {
 			colorSource->getTextureReference().bind();
 		}
 
-		auto mesh = depthSource->getMesh();
+		auto opts = Source::Depth::PointCloudOptions(true, Source::Depth::PointCloudOptions::TextureCoordinates::ColorCamera);
+		auto mesh = depthSource->getMesh(opts);
 
 		//draw point cloud
 		mesh.drawVertices();
