@@ -193,9 +193,9 @@ namespace ofxKinectForWindows2 {
 			SafeRelease(frame);
 		}
 
+		//----------
 		void Body::drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj) {
 			ofPushStyle();
-
 			int w, h;
 			switch (proj) {
 			case ColorCamera: w = 1920; h = 1080; break;
@@ -233,8 +233,8 @@ namespace ofxKinectForWindows2 {
 			ofPopStyle();
 		}
 
+		//----------
 		void Body::drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1){
-
 			TrackingState ts1 = pJoints[joint0].getTrackingState();
 			TrackingState ts2 = pJoints[joint1].getTrackingState();
 			if (ts1 == TrackingState_NotTracked || ts2 == TrackingState_NotTracked) return;
@@ -250,8 +250,8 @@ namespace ofxKinectForWindows2 {
 			ofLine(pJointPoints[joint0], pJointPoints[joint1]);
 		}
 
+		//----------
 		void Body::drawProjectedHand(HandState handState, ofVec2f & handPos){
-
 			ofColor color;
 			switch (handState)
 			{
