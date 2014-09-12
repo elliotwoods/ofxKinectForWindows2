@@ -3,10 +3,10 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	kinect.open();
-	kinect.initDepth();
-	kinect.initColor();
-	kinect.initInfrared();
-	kinect.initBodyIndex();
+	kinect.initDepthSource();
+	kinect.initColorSource();
+	kinect.initInfraredSource();
+	kinect.initBodyIndexSource();
 
 	ofSetWindowShape(640 * 2, 480 * 2);
 }
@@ -18,10 +18,10 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	this->kinect.getDepth()->draw(0,0,640,480); // note that the depth texture is RAW so may appear dark
-	this->kinect.getColor()->draw(640,0,640,480);
-	this->kinect.getInfrared()->draw(0,480,640,480);
-	this->kinect.getBodyIndex()->draw(640,480,640,480);
+	this->kinect.getDepthSource()->draw(0,0,640,480); // note that the depth texture is RAW so may appear dark
+	this->kinect.getColorSource()->draw(640,0,640,480);
+	this->kinect.getInfraredSource()->draw(0,480,640,480);
+	this->kinect.getBodyIndexSource()->draw(640,480,640,480);
 }
 
 //--------------------------------------------------------------
