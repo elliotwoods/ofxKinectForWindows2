@@ -33,6 +33,8 @@ void ofApp::setup(){
 
 	auto worldView = gui.addWorld("World");
 	worldView->onDrawWorld += [this] (ofCamera &) {
+		//NB : This is a copy of the ofxKinectForWindows2::Device::drawPrettyMesh() function
+		
 		//setup some point cloud properties for kicks
 		glPushAttrib(GL_POINT_BIT);
 		glPointSize(5.0f);

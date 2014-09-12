@@ -60,6 +60,8 @@ namespace ofxKinectForWindows2 {
 
 		IKinectSensor * getSensor();
 
+		void drawPrettyMesh();
+
 	protected: 
 		IKinectSensor * sensor;
 		vector<shared_ptr<Source::Base>> sources;

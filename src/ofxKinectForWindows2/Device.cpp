@@ -145,4 +145,48 @@ namespace ofxKinectForWindows2 {
 	IKinectSensor * Device::getSensor() {
 		return this->sensor;
 	}
+
+	//----------
+	void Device::drawPrettyMesh() {
+		//setup some point cloud properties for kicks
+		glPushAttrib(GL_POINT_BIT);
+		glPointSize(5.0f);
+		glEnable(GL_POINT_SMOOTH);
+
+		ofPushStyle();
+
+		//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
+		this->getColor()->getTextureReference().bind();
+
+		auto mesh = this->getDepth()->getMesh();
+
+		//draw point cloud
+		mesh.drawVertices();
+
+		//draw triangles
+		ofSetColor(255, 150);
+		mesh.drawWireframe();
+
+		//draw fills faded
+		ofSetColor(255, 50);
+		mesh.drawFaces();
+
+		//unbind colour camera
+		this->getColor()->getTextureReference().unbind();
+
+		ofPopStyle();
+
+		//clear the point cloud drawing attributes
+		glPopAttrib();
+
+		//draw the view cones of depth and colour cameras
+		ofPushStyle();
+		ofNoFill();
+		ofSetLineWidth(2.0f);
+		ofSetColor(100, 200, 100);
+		this->getDepth()->drawFrustum();
+		ofSetColor(200, 100, 100);
+		this->getColor()->drawFrustum();
+		ofPopStyle();
+	}
 }
