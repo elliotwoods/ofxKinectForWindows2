@@ -3,10 +3,10 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	kinect.open();
-	kinect.initDepth();
-	kinect.initColor();
-	kinect.initInfrared();
-	kinect.initBodyIndex();
+	kinect.initDepthSource();
+	kinect.initColorSource();
+	kinect.initInfraredSource();
+	kinect.initBodyIndexSource();
 
 	gui.init();
 
@@ -43,7 +43,7 @@ void ofApp::setup(){
 		ofPushStyle();
 
 		//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
-		this->kinect.getColor()->getTextureReference().bind();
+		this->kinect.getColorSource()->getTextureReference().bind();
 
 		//draw point cloud
 		this->mesh.drawVertices();
@@ -57,7 +57,7 @@ void ofApp::setup(){
 		this->mesh.drawFaces();
 
 		//unbind colour camera
-		this->kinect.getColor()->getTextureReference().unbind();
+		this->kinect.getColorSource()->getTextureReference().unbind();
 
 		ofPopStyle();
 
@@ -69,9 +69,9 @@ void ofApp::setup(){
 		ofNoFill();
 		ofSetLineWidth(2.0f);
 		ofSetColor(100, 200, 100);
-		this->kinect.getDepth()->drawFrustum();
+		this->kinect.getDepthSource()->drawFrustum();
 		ofSetColor(200, 100, 100);
-		this->kinect.getColor()->drawFrustum();
+		this->kinect.getColorSource()->drawFrustum();
 		ofPopStyle();
 	};
 
@@ -86,7 +86,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 	kinect.update();
-	mesh = kinect.getDepth()->getMesh(true, ofxKinectForWindows2::Source::Depth::PointCloudOptions::TextureCoordinates::ColorCamera);
+	mesh = kinect.getDepthSource()->getMesh(true, ofxKinectForWindows2::Source::Depth::PointCloudOptions::TextureCoordinates::ColorCamera);
 }
 
 //--------------------------------------------------------------
