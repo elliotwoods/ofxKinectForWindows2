@@ -8,13 +8,15 @@ namespace ofxKinectForWindows2 {
 			this->stitchFaces = true;
 			this->textureCoordinates = TextureCoordinates::None;
 			this->steps = 1;
-			this->facesMaxLength = 0.3;
+			this->facesMaxLength = 0.3f;
 		}
 
 		//----------
 		Depth::PointCloudOptions::PointCloudOptions(bool stitchFaces, TextureCoordinates textureCoordinates) {
 			this->stitchFaces = stitchFaces;
 			this->textureCoordinates = textureCoordinates;
+			this->steps = 1;
+			this->facesMaxLength = 0.3f;
 		}
 
 		//----------
@@ -119,8 +121,7 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		ofMesh Depth::getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates) {
-			ofLogWarning() << "getMesh(bool, PointCloudOptions::TextureCoordinates) is deprecated, use getMesh(PointCloudOptions) instead!";
-			return this->getMesh();
+			return this->getMesh(PointCloudOptions(stitchFaces, textureCoordinates));
 		}
 	}
 }
