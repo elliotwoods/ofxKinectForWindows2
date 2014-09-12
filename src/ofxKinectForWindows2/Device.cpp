@@ -70,33 +70,33 @@ namespace ofxKinectForWindows2 {
 	}
 
 	//----------
-	shared_ptr<Source::Depth> Device::initDepth() {
+	shared_ptr<Source::Depth> Device::initDepthSource() {
 		return this->initSource<Source::Depth>();
 	}
 
 	//----------
-	shared_ptr<Source::Color> Device::initColor() {
+	shared_ptr<Source::Color> Device::initColorSource() {
 		return this->initSource<Source::Color>();
 	}
 	
 	//----------
-	shared_ptr<Source::Infrared> Device::initInfrared() {
+	shared_ptr<Source::Infrared> Device::initInfraredSource() {
 		return this->initSource<Source::Infrared>();
 	}
 
 	//----------
-	shared_ptr<Source::LongExposureInfrared> Device::initLongExposureInfrared() {
+	shared_ptr<Source::LongExposureInfrared> Device::initLongExposureInfraredSource() {
 		return this->initSource<Source::LongExposureInfrared>();
 	}
 
 	//----------
-	shared_ptr<Source::BodyIndex> Device::initBodyIndex() {
+	shared_ptr<Source::BodyIndex> Device::initBodyIndexSource() {
 		return this->initSource<Source::BodyIndex>();
 	}
 
 	//----------
-	shared_ptr<Source::BodyFrame> Device::initBodyFrame() {
-		return this->initSource<Source::BodyFrame>();
+	shared_ptr<Source::Body> Device::initBodySource() {
+		return this->initSource<Source::Body>();
 	}
 
 	//----------
@@ -112,33 +112,33 @@ namespace ofxKinectForWindows2 {
 	}
 
 	//----------
-	shared_ptr<Source::Depth> Device::getDepth() {
+	shared_ptr<Source::Depth> Device::getDepthSource() {
 		return this->getSource<Source::Depth>();
 	}
 
 	//----------
-	shared_ptr<Source::Color> Device::getColor() {
+	shared_ptr<Source::Color> Device::getColorSource() {
 		return this->getSource<Source::Color>();
 	}
 	
 	//----------
-	shared_ptr<Source::Infrared> Device::getInfrared() {
+	shared_ptr<Source::Infrared> Device::getInfraredSource() {
 		return this->getSource<Source::Infrared>();
 	}
 
 	//----------
-	shared_ptr<Source::LongExposureInfrared> Device::getLongExposureInfrared() {
+	shared_ptr<Source::LongExposureInfrared> Device::getLongExposureInfraredSource() {
 		return this->getSource<Source::LongExposureInfrared>();
 	}
 
 	//----------
-	shared_ptr<Source::BodyIndex> Device::getBodyIndex() {
+	shared_ptr<Source::BodyIndex> Device::getBodyIndexSource() {
 		return this->getSource<Source::BodyIndex>();
 	}
 
 	//----------
-	shared_ptr<Source::BodyFrame> Device::getBodyFrame() {
-		return this->getSource<Source::BodyFrame>();
+	shared_ptr<Source::Body> Device::getBodySource() {
+		return this->getSource<Source::Body>();
 	}
 
 	//----------
@@ -148,6 +148,14 @@ namespace ofxKinectForWindows2 {
 
 	//----------
 	void Device::drawPrettyMesh() {
+		auto colorSource = this->getColorSource();
+		auto depthSource = this->getDepthSource();
+
+		if (!depthSource) {
+			ofLogError("ofxKinectForWindows2::Device::drawPrettyMesh") << "No depth source initialised";
+			return;
+		}
+		
 		//setup some point cloud properties for kicks
 		glPushAttrib(GL_POINT_BIT);
 		glPointSize(5.0f);
@@ -155,10 +163,12 @@ namespace ofxKinectForWindows2 {
 
 		ofPushStyle();
 
-		//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
-		this->getColor()->getTextureReference().bind();
+		if (colorSource) {
+			//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
+			colorSource->getTextureReference().bind();
+		}
 
-		auto mesh = this->getDepth()->getMesh();
+		auto mesh = depthSource->getMesh();
 
 		//draw point cloud
 		mesh.drawVertices();
@@ -170,9 +180,11 @@ namespace ofxKinectForWindows2 {
 		//draw fills faded
 		ofSetColor(255, 50);
 		mesh.drawFaces();
-
-		//unbind colour camera
-		this->getColor()->getTextureReference().unbind();
+		
+		if (colorSource) {
+			//unbind colour camera
+			colorSource->getTextureReference().unbind();
+		}
 
 		ofPopStyle();
 
@@ -184,9 +196,11 @@ namespace ofxKinectForWindows2 {
 		ofNoFill();
 		ofSetLineWidth(2.0f);
 		ofSetColor(100, 200, 100);
-		this->getDepth()->drawFrustum();
-		ofSetColor(200, 100, 100);
-		this->getColor()->drawFrustum();
+		depthSource->drawFrustum();
+		if (colorSource) {
+			ofSetColor(200, 100, 100);
+			colorSource->drawFrustum();
+		}
 		ofPopStyle();
 	}
 }

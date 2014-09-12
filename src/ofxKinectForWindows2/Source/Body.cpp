@@ -1,4 +1,4 @@
-#include "BodyFrame.h"
+#include "Body.h"
 #include "ofMain.h"
 
 #define CHECK_OPEN if(!this->reader) { OFXKINECTFORWINDOWS2_ERROR << "Failed : Reader is not open"; }
@@ -6,22 +6,22 @@
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
-		string BodyFrame::getTypeName() const {
-			return "BodyFrame";
+		string Body::getTypeName() const {
+			return "Body";
 		}
 
 		//----------
-		const vector<Body> & BodyFrame::getBodies() const {
+		const vector<Data::Body> & Body::getBodies() const {
 			return bodies;
 		}
 
 		//----------
-		const vector< pair<JointType, JointType> > & BodyFrame::getBonesDef() const {
+		const vector< pair<JointType, JointType> > & Body::getBonesDef() const {
 			return bonesDef;
 		}
 
 		//----------
-		ofMatrix4x4 BodyFrame::getFloorTransform() {
+		ofMatrix4x4 Body::getFloorTransform() {
 			ofNode helper;
 			helper.lookAt(ofVec3f(floorClipPlane.x, floorClipPlane.z, -floorClipPlane.y));
 			helper.boom(-floorClipPlane.w);
@@ -30,7 +30,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void BodyFrame::init(IKinectSensor * sensor) {
+		void Body::init(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
 				IBodyFrameSource * source = NULL;
@@ -59,7 +59,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void BodyFrame::initBonesDefinition() {
+		void Body::initBonesDefinition() {
 #define BONEDEF_ADD(J1, J2) bonesDef.push_back( make_pair<JointType, JointType>(JointType_ ## J1, JointType_ ## J2) )
 			// Torso
 			BONEDEF_ADD	(Head,			Neck);
@@ -98,7 +98,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void BodyFrame::update() {
+		void Body::update() {
 			CHECK_OPEN
 			
 			IBodyFrame * frame = NULL;
@@ -123,7 +123,7 @@ namespace ofxKinectForWindows2 {
 
 				for (int i = 0; i < BODY_COUNT; ++i)
 				{
-					Body & body = bodies[i];
+					auto & body = bodies[i];
 					body.clear();
 
 					IBody* pBody = ppBodies[i];
@@ -160,7 +160,7 @@ namespace ofxKinectForWindows2 {
 							}
 
 							for (int j = 0; j < JointType_Count; ++j) {
-								body.joints[joints[j].JointType] = Joint(joints[j], jointsOrient[j]);
+								body.joints[joints[j].JointType] = Data::Joint(joints[j], jointsOrient[j]);
 							}
 
 							// retrieve hand states
@@ -193,7 +193,7 @@ namespace ofxKinectForWindows2 {
 			SafeRelease(frame);
 		}
 
-		void BodyFrame::drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj) {
+		void Body::drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj) {
 			ofPushStyle();
 
 			int w, h;
@@ -233,7 +233,7 @@ namespace ofxKinectForWindows2 {
 			ofPopStyle();
 		}
 
-		void BodyFrame::drawProjectedBone( map<JointType, Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1){
+		void Body::drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1){
 
 			TrackingState ts1 = pJoints[joint0].getTrackingState();
 			TrackingState ts2 = pJoints[joint1].getTrackingState();
@@ -250,7 +250,7 @@ namespace ofxKinectForWindows2 {
 			ofLine(pJointPoints[joint0], pJointPoints[joint1]);
 		}
 
-		void BodyFrame::drawProjectedHand(HandState handState, ofVec2f & handPos){
+		void Body::drawProjectedHand(HandState handState, ofVec2f & handPos){
 
 			ofColor color;
 			switch (handState)
