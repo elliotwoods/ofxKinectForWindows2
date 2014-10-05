@@ -10,7 +10,6 @@ namespace ofxKinectForWindows2 {
 			const auto & boneAtlas = this->getBonesAtlas();
 			for(auto & bone : boneAtlas) {
 				ofLine(this->joints[bone.first].getPosition(), this->joints[bone.second].getPosition());
-				cout << ".";
 			}
 		}
 

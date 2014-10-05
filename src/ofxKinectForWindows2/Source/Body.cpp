@@ -207,7 +207,6 @@ namespace ofxKinectForWindows2 {
 				col.setHue(255.0f / this->getBodies().size() * bodyIndex);
 				ofSetColor(col);
 				body.drawWorld();
-				cout << col << endl;
 
 				ofPopStyle();
 
