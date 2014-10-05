@@ -150,6 +150,7 @@ namespace ofxKinectForWindows2 {
 	void Device::drawPrettyMesh() {
 		auto colorSource = this->getColorSource();
 		auto depthSource = this->getDepthSource();
+		auto bodySource = this->getBodySource();
 
 		if (!depthSource) {
 			ofLogError("ofxKinectForWindows2::Device::drawPrettyMesh") << "No depth source initialised";
@@ -191,6 +192,11 @@ namespace ofxKinectForWindows2 {
 
 		//clear the point cloud drawing attributes
 		glPopAttrib();
+
+		//draw bodies
+		if (bodySource) {
+			bodySource->drawWorld();
+		}
 
 		//draw the view cones of depth and colour cameras
 		ofPushStyle();

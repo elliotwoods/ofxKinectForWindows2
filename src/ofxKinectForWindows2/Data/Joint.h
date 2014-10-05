@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Kinect.h>
 #include "ofMain.h"
+#include <Kinect.h>
 
 namespace ofxKinectForWindows2 {
 	enum ProjectionCoordinates {

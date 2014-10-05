@@ -83,5 +83,8 @@
     <ClCompile Include="..\src\ofxKinectForWindows2\Source\Body.cpp">
       <Filter>src\ofxKinectForWindows2\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Data\Body.cpp">
+      <Filter>src\ofxKinectForWindows2\Data</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

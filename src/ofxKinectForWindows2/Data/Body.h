@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Kinect.h>
-
 #include "Joint.h"
+
+#include <Kinect.h>
 
 namespace ofxKinectForWindows2 {
 	namespace Data {
@@ -15,12 +15,14 @@ namespace ofxKinectForWindows2 {
 			std::map<JointType, Joint> joints;
 			std::map<Activity, DetectionResult> activity;
 
-			void clear() {
-				joints.clear();
-				leftHandState = HandState_Unknown;
-				rightHandState = HandState_Unknown;
-				tracked = false;
-			}
+			void drawWorld();
+			void clear();
+
+			static const std::vector<pair<JointType, JointType> > & getBonesAtlas();
+
+		protected:
+			static void initBonesAtlas();
+			static vector<pair<JointType, JointType> > * bonesAtlas;
 		};
 	}
 }
