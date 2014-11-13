@@ -10,6 +10,9 @@
     <Filter Include="src\ofxKinectForWindows2\Source">
       <UniqueIdentifier>{ef038ac8-52e4-450d-b04c-489f6aba359a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ofxKinectForWindows2\Data">
+      <UniqueIdentifier>{eeab42d3-af56-4576-8e45-79e3ea5610f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ofxKinectForWindows2.h">
@@ -42,8 +45,14 @@
     <ClInclude Include="..\src\ofxKinectForWindows2\Source\Color.h">
       <Filter>src\ofxKinectForWindows2\Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ofxKinectForWindows2\Source\BodyFrame.h">
+    <ClInclude Include="..\src\ofxKinectForWindows2\Source\Body.h">
       <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Data\Body.h">
+      <Filter>src\ofxKinectForWindows2\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxKinectForWindows2\Data\Joint.h">
+      <Filter>src\ofxKinectForWindows2\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,8 +80,11 @@
     <ClCompile Include="..\src\ofxKinectForWindows2\Source\Color.cpp">
       <Filter>src\ofxKinectForWindows2\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ofxKinectForWindows2\Source\BodyFrame.cpp">
+    <ClCompile Include="..\src\ofxKinectForWindows2\Source\Body.cpp">
       <Filter>src\ofxKinectForWindows2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxKinectForWindows2\Data\Body.cpp">
+      <Filter>src\ofxKinectForWindows2\Data</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

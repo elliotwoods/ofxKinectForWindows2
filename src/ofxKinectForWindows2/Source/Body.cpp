@@ -1,4 +1,4 @@
-#include "BodyFrame.h"
+#include "Body.h"
 #include "ofMain.h"
 
 #define CHECK_OPEN if(!this->reader) { OFXKINECTFORWINDOWS2_ERROR << "Failed : Reader is not open"; }
@@ -6,22 +6,17 @@
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
-		string BodyFrame::getTypeName() const {
-			return "BodyFrame";
+		string Body::getTypeName() const {
+			return "Body";
 		}
 
 		//----------
-		const vector<Body> & BodyFrame::getBodies() const {
+		const vector<Data::Body> & Body::getBodies() const {
 			return bodies;
 		}
 
 		//----------
-		const vector< pair<JointType, JointType> > & BodyFrame::getBonesDef() const {
-			return bonesDef;
-		}
-
-		//----------
-		ofMatrix4x4 BodyFrame::getFloorTransform() {
+		ofMatrix4x4 Body::getFloorTransform() {
 			ofNode helper;
 			helper.lookAt(ofVec3f(floorClipPlane.x, floorClipPlane.z, -floorClipPlane.y));
 			helper.boom(-floorClipPlane.w);
@@ -30,7 +25,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void BodyFrame::init(IKinectSensor * sensor) {
+		void Body::init(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
 				IBodyFrameSource * source = NULL;
@@ -50,7 +45,6 @@ namespace ofxKinectForWindows2 {
 				}
 
 				bodies.resize(BODY_COUNT);
-				initBonesDefinition();
 			}
 			catch (std::exception & e) {
 				SafeRelease(this->reader);
@@ -59,46 +53,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void BodyFrame::initBonesDefinition() {
-#define BONEDEF_ADD(J1, J2) bonesDef.push_back( make_pair<JointType, JointType>(JointType_ ## J1, JointType_ ## J2) )
-			// Torso
-			BONEDEF_ADD	(Head,			Neck);
-			BONEDEF_ADD	(Neck,			SpineShoulder);
-			BONEDEF_ADD	(SpineShoulder,	SpineMid);
-			BONEDEF_ADD	(SpineMid,		SpineBase);
-			BONEDEF_ADD	(SpineShoulder,	ShoulderRight);
-			BONEDEF_ADD	(SpineShoulder,	ShoulderLeft);
-			BONEDEF_ADD	(SpineBase,		HipRight);
-			BONEDEF_ADD	(SpineBase,		HipLeft);
-
-			// Right Arm
-			BONEDEF_ADD	(ShoulderRight,	ElbowRight);
-			BONEDEF_ADD	(ElbowRight,	WristRight);
-			BONEDEF_ADD	(WristRight,	HandRight);
-			BONEDEF_ADD	(HandRight,		HandTipRight);
-			BONEDEF_ADD	(WristRight,	ThumbRight);
-
-			// Left Arm
-			BONEDEF_ADD	(ShoulderLeft,	ElbowLeft);
-			BONEDEF_ADD	(ElbowLeft,		WristLeft);
-			BONEDEF_ADD	(WristLeft,		HandLeft);
-			BONEDEF_ADD	(HandLeft,		HandTipLeft);
-			BONEDEF_ADD	(WristLeft,		ThumbLeft);
-
-			// Right Leg
-			BONEDEF_ADD	(HipRight,		KneeRight);
-			BONEDEF_ADD	(KneeRight,		AnkleRight);
-			BONEDEF_ADD	(AnkleRight,	FootRight);
-
-			// Left Leg
-			BONEDEF_ADD	(HipLeft,	KneeLeft);
-			BONEDEF_ADD	(KneeLeft,	AnkleLeft);
-			BONEDEF_ADD	(AnkleLeft,	FootLeft);
-#undef BONEDEF_ADD
-		}
-
-		//----------
-		void BodyFrame::update() {
+		void Body::update() {
 			CHECK_OPEN
 			
 			IBodyFrame * frame = NULL;
@@ -113,17 +68,17 @@ namespace ofxKinectForWindows2 {
 					throw Exception("Failed to get relative time");
 				}
 				
-				if (FAILED(frame->get_FloorClipPlane(&floorClipPlane))){
+				if (FAILED(frame->get_FloorClipPlane(&floorClipPlane))) {
 					throw(Exception("Failed to get floor clip plane"));
 				}
 
-				if (FAILED(frame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies))){
+				IBody* ppBodies[BODY_COUNT] = {0};
+				if (FAILED(frame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies))) {
 					throw Exception("Failed to refresh body data");
 				}
 
-				for (int i = 0; i < BODY_COUNT; ++i)
-				{
-					Body & body = bodies[i];
+				for (int i = 0; i < BODY_COUNT; ++i) {
+					auto & body = bodies[i];
 					body.clear();
 
 					IBody* pBody = ppBodies[i];
@@ -160,7 +115,7 @@ namespace ofxKinectForWindows2 {
 							}
 
 							for (int j = 0; j < JointType_Count; ++j) {
-								body.joints[joints[j].JointType] = Joint(joints[j], jointsOrient[j]);
+								body.joints[joints[j].JointType] = Data::Joint(joints[j], jointsOrient[j]);
 							}
 
 							// retrieve hand states
@@ -193,14 +148,16 @@ namespace ofxKinectForWindows2 {
 			SafeRelease(frame);
 		}
 
-		void BodyFrame::drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj) {
+		//----------
+		void Body::drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj) {
 			ofPushStyle();
-
 			int w, h;
 			switch (proj) {
 			case ColorCamera: w = 1920; h = 1080; break;
 			case DepthCamera: w = 512; h = 424; break;
 			}
+
+			const auto & bonesAtlas = Data::Body::getBonesAtlas();
 
 			for (auto & body : bodies) {
 				if (!body.tracked) continue;
@@ -222,7 +179,7 @@ namespace ofxKinectForWindows2 {
 					ofCircle(p.x, p.y, radius);
 				}
 				
-				for (auto & bone : bonesDef) {
+				for (auto & bone : bonesAtlas) {
 					drawProjectedBone(body.joints, jntsProj, bone.first, bone.second);
 				}
 
@@ -233,8 +190,32 @@ namespace ofxKinectForWindows2 {
 			ofPopStyle();
 		}
 
-		void BodyFrame::drawProjectedBone( map<JointType, Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1){
+		//----------
+		void Body::drawWorld() {
+			auto bodies = this->getBodies();
+			int bodyIndex = 0;
+			for (auto & body : bodies) {
+				//draw black lines
+				ofPushStyle();
+				ofSetLineWidth(10.0f);
+				ofSetColor(0);
+				body.drawWorld();
 
+				//draw coloured lines
+				ofSetLineWidth(8.0f);
+				ofColor col(200, 100, 100);
+				col.setHue(255.0f / this->getBodies().size() * bodyIndex);
+				ofSetColor(col);
+				body.drawWorld();
+
+				ofPopStyle();
+
+				bodyIndex++;
+			}
+		}
+
+		//----------
+		void Body::drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1){
 			TrackingState ts1 = pJoints[joint0].getTrackingState();
 			TrackingState ts2 = pJoints[joint1].getTrackingState();
 			if (ts1 == TrackingState_NotTracked || ts2 == TrackingState_NotTracked) return;
@@ -250,8 +231,8 @@ namespace ofxKinectForWindows2 {
 			ofLine(pJointPoints[joint0], pJointPoints[joint1]);
 		}
 
-		void BodyFrame::drawProjectedHand(HandState handState, ofVec2f & handPos){
-
+		//----------
+		void Body::drawProjectedHand(HandState handState, ofVec2f & handPos){
 			ofColor color;
 			switch (handState)
 			{

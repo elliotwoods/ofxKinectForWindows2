@@ -3,10 +3,11 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	kinect.open();
-	kinect.initDepth();
-	kinect.initColor();
-	kinect.initInfrared();
-	kinect.initBodyIndex();
+	kinect.initDepthSource();
+	kinect.initColorSource();
+	kinect.initInfraredSource();
+	kinect.initBodyIndexSource();
+	kinect.initBodySource();
 
 	gui.init();
 
@@ -33,44 +34,7 @@ void ofApp::setup(){
 
 	auto worldView = gui.addWorld("World");
 	worldView->onDrawWorld += [this] (ofCamera &) {
-		//setup some point cloud properties for kicks
-		glPushAttrib(GL_POINT_BIT);
-		glPointSize(5.0f);
-		glEnable(GL_POINT_SMOOTH);
-
-		ofPushStyle();
-
-		//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
-		this->kinect.getColor()->getTextureReference().bind();
-
-		//draw point cloud
-		this->mesh.drawVertices();
-		
-		//draw triangles
-		ofSetColor(255, 150);
-		this->mesh.drawWireframe();
-		
-		//draw fills faded
-		ofSetColor(255, 50);
-		this->mesh.drawFaces();
-
-		//unbind colour camera
-		this->kinect.getColor()->getTextureReference().unbind();
-
-		ofPopStyle();
-
-		//clear the point cloud drawing attributes
-		glPopAttrib();
-
-		//draw the view cones of depth and colour cameras
-		ofPushStyle();
-		ofNoFill();
-		ofSetLineWidth(2.0f);
-		ofSetColor(100, 200, 100);
-		this->kinect.getDepth()->drawFrustum();
-		ofSetColor(200, 100, 100);
-		this->kinect.getColor()->drawFrustum();
-		ofPopStyle();
+		this->kinect.drawPrettyMesh();
 	};
 
 	//if we press the 'c' key on the World panel, then toggle the camera's cursor. This works best when you fullscreen that panel
@@ -84,7 +48,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 	kinect.update();
-	mesh = kinect.getDepth()->getMesh(true, ofxKinectForWindows2::Source::Depth::PointCloudOptions::TextureCoordinates::ColorCamera);
+	mesh = kinect.getDepthSource()->getMesh(true, ofxKinectForWindows2::Source::Depth::PointCloudOptions::TextureCoordinates::ColorCamera);
 }
 
 //--------------------------------------------------------------

@@ -6,7 +6,7 @@
 #include "Source/Infrared.h"
 #include "Source/LongExposureInfrared.h"
 #include "Source/BodyIndex.h"
-#include "Source/BodyFrame.h"
+#include "Source/Body.h"
 
 #include <memory>
 #include <vector>
@@ -24,12 +24,12 @@ namespace ofxKinectForWindows2 {
 		template<typename SourceType>
 		shared_ptr<SourceType> initSource();
 
-		shared_ptr<Source::Depth> initDepth();
-		shared_ptr<Source::Color> initColor();
-		shared_ptr<Source::Infrared> initInfrared();
-		shared_ptr<Source::LongExposureInfrared> initLongExposureInfrared();
-		shared_ptr<Source::BodyIndex> initBodyIndex();
-		shared_ptr<Source::BodyFrame> initBodyFrame();
+		shared_ptr<Source::Depth> initDepthSource();
+		shared_ptr<Source::Color> initColorSource();
+		shared_ptr<Source::Infrared> initInfraredSource();
+		shared_ptr<Source::LongExposureInfrared> initLongExposureInfraredSource();
+		shared_ptr<Source::BodyIndex> initBodyIndexSource();
+		shared_ptr<Source::Body> initBodySource();
 
 		void update();
 
@@ -51,14 +51,16 @@ namespace ofxKinectForWindows2 {
 
 		vector<shared_ptr<Source::Base>> getSources();
 
-		shared_ptr<Source::Depth> getDepth();
-		shared_ptr<Source::Color> getColor();
-		shared_ptr<Source::Infrared> getInfrared();
-		shared_ptr<Source::LongExposureInfrared> getLongExposureInfrared();
-		shared_ptr<Source::BodyIndex> getBodyIndex();
-		shared_ptr<Source::BodyFrame> getBodyFrame();
+		shared_ptr<Source::Depth> getDepthSource();
+		shared_ptr<Source::Color> getColorSource();
+		shared_ptr<Source::Infrared> getInfraredSource();
+		shared_ptr<Source::LongExposureInfrared> getLongExposureInfraredSource();
+		shared_ptr<Source::BodyIndex> getBodyIndexSource();
+		shared_ptr<Source::Body> getBodySource();
 
 		IKinectSensor * getSensor();
+
+		void drawPrettyMesh();
 
 	protected: 
 		IKinectSensor * sensor;
