@@ -166,7 +166,7 @@ namespace ofxKinectForWindows2 {
 
 		if (colorSource) {
 			//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
-			colorSource->getTextureReference().bind();
+			colorSource->getTexture().bind();
 		}
 
 		auto opts = Source::Depth::PointCloudOptions(true, Source::Depth::PointCloudOptions::TextureCoordinates::ColorCamera);
@@ -185,7 +185,7 @@ namespace ofxKinectForWindows2 {
 		
 		if (colorSource) {
 			//unbind colour camera
-			colorSource->getTextureReference().unbind();
+			colorSource->getTexture().unbind();
 		}
 
 		ofPopStyle();
