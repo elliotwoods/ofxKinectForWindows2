@@ -35,6 +35,9 @@ namespace ofxKinectForWindows2 {
 			float getWidth() override;
 			float getHeight() override;
 
+			float getWidth() const;
+			float getHeight() const;
+
 			float getDiagonalFieldOfView() const;
 			float getHorizontalFieldOfView() const;
 			float getVerticalFieldOfView() const;

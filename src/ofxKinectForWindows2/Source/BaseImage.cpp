@@ -87,12 +87,24 @@ namespace ofxKinectForWindows2 {
 		float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getWidth() {
 			return this->pixels.getWidth();
 		}
-
+		
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getHeight() {
 			return this->pixels.getHeight();
 		}
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+			float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getWidth() const {
+				return this->pixels.getWidth();
+			}
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+			float BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getHeight() const {
+				return this->pixels.getHeight();
+			}
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS

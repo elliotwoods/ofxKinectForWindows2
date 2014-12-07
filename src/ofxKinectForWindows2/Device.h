@@ -60,7 +60,7 @@ namespace ofxKinectForWindows2 {
 
 		IKinectSensor * getSensor();
 
-		void drawPrettyMesh();
+		void drawWorld();
 
 	protected: 
 		IKinectSensor * sensor;

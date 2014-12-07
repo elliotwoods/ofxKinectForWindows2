@@ -147,9 +147,10 @@ namespace ofxKinectForWindows2 {
 	}
 
 	//----------
-	void Device::drawPrettyMesh() {
+	void Device::drawWorld() {
 		auto colorSource = this->getColorSource();
 		auto depthSource = this->getDepthSource();
+		auto bodySource = this->getBodySource();
 
 		if (!depthSource) {
 			ofLogError("ofxKinectForWindows2::Device::drawPrettyMesh") << "No depth source initialised";
@@ -203,5 +204,13 @@ namespace ofxKinectForWindows2 {
 			colorSource->drawFrustum();
 		}
 		ofPopStyle();
+
+		if (bodySource) {
+			ofPushMatrix();
+			ofRotate(90, 0, 0, 1);
+			ofMultMatrix(bodySource->getFloorTransform());
+			ofDrawGridPlane(5.0f);
+			ofPopMatrix();
+		}
 	}
 }

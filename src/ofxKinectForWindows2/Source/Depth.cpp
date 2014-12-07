@@ -123,5 +123,21 @@ namespace ofxKinectForWindows2 {
 		ofMesh Depth::getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates) {
 			return this->getMesh(PointCloudOptions(stitchFaces, textureCoordinates));
 		}
+
+		//----------
+		ofFloatPixels Depth::getColorToWorldMap(int colorImageWidth, int colorImageHeight) const {
+			ofFloatPixels colorToWorldMap;
+			colorToWorldMap.allocate(colorImageWidth, colorImageHeight, ofPixelFormat::OF_PIXELS_RGB);
+			this->coordinateMapper->MapColorFrameToCameraSpace(this->pixels.size(), this->pixels.getPixels(), colorImageWidth * colorImageHeight, (CameraSpacePoint*)colorToWorldMap.getPixels());
+			return colorToWorldMap;
+		}
+
+		//----------
+		ofFloatPixels Depth::getDepthToWorldMap() const {
+			ofFloatPixels depthToWorldMap;
+			depthToWorldMap.allocate(this->getWidth(), this->getHeight(), ofPixelFormat::OF_PIXELS_RGB);
+			this->coordinateMapper->MapColorFrameToCameraSpace(this->pixels.size(), this->pixels.getPixels(), depthToWorldMap.size(), (CameraSpacePoint*)depthToWorldMap.getPixels());
+			return depthToWorldMap;
+		}
 	}
 }
