@@ -22,18 +22,20 @@ namespace ofxKinectForWindows2 {
 			ReaderType * getReader();
 
 			//ofBaseHasTexture
-			ofTexture & getTextureReference() override;
+			ofTexture & getTexture() override;
+			const ofTexture & getTexture() const override;
 			void setUseTexture(bool) override;
+			bool isUsingTexture() const override { return useTexture; }
 
 			//ofBaseHasPixels
-			PixelType * getPixels() override;
-			ofPixels_<PixelType> & getPixelsRef() override;
+			ofPixels_<PixelType> & getPixels() override;
+			const ofPixels_<PixelType> & getPixels() const override;
 
 			//ofBaseDraws
-			void draw(float, float) override;
-			void draw(float, float, float, float) override;
-			float getWidth() override;
-			float getHeight() override;
+			void draw(float, float) const override;
+			void draw(float, float, float, float) const override;
+			float getWidth() const override;
+			float getHeight() const override;
 
 			float getWidth() const;
 			float getHeight() const;

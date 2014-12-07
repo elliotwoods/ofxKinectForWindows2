@@ -45,9 +45,16 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		ofTexture & BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getTextureReference() {
+		ofTexture & BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getTexture() {
 			return this->texture;
 		}
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		const ofTexture & BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getTexture() const {
+			return this->texture;
+		}
+
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
@@ -60,13 +67,13 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		PixelType * BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getPixels() {
-			return this->pixels.getPixels();
+		ofPixels_<PixelType> & BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getPixels() {
+			return this->pixels;
 		}
 
-		//----------
+				//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		ofPixels_<PixelType> & BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getPixelsRef() {
+		const ofPixels_<PixelType> & BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getPixels() const {
 			return this->pixels;
 		}
 
