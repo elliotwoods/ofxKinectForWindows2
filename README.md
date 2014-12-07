@@ -5,6 +5,10 @@ ofxKinectForWindows2
 
 Implementation of Kinect For Windows v2 API using COM (not KinectCommonBridge)
 
+## Warning
+
+Following PR https://github.com/elliotwoods/ofxKinectForWindows2/pull/13 , we are now working against oF 0.9.0. If you intend to work with 0.8.4 or earlier, please use the following previous version : https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4
+
 ## Features
 
 Currently lets you:
