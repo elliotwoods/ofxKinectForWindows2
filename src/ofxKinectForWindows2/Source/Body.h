@@ -1,8 +1,9 @@
 #pragma once
 
+#include "ofMain.h"
+
 #include "Base.h"
 #include "../Utils.h"
-#include "ofMain.h"
 
 #include "../Data/Body.h"
 #include "../Data/Joint.h"
@@ -17,10 +18,10 @@ namespace ofxKinectForWindows2 {
 			void update();
 
 			void drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj = ColorCamera);
+			void drawWorld();
 
 			IBodyFrameReader * getReader();
 			const vector<Data::Body> & getBodies() const;
-			const vector< pair<JointType, JointType> > & getBonesDef() const;
 
 			const Vector4 getFloorClipPlane() {
 				return floorClipPlane;
@@ -28,21 +29,18 @@ namespace ofxKinectForWindows2 {
 
 			ofMatrix4x4 getFloorTransform();
 
-		protected:
-			void drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
-			void drawProjectedHand(HandState handState, ofVec2f & handPos);
+			static void drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
+			static void drawProjectedHand(HandState handState, ofVec2f & handPos);
 
+		protected:
 			void initBonesDefinition();
 
 			IBodyFrameReader * reader;
 			ICoordinateMapper * coordinateMapper;
 
-			IBody* ppBodies[BODY_COUNT];
-
 			Vector4 floorClipPlane;
 
 			vector<Data::Body> bodies;
-			vector<pair<JointType, JointType> > bonesDef;
 		};
 	}
 }

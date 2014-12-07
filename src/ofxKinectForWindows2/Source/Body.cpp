@@ -16,11 +16,6 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		const vector< pair<JointType, JointType> > & Body::getBonesDef() const {
-			return bonesDef;
-		}
-
-		//----------
 		ofMatrix4x4 Body::getFloorTransform() {
 			ofNode helper;
 			helper.lookAt(ofVec3f(floorClipPlane.x, floorClipPlane.z, -floorClipPlane.y));
@@ -50,51 +45,11 @@ namespace ofxKinectForWindows2 {
 				}
 
 				bodies.resize(BODY_COUNT);
-				initBonesDefinition();
 			}
 			catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
-		}
-
-		//----------
-		void Body::initBonesDefinition() {
-#define BONEDEF_ADD(J1, J2) bonesDef.push_back( make_pair<JointType, JointType>(JointType_ ## J1, JointType_ ## J2) )
-			// Torso
-			BONEDEF_ADD	(Head,			Neck);
-			BONEDEF_ADD	(Neck,			SpineShoulder);
-			BONEDEF_ADD	(SpineShoulder,	SpineMid);
-			BONEDEF_ADD	(SpineMid,		SpineBase);
-			BONEDEF_ADD	(SpineShoulder,	ShoulderRight);
-			BONEDEF_ADD	(SpineShoulder,	ShoulderLeft);
-			BONEDEF_ADD	(SpineBase,		HipRight);
-			BONEDEF_ADD	(SpineBase,		HipLeft);
-
-			// Right Arm
-			BONEDEF_ADD	(ShoulderRight,	ElbowRight);
-			BONEDEF_ADD	(ElbowRight,	WristRight);
-			BONEDEF_ADD	(WristRight,	HandRight);
-			BONEDEF_ADD	(HandRight,		HandTipRight);
-			BONEDEF_ADD	(WristRight,	ThumbRight);
-
-			// Left Arm
-			BONEDEF_ADD	(ShoulderLeft,	ElbowLeft);
-			BONEDEF_ADD	(ElbowLeft,		WristLeft);
-			BONEDEF_ADD	(WristLeft,		HandLeft);
-			BONEDEF_ADD	(HandLeft,		HandTipLeft);
-			BONEDEF_ADD	(WristLeft,		ThumbLeft);
-
-			// Right Leg
-			BONEDEF_ADD	(HipRight,		KneeRight);
-			BONEDEF_ADD	(KneeRight,		AnkleRight);
-			BONEDEF_ADD	(AnkleRight,	FootRight);
-
-			// Left Leg
-			BONEDEF_ADD	(HipLeft,	KneeLeft);
-			BONEDEF_ADD	(KneeLeft,	AnkleLeft);
-			BONEDEF_ADD	(AnkleLeft,	FootLeft);
-#undef BONEDEF_ADD
 		}
 
 		//----------
@@ -113,16 +68,16 @@ namespace ofxKinectForWindows2 {
 					throw Exception("Failed to get relative time");
 				}
 				
-				if (FAILED(frame->get_FloorClipPlane(&floorClipPlane))){
+				if (FAILED(frame->get_FloorClipPlane(&floorClipPlane))) {
 					throw(Exception("Failed to get floor clip plane"));
 				}
 
-				if (FAILED(frame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies))){
+				IBody* ppBodies[BODY_COUNT] = {0};
+				if (FAILED(frame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies))) {
 					throw Exception("Failed to refresh body data");
 				}
 
-				for (int i = 0; i < BODY_COUNT; ++i)
-				{
+				for (int i = 0; i < BODY_COUNT; ++i) {
 					auto & body = bodies[i];
 					body.clear();
 
@@ -202,6 +157,8 @@ namespace ofxKinectForWindows2 {
 			case DepthCamera: w = 512; h = 424; break;
 			}
 
+			const auto & bonesAtlas = Data::Body::getBonesAtlas();
+
 			for (auto & body : bodies) {
 				if (!body.tracked) continue;
 
@@ -222,7 +179,7 @@ namespace ofxKinectForWindows2 {
 					ofCircle(p.x, p.y, radius);
 				}
 				
-				for (auto & bone : bonesDef) {
+				for (auto & bone : bonesAtlas) {
 					drawProjectedBone(body.joints, jntsProj, bone.first, bone.second);
 				}
 
@@ -231,6 +188,30 @@ namespace ofxKinectForWindows2 {
 			}
 
 			ofPopStyle();
+		}
+
+		//----------
+		void Body::drawWorld() {
+			auto bodies = this->getBodies();
+			int bodyIndex = 0;
+			for (auto & body : bodies) {
+				//draw black lines
+				ofPushStyle();
+				ofSetLineWidth(10.0f);
+				ofSetColor(0);
+				body.drawWorld();
+
+				//draw coloured lines
+				ofSetLineWidth(8.0f);
+				ofColor col(200, 100, 100);
+				col.setHue(255.0f / this->getBodies().size() * bodyIndex);
+				ofSetColor(col);
+				body.drawWorld();
+
+				ofPopStyle();
+
+				bodyIndex++;
+			}
 		}
 
 		//----------
