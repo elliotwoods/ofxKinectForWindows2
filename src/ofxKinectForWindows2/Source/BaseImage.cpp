@@ -160,7 +160,7 @@ namespace ofxKinectForWindows2 {
 				}
 
 				//update local assets
-				if (FAILED(frame->CopyFrameDataToArray(this->pixels.size(), this->pixels.getPixels()))) {
+				if (FAILED(frame->CopyFrameDataToArray(this->pixels.size() / this->pixels.getBytesPerPixel(), this->pixels.getPixels()))) {
 					throw Exception("Couldn't pull pixel buffer ");
 				}
 				if (this->useTexture) {
