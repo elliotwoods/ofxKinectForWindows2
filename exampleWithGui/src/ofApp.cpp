@@ -34,7 +34,7 @@ void ofApp::setup(){
 
 	auto worldView = gui.addWorld("World");
 	worldView->onDrawWorld += [this] (ofCamera &) {
-		this->kinect.drawPrettyMesh();
+		this->kinect.drawWorld();
 	};
 
 	//if we press the 'c' key on the World panel, then toggle the camera's cursor. This works best when you fullscreen that panel
