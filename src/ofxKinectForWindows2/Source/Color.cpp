@@ -66,7 +66,7 @@ namespace ofxKinectForWindows2 {
 				}
 
 				//update local assets
-				if (FAILED(frame->CopyConvertedFrameDataToArray(this->pixels.size(), this->pixels.getPixels(), ColorImageFormat_Rgba))) {
+				if (FAILED(frame->CopyConvertedFrameDataToArray(this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(), ColorImageFormat_Rgba))) {
 					throw Exception("Couldn't pull pixel buffer");
 				}
 				if (this->useTexture) {
