@@ -60,7 +60,13 @@ namespace ofxKinectForWindows2 {
 
 		IKinectSensor * getSensor();
 
-		void drawWorld();
+		enum DrawStyle {
+			Pretty = 1 << 0,
+			Vertices = 1 << 1,
+			Wireframe = 1 << 2,
+			Faces = 1 << 3
+		};
+		void drawWorld(DrawStyle drawStyle = Pretty);
 
 	protected: 
 		IKinectSensor * sensor;

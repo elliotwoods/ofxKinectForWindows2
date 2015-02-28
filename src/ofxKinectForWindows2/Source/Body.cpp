@@ -194,6 +194,39 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
+		void Body::drawBodies() {
+			int bodyIndex = 0;
+			for (auto & body : this->bodies) {
+				if (!body.tracked) {
+					continue;
+				}
+
+				ofPushStyle();
+				ofSetLineWidth(3.0f);
+
+				auto col = ofColor(200, 100, 100);
+				col.setHue(bodyIndex * 60);
+				ofSetColor(col);
+
+				for (auto & bone : this->bonesDef) {
+					ofLine(body.joints[bone.first].getPosition(), body.joints[bone.second].getPosition());
+				}
+				ofPopStyle();
+
+				bodyIndex++;
+			}
+		}
+
+		//----------
+		void Body::drawFloor() {
+			ofPushMatrix();
+			ofRotate(90, 0, 0, 1);
+			ofMultMatrix(this->getFloorTransform());
+			ofDrawGridPlane(5.0f);
+			ofPopMatrix();
+		}
+
+		//----------
 		void Body::drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj) {
 			ofPushStyle();
 			int w, h;

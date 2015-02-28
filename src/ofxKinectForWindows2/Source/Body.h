@@ -16,6 +16,8 @@ namespace ofxKinectForWindows2 {
 			void init(IKinectSensor *) override;
 			void update();
 
+			void drawBodies();
+			void drawFloor();
 			void drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj = ColorCamera);
 
 			IBodyFrameReader * getReader();
