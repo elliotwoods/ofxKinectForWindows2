@@ -39,8 +39,6 @@ namespace ofxKinectForWindows2 {
 			IBodyFrameReader * reader;
 			ICoordinateMapper * coordinateMapper;
 
-			IBody* ppBodies[BODY_COUNT];
-
 			Vector4 floorClipPlane;
 
 			vector<Data::Body> bodies;

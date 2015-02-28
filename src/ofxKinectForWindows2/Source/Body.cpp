@@ -117,6 +117,7 @@ namespace ofxKinectForWindows2 {
 					throw(Exception("Failed to get floor clip plane"));
 				}
 
+				IBody* ppBodies[BODY_COUNT] = {0};
 				if (FAILED(frame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies))){
 					throw Exception("Failed to refresh body data");
 				}
