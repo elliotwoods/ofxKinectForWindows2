@@ -51,24 +51,24 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
     <Import Project="..\ofxKinectForWindows2.props" />
-    <Import Project="..\..\ofxCvGui2\ofxCvGuiLib\ofxCvGui.props" />
+    <Import Project="..\..\ofxCvGui\ofxCvGuiLib\ofxCvGui.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\ofxKinectForWindows2.props" />
-    <Import Project="..\..\ofxCvGui2\ofxCvGuiLib\ofxCvGui.props" />
+    <Import Project="..\..\ofxCvGui\ofxCvGuiLib\ofxCvGui.props" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease64.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
     <Import Project="..\ofxKinectForWindows2.props" />
-    <Import Project="..\..\ofxCvGui2\ofxCvGuiLib\ofxCvGui.props" />
+    <Import Project="..\..\ofxCvGui\ofxCvGuiLib\ofxCvGui.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\ofxKinectForWindows2.props" />
-    <Import Project="..\..\ofxCvGui2\ofxCvGuiLib\ofxCvGui.props" />
+    <Import Project="..\..\ofxCvGui\ofxCvGuiLib\ofxCvGui.props" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -183,7 +183,7 @@
     <ProjectReference Include="..\..\..\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
       <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\ofxCvGui2\ofxCvGuiLib\ofxCvGuiLib.vcxproj">
+    <ProjectReference Include="..\..\ofxCvGui\ofxCvGuiLib\ofxCvGuiLib.vcxproj">
       <Project>{6f0ddb4f-4014-4433-919b-9d956c034bad}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ofxKinectForWindows2Lib\ofxKinectForWindows2Lib.vcxproj">
