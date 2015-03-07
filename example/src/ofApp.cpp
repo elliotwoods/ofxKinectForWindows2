@@ -9,6 +9,7 @@ void ofApp::setup(){
 	kinect.initDepthSource();
 	kinect.initColorSource();
 	kinect.initInfraredSource();
+	kinect.initBodySource();
 	kinect.initBodyIndexSource();
 
 	ofSetWindowShape(previewWidth * 2, previewHeight * 2);
@@ -31,6 +32,7 @@ void ofApp::draw(){
 	sourceRatio = kinect.getColorSource()->getHeight() / kinect.getColorSource()->getWidth();
 	sourceHeight = previewWidth * sourceRatio; 
 	kinect.getColorSource()->draw(previewWidth, 0 + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
+	kinect.getBodySource()->drawProjected(previewWidth, 0 + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
 	
 	sourceRatio = kinect.getInfraredSource()->getHeight() / kinect.getInfraredSource()->getWidth();
 	sourceHeight = previewWidth * sourceRatio; 
@@ -39,6 +41,7 @@ void ofApp::draw(){
 	sourceRatio = kinect.getBodyIndexSource()->getHeight() / kinect.getBodyIndexSource()->getWidth();
 	sourceHeight = previewWidth * sourceRatio; 
 	kinect.getBodyIndexSource()->draw(previewWidth, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
+	kinect.getBodySource()->drawProjected(previewWidth, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight, ofxKFW2::DepthCamera);
 }
 
 //--------------------------------------------------------------
