@@ -1,5 +1,8 @@
 #include "ofApp.h"
 
+int previewWidth = 640;
+int previewHeight = 480;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	kinect.open();
@@ -8,20 +11,34 @@ void ofApp::setup(){
 	kinect.initInfraredSource();
 	kinect.initBodyIndexSource();
 
-	ofSetWindowShape(640 * 2, 480 * 2);
+	ofSetWindowShape(previewWidth * 2, previewHeight * 2);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	this->kinect.update();
+	kinect.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	this->kinect.getDepthSource()->draw(0,0,640,480); // note that the depth texture is RAW so may appear dark
-	this->kinect.getColorSource()->draw(640,0,640,480);
-	this->kinect.getInfraredSource()->draw(0,480,640,480);
-	this->kinect.getBodyIndexSource()->draw(640,480,640,480);
+	float sourceRatio;
+	float sourceHeight;
+
+	sourceRatio = kinect.getDepthSource()->getHeight() / kinect.getDepthSource()->getWidth();
+	sourceHeight = previewWidth * sourceRatio; 
+	kinect.getDepthSource()->draw(0, 0 + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);  // note that the depth texture is RAW so may appear dark
+	
+	sourceRatio = kinect.getColorSource()->getHeight() / kinect.getColorSource()->getWidth();
+	sourceHeight = previewWidth * sourceRatio; 
+	kinect.getColorSource()->draw(previewWidth, 0 + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
+	
+	sourceRatio = kinect.getInfraredSource()->getHeight() / kinect.getInfraredSource()->getWidth();
+	sourceHeight = previewWidth * sourceRatio; 
+	kinect.getInfraredSource()->draw(0, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
+	
+	sourceRatio = kinect.getBodyIndexSource()->getHeight() / kinect.getBodyIndexSource()->getWidth();
+	sourceHeight = previewWidth * sourceRatio; 
+	kinect.getBodyIndexSource()->draw(previewWidth, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
 }
 
 //--------------------------------------------------------------
