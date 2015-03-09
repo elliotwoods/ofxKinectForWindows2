@@ -7,7 +7,7 @@ uniform int uWidth;
 void main()
 { 
 	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-    gl_TexCoord[0] = gl_MultiTexCoord1;
+	gl_TexCoord[0] = gl_MultiTexCoord1;
 
 	vec2 bIdxTexCoord = vec2(gl_VertexID % uWidth, gl_VertexID / uWidth);
 	vec4 bIdxColor = texture2DRect(uBodyIndexTex, bIdxTexCoord);

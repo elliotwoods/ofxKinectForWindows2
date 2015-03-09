@@ -10,6 +10,4 @@ void main()
 
 	vec4 color = texture2DRect(uColorTex, gl_TexCoord[0].st);
 	gl_FragColor = color;
-
-//	gl_FragColor = gl_Color;
 }
