@@ -28,7 +28,7 @@ void ofApp::draw(){
 	float colorHeight = previewWidth * (kinect.getColorSource()->getHeight() / kinect.getColorSource()->getWidth());
 	float colorTop = (previewHeight - colorHeight) / 2.0;
 	kinect.getColorSource()->draw(previewWidth, 0 + colorTop, previewWidth, colorHeight);
-	kinect.getBodySource()->drawProjected(previewWidth, 0 + colorTop / 2.0, previewWidth, colorHeight);
+	kinect.getBodySource()->drawProjected(previewWidth, 0 + colorTop, previewWidth, colorHeight);
 	
 	kinect.getInfraredSource()->draw(0, previewHeight, previewWidth, previewHeight);
 	
