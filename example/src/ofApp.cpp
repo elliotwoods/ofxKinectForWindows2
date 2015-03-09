@@ -22,26 +22,18 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	float sourceRatio;
-	float sourceHeight;
-
-	sourceRatio = kinect.getDepthSource()->getHeight() / kinect.getDepthSource()->getWidth();
-	sourceHeight = previewWidth * sourceRatio; 
-	kinect.getDepthSource()->draw(0, 0 + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);  // note that the depth texture is RAW so may appear dark
+	kinect.getDepthSource()->draw(0, 0, previewWidth, previewHeight);  // note that the depth texture is RAW so may appear dark
 	
-	sourceRatio = kinect.getColorSource()->getHeight() / kinect.getColorSource()->getWidth();
-	sourceHeight = previewWidth * sourceRatio; 
-	kinect.getColorSource()->draw(previewWidth, 0 + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
-	kinect.getBodySource()->drawProjected(previewWidth, 0 + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
+	// Color is at 1920x1080 instead of 512x424 so we should fix aspect ratio
+	float colorHeight = previewWidth * (kinect.getColorSource()->getHeight() / kinect.getColorSource()->getWidth());
+	float colorTop = (previewHeight - colorHeight) / 2.0;
+	kinect.getColorSource()->draw(previewWidth, 0 + colorTop, previewWidth, colorHeight);
+	kinect.getBodySource()->drawProjected(previewWidth, 0 + colorTop / 2.0, previewWidth, colorHeight);
 	
-	sourceRatio = kinect.getInfraredSource()->getHeight() / kinect.getInfraredSource()->getWidth();
-	sourceHeight = previewWidth * sourceRatio; 
-	kinect.getInfraredSource()->draw(0, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
+	kinect.getInfraredSource()->draw(0, previewHeight, previewWidth, previewHeight);
 	
-	sourceRatio = kinect.getBodyIndexSource()->getHeight() / kinect.getBodyIndexSource()->getWidth();
-	sourceHeight = previewWidth * sourceRatio; 
-	kinect.getBodyIndexSource()->draw(previewWidth, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
-	kinect.getBodySource()->drawProjected(previewWidth, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight, ofxKFW2::ProjectionCoordinates::DepthCamera);
+	kinect.getBodyIndexSource()->draw(previewWidth, previewHeight, previewWidth, previewHeight);
+	kinect.getBodySource()->drawProjected(previewWidth, previewHeight, previewWidth, previewHeight, ofxKFW2::ProjectionCoordinates::DepthCamera);
 }
 
 //--------------------------------------------------------------
