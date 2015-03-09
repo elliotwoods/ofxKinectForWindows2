@@ -41,7 +41,7 @@ void ofApp::draw(){
 	sourceRatio = kinect.getBodyIndexSource()->getHeight() / kinect.getBodyIndexSource()->getWidth();
 	sourceHeight = previewWidth * sourceRatio; 
 	kinect.getBodyIndexSource()->draw(previewWidth, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight);
-	kinect.getBodySource()->drawProjected(previewWidth, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight, ofxKFW2::DepthCamera);
+	kinect.getBodySource()->drawProjected(previewWidth, previewHeight + (previewHeight - sourceHeight) / 2.0, previewWidth, sourceHeight, ofxKFW2::ProjectionCoordinates::DepthCamera);
 }
 
 //--------------------------------------------------------------
