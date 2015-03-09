@@ -1,27 +1,39 @@
 #include "ofApp.h"
 
+int previewWidth = 640;
+int previewHeight = 480;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	kinect.open();
 	kinect.initDepthSource();
 	kinect.initColorSource();
 	kinect.initInfraredSource();
+	kinect.initBodySource();
 	kinect.initBodyIndexSource();
 
-	ofSetWindowShape(640 * 2, 480 * 2);
+	ofSetWindowShape(previewWidth * 2, previewHeight * 2);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	this->kinect.update();
+	kinect.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	this->kinect.getDepthSource()->draw(0,0,640,480); // note that the depth texture is RAW so may appear dark
-	this->kinect.getColorSource()->draw(640,0,640,480);
-	this->kinect.getInfraredSource()->draw(0,480,640,480);
-	this->kinect.getBodyIndexSource()->draw(640,480,640,480);
+	kinect.getDepthSource()->draw(0, 0, previewWidth, previewHeight);  // note that the depth texture is RAW so may appear dark
+	
+	// Color is at 1920x1080 instead of 512x424 so we should fix aspect ratio
+	float colorHeight = previewWidth * (kinect.getColorSource()->getHeight() / kinect.getColorSource()->getWidth());
+	float colorTop = (previewHeight - colorHeight) / 2.0;
+	kinect.getColorSource()->draw(previewWidth, 0 + colorTop, previewWidth, colorHeight);
+	kinect.getBodySource()->drawProjected(previewWidth, 0 + colorTop, previewWidth, colorHeight);
+	
+	kinect.getInfraredSource()->draw(0, previewHeight, previewWidth, previewHeight);
+	
+	kinect.getBodyIndexSource()->draw(previewWidth, previewHeight, previewWidth, previewHeight);
+	kinect.getBodySource()->drawProjected(previewWidth, previewHeight, previewWidth, previewHeight, ofxKFW2::ProjectionCoordinates::DepthCamera);
 }
 
 //--------------------------------------------------------------
