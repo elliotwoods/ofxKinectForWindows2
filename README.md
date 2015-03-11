@@ -14,7 +14,7 @@ Following PR https://github.com/elliotwoods/ofxKinectForWindows2/pull/13 , we ar
 Currently lets you:
 
 * Grab all the image streams (color, depth, IR, long exposure IR, body index)
-* Generate an ofMesh (point cloud or stitched mesh) with texture coordinates
+* Generate a 3D ofMesh (point cloud or stitched mesh) with texture coordinates
 * Track bodies (skeleton points, bone maps)
 * Transfer coordinates
 
