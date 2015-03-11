@@ -5,18 +5,23 @@ ofxKinectForWindows2
 
 Implementation of Kinect For Windows v2 API using COM (not KinectCommonBridge)
 
+## Warning
+
+Following PR https://github.com/elliotwoods/ofxKinectForWindows2/pull/13 , we are now working against oF 0.9.0. If you intend to work with 0.8.4 or earlier, please use the following previous version : https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4
+
 ## Features
 
-Currently supports: 
-* Grab RGB, IR, Long Exposure IR, Depth, BodyIndex
-* Body tracking (aka skeleton tracking)
-* Ground plane detection
-* Some remapping functions
+Currently lets you:
 
-Doesn't support:
+* Grab all the image streams (color, depth, IR, long exposure IR, body index)
+* Generate a 3D ofMesh (point cloud or stitched mesh) with texture coordinates
+* Track bodies (skeleton points, bone maps)
+* Transfer coordinates
+
+Currently doesn't support:
+
 * Audio
-* Face tracking
-* All remapping functions
+* Some remapping functions
 
 ## License
 
