@@ -14,5 +14,4 @@ void main()
 	}
 
 	vFragColor = texture(uColorTex, vTexCoord);
-	//vFragColor = vIndexColor;
 }

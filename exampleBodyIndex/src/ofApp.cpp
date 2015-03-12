@@ -11,7 +11,7 @@ void ofApp::setup(){
 	bStitchFaces = false;
 	bDrawBodies = true;
 
-    if (ofIsGLProgrammableRenderer()) {
+	if (ofIsGLProgrammableRenderer()) {
 		shader.load("shaders_gl3/bodyIndex");
 	}
 	else {
@@ -32,7 +32,7 @@ void ofApp::draw(){
 
 	shader.begin();
 	shader.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
-    if (ofIsGLProgrammableRenderer()) {
+	if (ofIsGLProgrammableRenderer()) {
 		shader.setUniformTexture("uBodyIndexTex", kinect.getBodyIndexSource()->getTexture(), 1);
 		shader.setUniformTexture("uColorTex", kinect.getColorSource()->getTexture(), 2);
 	}

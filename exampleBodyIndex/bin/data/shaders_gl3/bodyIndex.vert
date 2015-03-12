@@ -8,7 +8,7 @@ uniform mat4 modelViewProjectionMatrix;
 in vec4 position;
 in vec2 texcoord;
     	
-// Custom uniforms and attributes
+// App uniforms and attributes
 uniform sampler2DRect uBodyIndexTex;
 uniform int uWidth;
 
