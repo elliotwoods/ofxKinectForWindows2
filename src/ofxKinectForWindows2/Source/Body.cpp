@@ -155,13 +155,15 @@ namespace ofxKinectForWindows2 {
 			const auto & body = bodies[bodyIdx];
 			if (!body.tracked) return result;
 
-			for (auto & j : body.joints) {
-				ofVec2f & p = result[j.second.getType()] = ofVec2f();
+			for (auto & joint : body.joints) {
+				ofVec2f & position = result[joint.second.getType()] = ofVec2f();
 
-				TrackingState state = j.second.getTrackingState();
-				if (state == TrackingState_NotTracked) continue;
+				TrackingState state = joint.second.getTrackingState();
+				if (state == TrackingState_NotTracked) {
+					continue;
+				}
 
-				p.set(j.second.getProjected(coordinateMapper, proj));
+				position.set(joint.second.getProjected(coordinateMapper, proj));
 			}
 
 			return result;
