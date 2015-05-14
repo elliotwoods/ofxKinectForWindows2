@@ -20,6 +20,8 @@ namespace ofxKinectForWindows2 {
 				bool stitchFaces;
 				float facesMaxLength;
 				TextureCoordinates textureCoordinates;
+				float minDepth;
+				float maxDepth;
 			};
 
 			string getTypeName() const override;
@@ -31,8 +33,12 @@ namespace ofxKinectForWindows2 {
 
 			ofFloatPixels getColorToWorldMap(int colorImageWidth = 1920, int colorImageHeight = 1080) const;
 			ofFloatPixels getDepthToWorldMap() const;
+			UINT16				getMinDepthReliableDistance() const;
+			UINT16				getMaxDepthReliableDistance() const;
 		protected:
 			ICoordinateMapper * coordinateMapper;
+			UINT16				minDepthReliableDistance;
+			UINT16				maxDepthReliableDistance;
 		};
 	}
 }
