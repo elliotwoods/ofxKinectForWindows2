@@ -18,6 +18,8 @@ namespace ofxKinectForWindows2 {
 			this->diagonalFieldOfView = 0.0f;
 			this->horizontalFieldOfView = 0.0f;
 			this->verticalFieldOfView = 0.0f;
+			this->lastFrameTime = 0;
+			this->isFrameNew = false;
 
 			if (this->frustumMesh.getVertices().empty()) {
 				this->frustumMesh.addVertex(ofVec3f(0.0f, 0.0f, 0.0f));
@@ -121,6 +123,12 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		bool BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::IsFrameNew() const {
+		return this->isFrameNew;
+		}
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::drawFrustum() const {
 			ofPushMatrix();
 			ofScale(tan(DEG_TO_RAD * this->getHorizontalFieldOfView() / 2.0f), tan(DEG_TO_RAD * this->getVerticalFieldOfView() / 2.0f), 1.0f);
@@ -137,13 +145,27 @@ namespace ofxKinectForWindows2 {
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		void BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::update() {
 			CHECK_OPEN
-
+			isFrameNew = false;
 			FrameType * frame = NULL;
 			IFrameDescription * frameDescription = NULL;
 			try {
 				//acquire frame
 				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
 					return; // we often throw here when no new frame is available
+				}
+
+				INT64 relativeTime = 0;
+				if (FAILED(frame->get_RelativeTime(&relativeTime))) {
+					throw Exception("Failed to get relative time");
+				}
+				
+				if (relativeTime > lastFrameTime) {
+					relativeTime = lastFrameTime;
+					isFrameNew = true;
+				} 
+				else {
+					SafeRelease(frame);
+					return;
 				}
 
 				//allocate pixels and texture if we need to
