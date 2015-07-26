@@ -79,13 +79,13 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::draw(float x, float y) {
+		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::draw(float x, float y) const {
 			this->texture.draw(x, y);
 		}
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::draw(float x, float y, float width, float height) {
+		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::draw(float x, float y, float width, float height) const {
 			this->texture.draw(x, y, width, height);
 		}
 
@@ -160,7 +160,7 @@ namespace ofxKinectForWindows2 {
 				}
 
 				//update local assets
-				if (FAILED(frame->CopyFrameDataToArray(this->pixels.size(), this->pixels.getPixels()))) {
+				if (FAILED(frame->CopyFrameDataToArray(width * height, this->pixels.getData()))) {
 					throw Exception("Couldn't pull pixel buffer ");
 				}
 				if (this->useTexture) {

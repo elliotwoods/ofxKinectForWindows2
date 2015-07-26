@@ -51,9 +51,9 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		ofMesh Depth::getMesh(const PointCloudOptions &opts) {
-			const auto frameSize = this->pixels.size();
 			const int width = this->getWidth();
 			const int height = this->getHeight();
+			const auto frameSize = width * height;
 
 			ofMesh mesh;
 			mesh.setMode(opts.stitchFaces ? ofPrimitiveMode::OF_PRIMITIVE_TRIANGLES : ofPrimitiveMode::OF_PRIMITIVE_POINTS);
@@ -139,7 +139,7 @@ namespace ofxKinectForWindows2 {
 		ofFloatPixels Depth::getColorToWorldMap(int colorImageWidth, int colorImageHeight) const {
 			ofFloatPixels colorToWorldMap;
 			colorToWorldMap.allocate(colorImageWidth, colorImageHeight, ofPixelFormat::OF_PIXELS_RGB);
-			this->coordinateMapper->MapColorFrameToCameraSpace(this->pixels.size(), this->pixels.getPixels(), colorImageWidth * colorImageHeight, (CameraSpacePoint*)colorToWorldMap.getPixels());
+			this->coordinateMapper->MapColorFrameToCameraSpace(this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(), colorImageWidth * colorImageHeight, (CameraSpacePoint*)colorToWorldMap.getPixels());
 			return colorToWorldMap;
 		}
 
@@ -147,7 +147,7 @@ namespace ofxKinectForWindows2 {
 		ofFloatPixels Depth::getDepthToWorldMap() const {
 			ofFloatPixels depthToWorldMap;
 			depthToWorldMap.allocate(this->getWidth(), this->getHeight(), ofPixelFormat::OF_PIXELS_RGB);
-			this->coordinateMapper->MapColorFrameToCameraSpace(this->pixels.size(), this->pixels.getPixels(), depthToWorldMap.size(), (CameraSpacePoint*)depthToWorldMap.getPixels());
+			this->coordinateMapper->MapColorFrameToCameraSpace(this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(), depthToWorldMap.getWidth() * depthToWorldMap.getHeight(), (CameraSpacePoint*)depthToWorldMap.getPixels());
 			return depthToWorldMap;
 		}
 	}

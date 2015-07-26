@@ -149,6 +149,27 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
+		map<JointType, ofVec2f> Body::getProjectedJoints(int bodyIdx, ProjectionCoordinates proj) {
+			map<JointType, ofVec2f> result;
+
+			const auto & body = bodies[bodyIdx];
+			if (!body.tracked) return result;
+
+			for (auto & joint : body.joints) {
+				ofVec2f & position = result[joint.second.getType()] = ofVec2f();
+
+				TrackingState state = joint.second.getTrackingState();
+				if (state == TrackingState_NotTracked) {
+					continue;
+				}
+
+				position.set(joint.second.getProjected(coordinateMapper, proj));
+			}
+
+			return result;
+		}
+
+		//----------
 		void Body::drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj) {
 			ofPushStyle();
 			int w, h;

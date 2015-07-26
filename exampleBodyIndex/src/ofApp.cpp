@@ -1,18 +1,17 @@
 #include "ofApp.h"
 
-int previewWidth = 640;
-int previewHeight = 480;
-
 //--------------------------------------------------------------
 void ofApp::setup(){
 	kinect.open();
 	kinect.initDepthSource();
 	kinect.initColorSource();
-	kinect.initInfraredSource();
 	kinect.initBodySource();
 	kinect.initBodyIndexSource();
 
-	ofSetWindowShape(previewWidth * 2, previewHeight * 2);
+	bStitchFaces = false;
+	bDrawBodies = true;
+
+	shader.load("shaders/bodyIndex");
 }
 
 //--------------------------------------------------------------
@@ -22,23 +21,52 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	kinect.getDepthSource()->draw(0, 0, previewWidth, previewHeight);  // note that the depth texture is RAW so may appear dark
-	
-	// Color is at 1920x1080 instead of 512x424 so we should fix aspect ratio
-	float colorHeight = previewWidth * (kinect.getColorSource()->getHeight() / kinect.getColorSource()->getWidth());
-	float colorTop = (previewHeight - colorHeight) / 2.0;
-	kinect.getColorSource()->draw(previewWidth, 0 + colorTop, previewWidth, colorHeight);
-	kinect.getBodySource()->drawProjected(previewWidth, 0 + colorTop, previewWidth, colorHeight);
-	
-	kinect.getInfraredSource()->draw(0, previewHeight, previewWidth, previewHeight);
-	
-	kinect.getBodyIndexSource()->draw(previewWidth, previewHeight, previewWidth, previewHeight);
-	kinect.getBodySource()->drawProjected(previewWidth, previewHeight, previewWidth, previewHeight, ofxKFW2::ProjectionCoordinates::DepthCamera);
+	cam.begin();
+	ofPushMatrix();
+	ofScale(100, 100, 100);
+
+	shader.begin();
+	shader.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
+	//shader.setUniformTexture("uBodyIndexTex", kinect.getBodyIndexSource()->getTexture(), 1);
+	shader.setUniform1i("uBodyIndexTex", 1);
+    kinect.getBodyIndexSource()->getTexture().bind(1);
+	//shader.setUniformTexture("uColorTex", kinect.getColorSource()->getTexture(), 2);
+	shader.setUniform1i("uColorTex", 2);
+	kinect.getColorSource()->getTexture().bind(2);
+
+	ofSetColor(255);
+	ofMesh mesh = kinect.getDepthSource()->getMesh(bStitchFaces, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
+	mesh.draw();
+
+	kinect.getColorSource()->getTexture().unbind(2);
+	kinect.getBodyIndexSource()->getTexture().unbind(1);
+	shader.end();
+
+	if (bDrawBodies) {
+		kinect.getBodySource()->drawWorld();
+	}
+
+	ofPopMatrix();
+	cam.end();
+
+	ofSetColor(0);
+	stringstream ss;
+	ss << ofToString(ofGetFrameRate(), 2) << " FPS" << endl;
+	ss << "Stitch [F]aces: " << (bStitchFaces? "ON":"OFF") << endl;
+	ss << "Draw [B]odies: " << (bDrawBodies? "ON":"OFF") << endl;
+	ofDrawBitmapString(ss.str(), 10, 20);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-	
+	switch (key) {
+	case 'b':
+		bDrawBodies ^= 1;
+		break;
+	case 'f':
+		bStitchFaces ^= 1;
+		break;
+	}
 }
 
 //--------------------------------------------------------------
