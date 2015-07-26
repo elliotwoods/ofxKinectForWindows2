@@ -25,8 +25,9 @@ namespace ofxKinectForWindows2 {
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;
 
-			ofMesh getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates);
 			ofMesh getMesh(const PointCloudOptions & pointCloudOptions = PointCloudOptions());
+			ofMesh getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates);
+			ofVbo getVbo(const PointCloudOptions & pointCloudOptions = PointCloudOptions());
 
 			ofFloatPixels getColorToWorldMap(int colorImageWidth = 1920, int colorImageHeight = 1080) const;
 			ofFloatPixels getDepthToWorldMap() const;
