@@ -125,6 +125,17 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
+		ofVbo Depth::getVbo(const PointCloudOptions & pointCloudOptions) {
+			//this function should be a more optimised version of getMesh(). But we keep this here for compatability right now.
+			auto mesh = this->getMesh(pointCloudOptions);
+			ofVbo vbo;
+			vbo.setIndexData(mesh.getIndexPointer(), mesh.getNumIndices(), GL_STATIC_DRAW);
+			vbo.setVertexData(mesh.getVerticesPointer(), mesh.getNumVertices(), GL_STATIC_DRAW);
+			vbo.setVertexData(mesh.getTexCoordsPointer(), mesh.getNumTexCoords(), GL_STATIC_DRAW);
+			return vbo;
+		}
+
+		//----------
 		ofFloatPixels Depth::getColorToWorldMap(int colorImageWidth, int colorImageHeight) const {
 			ofFloatPixels colorToWorldMap;
 			colorToWorldMap.allocate(colorImageWidth, colorImageHeight, ofPixelFormat::OF_PIXELS_RGB);

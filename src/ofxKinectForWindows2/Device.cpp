@@ -193,6 +193,7 @@ namespace ofxKinectForWindows2 {
 		//clear the point cloud drawing attributes
 		glPopAttrib();
 
+
 		//draw bodies
 		if (bodySource) {
 			bodySource->drawWorld();
