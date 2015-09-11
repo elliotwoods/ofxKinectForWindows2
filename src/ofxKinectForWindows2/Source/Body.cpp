@@ -89,6 +89,7 @@ namespace ofxKinectForWindows2 {
 							throw Exception("Failed to get tracking status");
 						}
 						body.tracked = bTracked;
+						body.bodyId = i;
 
 						if (bTracked)
 						{
@@ -233,6 +234,16 @@ namespace ofxKinectForWindows2 {
 
 				bodyIndex++;
 			}
+		}
+
+		//----------
+		IBodyFrameReader * Body::getReader() {
+			return this->reader;
+		}
+
+		//----------
+		ICoordinateMapper * Body::getCoordinateMapper() {
+			return this->coordinateMapper;
 		}
 
 		//----------

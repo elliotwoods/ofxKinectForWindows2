@@ -21,6 +21,8 @@ namespace ofxKinectForWindows2 {
 			void drawWorld();
 
 			IBodyFrameReader * getReader();
+			ICoordinateMapper * getCoordinateMapper();
+
 			const vector<Data::Body> & getBodies() const;
 			map<JointType, ofVec2f> getProjectedJoints(int bodyIdx, ProjectionCoordinates proj = ColorCamera);
 
