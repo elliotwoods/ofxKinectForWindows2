@@ -19,7 +19,7 @@ namespace ofxKinectForWindows2 {
 			this->horizontalFieldOfView = 0.0f;
 			this->verticalFieldOfView = 0.0f;
 			this->lastFrameTime = 0;
-			this->isFrameNew = false;
+			this->bIsFrameNew = false;
 
 			if (this->frustumMesh.getVertices().empty()) {
 				this->frustumMesh.addVertex(ofVec3f(0.0f, 0.0f, 0.0f));
@@ -123,8 +123,8 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		bool BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::IsFrameNew() const {
-		return this->isFrameNew;
+		bool BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::isFrameNew() const {
+			return this->bIsFrameNew;
 		}
 
 		//----------
@@ -145,7 +145,7 @@ namespace ofxKinectForWindows2 {
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		void BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::update() {
 			CHECK_OPEN
-			isFrameNew = false;
+			bIsFrameNew = false;
 			FrameType * frame = NULL;
 			IFrameDescription * frameDescription = NULL;
 			try {
@@ -161,7 +161,7 @@ namespace ofxKinectForWindows2 {
 				
 				if (relativeTime > lastFrameTime) {
 					relativeTime = lastFrameTime;
-					isFrameNew = true;
+					bIsFrameNew = true;
 				} 
 				else {
 					SafeRelease(frame);

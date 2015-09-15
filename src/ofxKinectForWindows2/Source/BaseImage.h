@@ -43,7 +43,7 @@ namespace ofxKinectForWindows2 {
 
 			void drawFrustum() const;
 
-			bool IsFrameNew() const;
+			bool isFrameNew() const;
 		protected:
 			static ofMesh frustumMesh;
 
@@ -55,8 +55,8 @@ namespace ofxKinectForWindows2 {
 			float diagonalFieldOfView;
 			float horizontalFieldOfView;
 			float verticalFieldOfView;
-			INT64 lastFrameTime;
-			bool  isFrameNew;
+			long  lastFrameTime;
+			bool  bIsFrameNew;
 		};
 
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
