@@ -6,7 +6,16 @@ namespace ofxKinectForWindows2 {
 		vector<pair<JointType, JointType> > * Body::bonesAtlas = 0;
 		
 		//----------
-		void Body::drawWorld() {
+		Body::Body() {
+			this->bodyId = -1;
+			this->trackingId = -1;
+			this->tracked = false;
+			this->leftHandState = HandState::HandState_Unknown;
+			this->rightHandState = HandState::HandState_Unknown;
+		}
+
+		//----------
+			void Body::drawWorld() {
 			const auto & boneAtlas = this->getBonesAtlas();
 			for(auto & bone : boneAtlas) {
 				ofLine(this->joints[bone.first].getPosition(), this->joints[bone.second].getPosition());

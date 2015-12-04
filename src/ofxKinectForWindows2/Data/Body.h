@@ -8,6 +8,7 @@ namespace ofxKinectForWindows2 {
 	namespace Data {
 		class Body {
 		public:
+			Body();
 			int bodyId;
 			int trackingId;
 			bool tracked;
