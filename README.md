@@ -9,6 +9,8 @@ Implementation of Kinect For Windows v2 API using COM (not KinectCommonBridge)
 
 Following PR https://github.com/elliotwoods/ofxKinectForWindows2/pull/13 , we are now working against oF 0.9.0. If you intend to work with 0.8.4 or earlier, please use the following previous version : https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4
 
+The Kinect 2 SDK requires an x64 platform target. If you're receiving linker errors regarding _GetDefaultKinectSensor, please ensure that your platform is set to `x64` and not `Win32` (see the dropdown box near the top of the Visual Studio window).
+
 ## Features
 
 Currently lets you:
@@ -38,3 +40,4 @@ http://en.wikipedia.org/wiki/MIT_License
 0. The depth image comes in as RAW (i'm not rescaling it), so it may appear dark. Look closely :)
 1. This addon does not ship with any libraries, it'll look locally on your system for them (and hence should work with VS2012, VS2013, etc)
 2. You'll need to get a copy of the Kinect v2 SDK (i'm testing with v1404 April release)
+3. Make sure you're compiling for x64. See note in Warning regarding linker error.
