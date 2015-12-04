@@ -7,11 +7,11 @@ Implementation of Kinect For Windows v2 API using COM (not KinectCommonBridge)
 
 ## Important notes
 
-Following PR https://github.com/elliotwoods/ofxKinectForWindows2/pull/13 , we are now working against oF 0.9.0. If you intend to work with 0.8.4 or earlier, please use the following previous version : https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4
+The current version is designed for oF 0.9.0. If you are working with 0.8.4 or earlier, please use the previous version : https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4
 
-The Kinect 2 SDK requires an x64 platform target. If you're receiving linker errors regarding _GetDefaultKinectSensor, **please ensure that your platform is set to `x64` and not `Win32`** (see the dropdown box near the top of the Visual Studio window).
+The Kinect 2 SDK requires an x64 platform target. If you're receiving linker errors regarding _GetDefaultKinectSensor, please ensure that your platform is set to `x64` and not `Win32`.
 
-!(https://raw.githubusercontent.com/elliotwoods/ofxKinectForWindows2/master/Notes_Targetx64.PNG)
+![x64 Target](https://raw.githubusercontent.com/elliotwoods/ofxKinectForWindows2/master/Notes_Targetx64.PNG)
 
 ## Features
 
