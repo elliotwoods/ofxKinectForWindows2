@@ -127,7 +127,7 @@ void ofApp::draw() {
 	foregroundImg.draw(DEPTH_WIDTH, 0);
 
 	stringstream ss;
-	ss << ofGetFrameRate() << endl;
+	ss << "fps : " << ofGetFrameRate() << endl;
 	ss << "Tracked bodies: " << numBodiesTracked;
 	if (!bHaveAllStreams) ss << endl << "Not all streams detected!";
 	ofDrawBitmapStringHighlight(ss.str(), 20, 20);
