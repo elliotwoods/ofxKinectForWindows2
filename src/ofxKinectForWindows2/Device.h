@@ -32,6 +32,7 @@ namespace ofxKinectForWindows2 {
 		shared_ptr<Source::Body> initBodySource();
 
 		void update();
+		bool isFrameNew() const;
 
 		template<typename SourceType>
 		bool hasSource() {
@@ -61,9 +62,9 @@ namespace ofxKinectForWindows2 {
 		IKinectSensor * getSensor();
 
 		void drawWorld();
-
 	protected: 
 		IKinectSensor * sensor;
 		vector<shared_ptr<Source::Base>> sources;
+		bool isFrameNewFlag;
 	};
 }

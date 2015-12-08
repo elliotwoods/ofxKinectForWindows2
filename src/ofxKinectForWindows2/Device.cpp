@@ -7,6 +7,7 @@ namespace ofxKinectForWindows2 {
 	//----------
 	Device::Device() {
 		this->sensor = nullptr;
+		this->isFrameNewFlag = false;
 	}
 
 	//----------
@@ -101,9 +102,16 @@ namespace ofxKinectForWindows2 {
 
 	//----------
 	void Device::update() {
+		this->isFrameNewFlag = false;
 		for(auto source : this->sources) {
 			source->update();
+			this->isFrameNewFlag |= source->isFrameNew();
 		}
+	}
+
+	//----------
+	bool Device::isFrameNew() const {
+		return this->isFrameNewFlag;
 	}
 
 	//----------

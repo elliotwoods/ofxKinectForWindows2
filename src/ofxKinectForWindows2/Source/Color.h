@@ -14,8 +14,9 @@ namespace ofxKinectForWindows2 {
 			Color();
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;
-			void update() override;
 
+			void update() override;
+			bool isFrameNew() const override;
 			long int getExposure() const;
 			long int getFrameInterval() const;
 			float getGain() const;
@@ -25,6 +26,7 @@ namespace ofxKinectForWindows2 {
 			TIMESPAN frameInterval;
 			float gain;
 			float gamma;
+			bool  isFrameNewFlag;
 		};
 	}
 }

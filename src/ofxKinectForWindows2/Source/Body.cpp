@@ -6,6 +6,11 @@
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
+		Body::Body() {
+			this->isFrameNewFlag = false;
+		}
+
+		//----------
 		string Body::getTypeName() const {
 			return "Body";
 		}
@@ -56,6 +61,7 @@ namespace ofxKinectForWindows2 {
 		void Body::update() {
 			CHECK_OPEN
 			
+				this->isFrameNewFlag = false;
 			IBodyFrame * frame = NULL;
 			IFrameDescription * frameDescription = NULL;
 			try {
@@ -63,6 +69,8 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
 					return; // we often throw here when no new frame is available
 				}
+				this->isFrameNewFlag = true;
+
 				INT64 nTime = 0;
 				if (FAILED(frame->get_RelativeTime(&nTime))) {
 					throw Exception("Failed to get relative time");
@@ -147,6 +155,11 @@ namespace ofxKinectForWindows2 {
 			}
 			SafeRelease(frameDescription);
 			SafeRelease(frame);
+		}
+
+		//----------
+		bool Body::isFrameNew() const {
+			return this->isFrameNewFlag;
 		}
 
 		//----------

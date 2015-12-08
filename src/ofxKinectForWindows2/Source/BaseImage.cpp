@@ -19,7 +19,6 @@ namespace ofxKinectForWindows2 {
 			this->horizontalFieldOfView = 0.0f;
 			this->verticalFieldOfView = 0.0f;
 			this->lastFrameTime = 0;
-			this->bIsFrameNew = false;
 
 			if (this->frustumMesh.getVertices().empty()) {
 				this->frustumMesh.addVertex(ofVec3f(0.0f, 0.0f, 0.0f));
@@ -123,12 +122,6 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		bool BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::isFrameNew() const {
-			return this->bIsFrameNew;
-		}
-
-		//----------
-		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		void BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::drawFrustum() const {
 			ofPushMatrix();
 			ofScale(tan(DEG_TO_RAD * this->getHorizontalFieldOfView() / 2.0f), tan(DEG_TO_RAD * this->getVerticalFieldOfView() / 2.0f), 1.0f);
@@ -143,9 +136,14 @@ namespace ofxKinectForWindows2 {
 #pragma mark BaseImageSimple
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::BaseImageSimple() {
+			this->isFrameNewFlag = false;
+		}
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		void BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::update() {
 			CHECK_OPEN
-			bIsFrameNew = false;
+			this->isFrameNewFlag = false;
 			FrameType * frame = NULL;
 			IFrameDescription * frameDescription = NULL;
 			try {
@@ -153,15 +151,15 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
 					return; // we often throw here when no new frame is available
 				}
+				this->isFrameNewFlag = true;
 
 				INT64 relativeTime = 0;
 				if (FAILED(frame->get_RelativeTime(&relativeTime))) {
 					throw Exception("Failed to get relative time");
 				}
 				
-				if (relativeTime > lastFrameTime) {
-					relativeTime = lastFrameTime;
-					bIsFrameNew = true;
+				if (relativeTime > this->lastFrameTime) {
+					relativeTime = this->lastFrameTime;
 				} 
 				else {
 					SafeRelease(frame);
@@ -204,6 +202,12 @@ namespace ofxKinectForWindows2 {
 			}
 			SafeRelease(frameDescription);
 			SafeRelease(frame);
+		}
+
+		//----------
+		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
+		bool BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::isFrameNew() const {
+			return this->isFrameNewFlag;
 		}
 
 		//---------

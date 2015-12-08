@@ -11,6 +11,7 @@ namespace ofxKinectForWindows2 {
 			this->frameInterval = 0;
 			this->gain = 0;
 			this->gamma = 0;
+			this->isFrameNewFlag = false;
 		}
 
 		//----------
@@ -43,6 +44,7 @@ namespace ofxKinectForWindows2 {
 		void Color::update() {
 			CHECK_OPEN
 
+			this->isFrameNewFlag = false;
 			IColorFrame * frame = NULL;
 			IFrameDescription * frameDescription = NULL;
 			try {
@@ -50,6 +52,7 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
 					return; // we often throw here when no new frame is available
 				}
+				this->isFrameNewFlag = true;
 
 				//allocate pixels and texture if we need to
 				if (FAILED(frame->get_FrameDescription(&frameDescription))) {
@@ -97,6 +100,11 @@ namespace ofxKinectForWindows2 {
 			}
 			SafeRelease(frameDescription);
 			SafeRelease(frame);
+		}
+
+		//----------
+		bool Color::isFrameNew() const {
+			return this->isFrameNewFlag;
 		}
 		
 		//----------

@@ -11,6 +11,7 @@ namespace ofxKinectForWindows2 {
 			virtual string getTypeName() const = 0;
 			virtual void init(IKinectSensor *) = 0;
 			virtual void update() = 0;
+			virtual bool isFrameNew() const = 0;
 		};
 	}
 }

@@ -13,9 +13,12 @@ namespace ofxKinectForWindows2 {
 		// -------
 		class Body : public Base {
 		public:
+			Body();
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;
+
 			void update();
+			bool isFrameNew() const override;
 
 			void drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj = ColorCamera);
 			void drawWorld();
@@ -34,7 +37,6 @@ namespace ofxKinectForWindows2 {
 
 			static void drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
 			static void drawProjectedHand(HandState handState, ofVec2f & handPos);
-
 		protected:
 			void initBonesDefinition();
 
@@ -44,6 +46,8 @@ namespace ofxKinectForWindows2 {
 			Vector4 floorClipPlane;
 
 			vector<Data::Body> bodies;
+
+			bool isFrameNewFlag;
 		};
 	}
 }
