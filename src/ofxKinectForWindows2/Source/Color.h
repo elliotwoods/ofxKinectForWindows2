@@ -21,12 +21,19 @@ namespace ofxKinectForWindows2 {
 			long int getFrameInterval() const;
 			float getGain() const;
 			float getGamma() const;
+
+			void setYuvPixelsEnabled(bool yuvPixelsEnabled);
+			bool getYuvPixelsEnabled() const;
+			const ofPixels & getYuvPixels() const;
 		protected:
 			TIMESPAN exposure;
 			TIMESPAN frameInterval;
 			float gain;
 			float gamma;
 			bool  isFrameNewFlag;
+
+			bool yuvPixelsEnabled;
+			ofPixels yuvPixels;
 		};
 	}
 }

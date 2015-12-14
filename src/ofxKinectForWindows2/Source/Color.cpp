@@ -68,12 +68,22 @@ namespace ofxKinectForWindows2 {
 					this->texture.allocate(this->pixels);
 				}
 
-				//update local assets
+				//update local rgba image
 				if (FAILED(frame->CopyConvertedFrameDataToArray(this->pixels.size(), this->pixels.getPixels(), ColorImageFormat_Rgba))) {
 					throw Exception("Couldn't pull pixel buffer");
 				}
 				if (this->useTexture) {
 					this->texture.loadData(this->pixels);
+				}
+
+				//update yuv
+				if (this->yuvPixelsEnabled) {
+					if (width != this->yuvPixels.getWidth() || height != this->yuvPixels.getHeight()) {
+						this->yuvPixels.allocate(width, height, OF_PIXELS_YUY2);
+					}
+					if (FAILED(frame->CopyRawFrameDataToArray(this->yuvPixels.size(), this->yuvPixels.getPixels()))) {
+						throw Exception("Couldn't pull raw YUV pixel buffer");
+					}
 				}
 
 				//update field of view
@@ -125,6 +135,21 @@ namespace ofxKinectForWindows2 {
 		//----------
 		float Color::getGamma() const {
 			return this->gamma;
+		}
+
+		//----------
+		void Color::setYuvPixelsEnabled(bool yuvPixelsEnabled) {
+			this->yuvPixelsEnabled = yuvPixelsEnabled;
+		}
+
+		//----------
+		bool Color::getYuvPixelsEnabled() const {
+			return this->yuvPixelsEnabled;
+		}
+
+		//----------
+		const ofPixels & Color::getYuvPixels() const {
+			return this->yuvPixels;
 		}
 	}
 }
