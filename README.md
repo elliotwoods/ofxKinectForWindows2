@@ -36,7 +36,8 @@ http://en.wikipedia.org/wiki/MIT_License
 
 1. Add the ofxKinectForWindows2Lib.vcxproj to your solution
 2. In `Property Manager`, right click on your project to select `Add Existing Property Sheet...` and select the `ofxKinectForWindows2.props` file
-
+3. Right click on your project (e.g. 'mySketch') and select 'Add Reference...', and add a reference to `ofxKinectForWindows2Lib`.
+4. 
 ## Notes
 
 0. The depth image comes in as RAW (i'm not rescaling it), so it may appear dark. Look closely :)
