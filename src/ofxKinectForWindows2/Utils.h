@@ -10,6 +10,7 @@
 #define MAKE(T, ...) shared_ptr<T>(new T(__VA_ARGS__))
 
 #include <string>
+#include "ofxKinectForWindows2/Data/Joint.h"
 
 using namespace std;
 
@@ -32,4 +33,6 @@ namespace ofxKinectForWindows2 {
 			pInterfaceToRelease = NULL;
 		}
 	}
+
+	string toString(const JointType &);
 }
