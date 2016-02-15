@@ -115,37 +115,37 @@ namespace ofxKinectForWindows2 {
 	}
 
 	//----------
-	vector<shared_ptr<Source::Base>> Device::getSources() {
+	const vector<shared_ptr<Source::Base>> & Device::getSources() const {
 		return this->sources;
 	}
 
 	//----------
-	shared_ptr<Source::Depth> Device::getDepthSource() {
+	shared_ptr<Source::Depth> Device::getDepthSource() const {
 		return this->getSource<Source::Depth>();
 	}
 
 	//----------
-	shared_ptr<Source::Color> Device::getColorSource() {
+	shared_ptr<Source::Color> Device::getColorSource() const {
 		return this->getSource<Source::Color>();
 	}
 	
 	//----------
-	shared_ptr<Source::Infrared> Device::getInfraredSource() {
+	shared_ptr<Source::Infrared> Device::getInfraredSource() const {
 		return this->getSource<Source::Infrared>();
 	}
 
 	//----------
-	shared_ptr<Source::LongExposureInfrared> Device::getLongExposureInfraredSource() {
+	shared_ptr<Source::LongExposureInfrared> Device::getLongExposureInfraredSource() const {
 		return this->getSource<Source::LongExposureInfrared>();
 	}
 
 	//----------
-	shared_ptr<Source::BodyIndex> Device::getBodyIndexSource() {
+	shared_ptr<Source::BodyIndex> Device::getBodyIndexSource() const {
 		return this->getSource<Source::BodyIndex>();
 	}
 
 	//----------
-	shared_ptr<Source::Body> Device::getBodySource() {
+	shared_ptr<Source::Body> Device::getBodySource() const {
 		return this->getSource<Source::Body>();
 	}
 

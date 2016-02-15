@@ -35,12 +35,12 @@ namespace ofxKinectForWindows2 {
 		bool isFrameNew() const;
 
 		template<typename SourceType>
-		bool hasSource() {
+		bool hasSource() const {
 			return getSource<SourceType>();
 		}
 
 		template<typename SourceType>
-		shared_ptr<SourceType> getSource() {
+		shared_ptr<SourceType> getSource() const {
 			for(auto source : this->sources) {
 				auto castSource = dynamic_pointer_cast<SourceType>(source);
 				if (castSource) {
@@ -50,14 +50,14 @@ namespace ofxKinectForWindows2 {
 			return shared_ptr<SourceType>();
 		}
 
-		vector<shared_ptr<Source::Base>> getSources();
+		const vector<shared_ptr<Source::Base>> & getSources() const;
 
-		shared_ptr<Source::Depth> getDepthSource();
-		shared_ptr<Source::Color> getColorSource();
-		shared_ptr<Source::Infrared> getInfraredSource();
-		shared_ptr<Source::LongExposureInfrared> getLongExposureInfraredSource();
-		shared_ptr<Source::BodyIndex> getBodyIndexSource();
-		shared_ptr<Source::Body> getBodySource();
+		shared_ptr<Source::Depth> getDepthSource() const;
+		shared_ptr<Source::Color> getColorSource() const;
+		shared_ptr<Source::Infrared> getInfraredSource() const;
+		shared_ptr<Source::LongExposureInfrared> getLongExposureInfraredSource() const;
+		shared_ptr<Source::BodyIndex> getBodyIndexSource() const;
+		shared_ptr<Source::Body> getBodySource() const;
 
 		IKinectSensor * getSensor();
 
