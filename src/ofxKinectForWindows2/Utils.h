@@ -12,8 +12,6 @@
 #include <string>
 #include "ofxKinectForWindows2/Data/Joint.h"
 
-using namespace std;
-
 namespace ofxKinectForWindows2 {
 	class Exception : public std::exception {
 	public:
@@ -34,5 +32,5 @@ namespace ofxKinectForWindows2 {
 		}
 	}
 
-	string toString(const JointType &);
+	std::string toString(const JointType &);
 }
