@@ -136,19 +136,40 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		ofFloatPixels Depth::getColorToWorldMap(int colorImageWidth, int colorImageHeight) const {
-			ofFloatPixels colorToWorldMap;
-			colorToWorldMap.allocate(colorImageWidth, colorImageHeight, ofPixelFormat::OF_PIXELS_RGB);
-			this->coordinateMapper->MapColorFrameToCameraSpace(this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(), colorImageWidth * colorImageHeight, (CameraSpacePoint*)colorToWorldMap.getPixels());
-			return colorToWorldMap;
+		void Depth::getWorldInColorFrame(ofFloatPixels & world, int colorImageWidth, int colorImageHeight) const {
+			world.allocate(colorImageWidth, colorImageHeight, ofPixelFormat::OF_PIXELS_RGB);
+			this->coordinateMapper->MapColorFrameToCameraSpace(
+				this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(),
+				colorImageWidth * colorImageHeight, (CameraSpacePoint*)world.getData());
 		}
 
 		//----------
-		ofFloatPixels Depth::getDepthToWorldMap() const {
-			ofFloatPixels depthToWorldMap;
-			depthToWorldMap.allocate(this->getWidth(), this->getHeight(), ofPixelFormat::OF_PIXELS_RGB);
-			this->coordinateMapper->MapColorFrameToCameraSpace(this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(), depthToWorldMap.getWidth() * depthToWorldMap.getHeight(), (CameraSpacePoint*)depthToWorldMap.getPixels());
-			return depthToWorldMap;
+		void Depth::getWorldInDepthFrame(ofFloatPixels & world) const {
+			world.allocate(this->getWidth(), this->getHeight(), ofPixelFormat::OF_PIXELS_RGB);
+			this->coordinateMapper->MapDepthFrameToCameraSpace(
+				this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(),
+				this->getWidth() * this->getHeight(), (CameraSpacePoint*)world.getData());
+		}
+
+		//----------
+		void Depth::getColorInDepthFrameMapping(ofFloatPixels & colorInDepthFrameMapping, int colorImageWidth, int colorImageHeight) {
+			colorInDepthFrameMapping.allocate(this->getWidth(), this->getHeight(), OF_PIXELS_UV);
+			this->coordinateMapper->MapDepthFrameToColorSpace(
+				this->getWidth() * this->getHeight(), this->pixels.getData(),
+				this->getWidth() * this->getHeight(), (ColorSpacePoint*) colorInDepthFrameMapping.getData());
+		}
+
+		//----------
+		void Depth::getDepthInColorFrameMapping(ofFloatPixels & depthInColorFrameMapping, int colorImageWidth, int colorImageHeight) {
+			depthInColorFrameMapping.allocate(colorImageWidth, colorImageHeight, OF_PIXELS_UV);
+			this->coordinateMapper->MapColorFrameToDepthSpace(
+				colorImageWidth * colorImageHeight, this->pixels.getData(),
+				colorImageWidth * colorImageHeight, (DepthSpacePoint*)depthInColorFrameMapping.getData());
+		}
+
+		//----------
+		ICoordinateMapper * Depth::getCoordinateMapper() const {
+			return this->coordinateMapper;
 		}
 	}
 }

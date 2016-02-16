@@ -29,8 +29,12 @@ namespace ofxKinectForWindows2 {
 			ofMesh getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates);
 			ofVbo getVbo(const PointCloudOptions & pointCloudOptions = PointCloudOptions());
 
-			ofFloatPixels getColorToWorldMap(int colorImageWidth = 1920, int colorImageHeight = 1080) const;
-			ofFloatPixels getDepthToWorldMap() const;
+			void getWorldInColorFrame(ofFloatPixels & world, int colorImageWidth = 1920, int colorImageHeight = 1080) const;
+			void getWorldInDepthFrame(ofFloatPixels & world) const;
+			void getColorInDepthFrameMapping(ofFloatPixels & colorInDepthFrameMapping, int colorImageWidth = 1920, int colorImageHeight = 1080);
+			void getDepthInColorFrameMapping(ofFloatPixels & depthInColorFrameMapping, int colorImageWidth = 1920, int colorImageHeight = 1080);
+
+			ICoordinateMapper * getCoordinateMapper() const;
 		protected:
 			ICoordinateMapper * coordinateMapper;
 		};
