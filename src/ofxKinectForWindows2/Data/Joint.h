@@ -42,15 +42,17 @@ namespace ofxKinectForWindows2 {
 			ofVec2f getProjected(ICoordinateMapper * coordinateMapper, ProjectionCoordinates proj = ColorCamera) const {
 				switch (proj) {
 				case ColorCamera: {
-									  ColorSpacePoint projected = { 0 };
-									  coordinateMapper->MapCameraPointToColorSpace(joint.Position, &projected);
-									  return ofVec2f(projected.X, projected.Y);
+					ColorSpacePoint projected = { 0 };
+					coordinateMapper->MapCameraPointToColorSpace(joint.Position, &projected);
+					return ofVec2f(projected.X, projected.Y);
 				}
 				case DepthCamera: {
-									  DepthSpacePoint projected = { 0 };
-									  coordinateMapper->MapCameraPointToDepthSpace(joint.Position, &projected);
-									  return ofVec2f(projected.X, projected.Y);
+					DepthSpacePoint projected = { 0 };
+					coordinateMapper->MapCameraPointToDepthSpace(joint.Position, &projected);
+					return ofVec2f(projected.X, projected.Y);
 				}
+				default:
+					return ofVec2f();
 				}
 			}
 
