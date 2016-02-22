@@ -18,17 +18,18 @@ namespace ofxKinectForWindows2 {
 		{
 		public:
 			Joint(){}
-			Joint(const _Joint& j, const _JointOrientation& jo) {
-				set(j, jo);
+			Joint(const _Joint& joint, const _JointOrientation& jointOrientation) {
+				set(joint, jointOrientation);
 			}
 
-			void set(const _Joint& j, const _JointOrientation& jo) {
-				joint = j;
-				jOrient = jo;
-				orientation.set(jo.Orientation.x, jo.Orientation.y, jo.Orientation.z, jo.Orientation.w);
-				position.set(j.Position.X, j.Position.Y, j.Position.Z);
-				type = j.JointType;
-				trackingState = j.TrackingState;
+			void set(const _Joint& joint, const _JointOrientation& jointOrientation) {
+				this->joint = joint;
+				this->position.set(joint.Position.X, joint.Position.Y, joint.Position.Z);
+				this->type = joint.JointType;
+				this->trackingState = joint.TrackingState;
+
+				this->jointOrientation = jointOrientation;
+				this->orientation.set(jointOrientation.Orientation.x, jointOrientation.Orientation.y, jointOrientation.Orientation.z, jointOrientation.Orientation.w);
 			}
 
 			JointType getType() const {
@@ -64,6 +65,14 @@ namespace ofxKinectForWindows2 {
 				return trackingState;
 			}
 
+			_Joint getRawJoint() const {
+				return this->joint;
+			}
+
+			_JointOrientation getRawJointOrientation() const {
+				return this->jointOrientation;
+			}
+
 		protected:
 			ofVec3f position;
 			ofQuaternion orientation;
@@ -71,7 +80,7 @@ namespace ofxKinectForWindows2 {
 			TrackingState trackingState;
 
 			_Joint joint;
-			_JointOrientation jOrient;
+			_JointOrientation jointOrientation;
 		};
 	}
 }

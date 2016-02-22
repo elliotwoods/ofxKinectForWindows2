@@ -9,8 +9,8 @@ namespace ofxKinectForWindows2 {
 		class Body {
 		public:
 			Body();
-			int bodyId;
-			int trackingId;
+			uint8_t bodyId;
+			uint64_t trackingId;
 			bool tracked;
 			HandState leftHandState;
 			HandState rightHandState;
