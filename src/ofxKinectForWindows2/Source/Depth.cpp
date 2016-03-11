@@ -152,19 +152,19 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Depth::getColorInDepthFrameMapping(ofFloatPixels & colorInDepthFrameMapping, int colorImageWidth, int colorImageHeight) {
-			colorInDepthFrameMapping.allocate(this->getWidth(), this->getHeight(), OF_PIXELS_UV);
+		void Depth::getColorInDepthFrameMapping(ofFloatPixels & colorInDepthFrameMapping) const {
+			colorInDepthFrameMapping.allocate(this->getWidth(), this->getHeight(), OF_PIXELS_RG);
 			this->coordinateMapper->MapDepthFrameToColorSpace(
 				this->getWidth() * this->getHeight(), this->pixels.getData(),
 				this->getWidth() * this->getHeight(), (ColorSpacePoint*) colorInDepthFrameMapping.getData());
 		}
 
 		//----------
-		void Depth::getDepthInColorFrameMapping(ofFloatPixels & depthInColorFrameMapping, int colorImageWidth, int colorImageHeight) {
-			depthInColorFrameMapping.allocate(colorImageWidth, colorImageHeight, OF_PIXELS_UV);
+		void Depth::getDepthInColorFrameMapping(ofFloatPixels & depthInColorFrameMapping) const {
+			depthInColorFrameMapping.allocate(1920, 1080, OF_PIXELS_RG);
 			this->coordinateMapper->MapColorFrameToDepthSpace(
-				colorImageWidth * colorImageHeight, this->pixels.getData(),
-				colorImageWidth * colorImageHeight, (DepthSpacePoint*)depthInColorFrameMapping.getData());
+				this->pixels.size(), this->pixels.getData(),
+				depthInColorFrameMapping.size(), (DepthSpacePoint*)depthInColorFrameMapping.getData());
 		}
 
 		//----------

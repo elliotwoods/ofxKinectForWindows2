@@ -31,8 +31,8 @@ namespace ofxKinectForWindows2 {
 
 			void getWorldInColorFrame(ofFloatPixels & world, int colorImageWidth = 1920, int colorImageHeight = 1080) const;
 			void getWorldInDepthFrame(ofFloatPixels & world) const;
-			void getColorInDepthFrameMapping(ofFloatPixels & colorInDepthFrameMapping, int colorImageWidth = 1920, int colorImageHeight = 1080);
-			void getDepthInColorFrameMapping(ofFloatPixels & depthInColorFrameMapping, int colorImageWidth = 1920, int colorImageHeight = 1080);
+			void getColorInDepthFrameMapping(ofFloatPixels & colorInDepthFrameMapping) const;
+			void getDepthInColorFrameMapping(ofFloatPixels & depthInColorFrameMapping) const;
 
 			ICoordinateMapper * getCoordinateMapper() const;
 		protected:
