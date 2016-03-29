@@ -11,6 +11,12 @@ void ofApp::setup(){
 
 	gui.init();
 
+	//setup a gui panel for the 3D view
+	auto worldView = gui.addWorld("World");
+	worldView->onDrawWorld += [this](ofCamera &) {
+		this->kinect.drawWorld();
+	};
+
 	//setup a gui panel for every kinect source
 	auto sources = kinect.getSources();
 	for(auto source : sources) {
@@ -34,17 +40,12 @@ void ofApp::setup(){
 			//if it's the depth panel, set some scaling
 			auto depthSource = dynamic_pointer_cast<ofxKFW2::Source::Depth>(source);
 			if (depthSource) {
-				auto style = panel->getStyle();
-				style.rangeMaximum = 0.25f;
-				//panel->setStyle(style);
+				auto style = make_shared<ofxCvGui::Panels::Texture::Style>();
+				style->rangeMaximum = 0.25f;
+				panel->setStyle(style);
 			}
 		}
 	}
-
-	auto worldView = gui.addWorld("World");
-	worldView->onDrawWorld += [this] (ofCamera &) {
-		this->kinect.drawWorld();
-	};
 
 	//if we press the 'c' key on the World panel, then toggle the camera's cursor. This works best when you fullscreen that panel
 	worldView->onKeyboard += [this, worldView] (ofxCvGui::KeyboardArguments & args) {
