@@ -58,7 +58,18 @@ namespace ofxKinectForWindows2 {
 	//----------
 	template<typename SourceType>
 	shared_ptr<SourceType> Device::initSource() {
-		CHECK_OPEN
+		CHECK_OPEN;
+
+		//first check if it already exists
+		{
+			auto source = this->getSource<SourceType>();
+			if (source) {
+				OFXKINECTFORWINDOWS2_WARNING << "Source of type " << typeid(SourceType).name() << " already initialised.";
+				return source;
+			}
+		}
+
+		//if not then open it
 		try {
 			auto depthSource = MAKE(SourceType);
 			depthSource->init(this->sensor);
@@ -226,5 +237,16 @@ namespace ofxKinectForWindows2 {
 			colorSource->drawFrustum();
 		}
 		ofPopStyle();
+	}
+
+	//----------
+	void Device::setUseTextures(bool useTexture) {
+		auto sources = this->getSources();
+		for (auto source : sources) {
+			auto imageSource = dynamic_pointer_cast<ofBaseHasTexture>(source);
+			if (imageSource) {
+				imageSource->setUseTexture(useTexture);
+			}
+		}
 	}
 }

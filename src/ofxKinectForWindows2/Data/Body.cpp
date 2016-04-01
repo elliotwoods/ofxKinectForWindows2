@@ -15,10 +15,20 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-			void Body::drawWorld() {
+		void Body::drawWorld() const {
+			if (!this->tracked) {
+				return;
+			}
 			const auto & boneAtlas = this->getBonesAtlas();
 			for(auto & bone : boneAtlas) {
-				ofLine(this->joints[bone.first].getPosition(), this->joints[bone.second].getPosition());
+				try {
+					const auto & firstJoint = this->joints.at(bone.first);
+					const auto & secondJoint = this->joints.at(bone.second);
+					ofLine(firstJoint.getPosition(), secondJoint.getPosition());
+				}
+				catch (...)	{
+
+				}
 			}
 		}
 

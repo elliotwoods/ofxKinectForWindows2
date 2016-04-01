@@ -17,7 +17,7 @@ namespace ofxKinectForWindows2 {
 			std::map<JointType, Joint> joints;
 			std::map<Activity, DetectionResult> activity;
 
-			void drawWorld();
+			void drawWorld() const;
 			void clear();
 
 			static const std::vector<pair<JointType, JointType> > & getBonesAtlas();

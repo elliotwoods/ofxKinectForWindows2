@@ -36,7 +36,12 @@ namespace ofxKinectForWindows2 {
 
 		template<typename SourceType>
 		bool hasSource() const {
-			return getSource<SourceType>();
+			if (this->getSource<SourceType>()) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 
 		template<typename SourceType>
@@ -62,6 +67,7 @@ namespace ofxKinectForWindows2 {
 		IKinectSensor * getSensor();
 
 		void drawWorld();
+		void setUseTextures(bool);
 	protected: 
 		IKinectSensor * sensor;
 		vector<shared_ptr<Source::Base>> sources;
