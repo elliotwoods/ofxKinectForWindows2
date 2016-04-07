@@ -179,9 +179,13 @@ namespace ofxKinectForWindows2 {
 		//point cloud
 		{
 			//setup some point cloud properties for kicks
-			glPushAttrib(GL_POINT_BIT);
-			glPointSize(5.0f);
-			glEnable(GL_POINT_SMOOTH);
+			auto mainWindow = std::static_pointer_cast<ofAppGLFWWindow>(ofGetCurrentWindow());
+			bool usePointSize = mainWindow ? mainWindow->getSettings().glVersionMajor <= 2 : false;
+			if (usePointSize) {
+				glPushAttrib(GL_POINT_BIT);
+				glPointSize(5.0f);
+				glEnable(GL_POINT_SMOOTH);
+			}
 
 			ofPushStyle();
 
@@ -212,7 +216,9 @@ namespace ofxKinectForWindows2 {
 			ofPopStyle();
 
 			//clear the point cloud drawing attributes
-			glPopAttrib();
+			if (usePointSize) {
+				glPopAttrib();
+			}
 		}
 		
 		//bodies and floor
