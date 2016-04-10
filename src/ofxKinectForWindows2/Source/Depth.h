@@ -33,6 +33,7 @@ namespace ofxKinectForWindows2 {
 			void getWorldInDepthFrame(ofFloatPixels & world) const;
 			void getColorInDepthFrameMapping(ofFloatPixels & colorInDepthFrameMapping) const;
 			void getDepthInColorFrameMapping(ofFloatPixels & depthInColorFrameMapping) const;
+			void getDepthToWorldTable(ofFloatPixels & world) const;
 
 			ICoordinateMapper * getCoordinateMapper() const;
 		protected:
