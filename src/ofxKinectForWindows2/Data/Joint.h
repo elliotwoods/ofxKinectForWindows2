@@ -18,60 +18,18 @@ namespace ofxKinectForWindows2 {
 		{
 		public:
 			Joint(){}
-			Joint(const _Joint& joint, const _JointOrientation& jointOrientation) {
-				set(joint, jointOrientation);
-			}
+			Joint(const _Joint& joint, const _JointOrientation& jointOrientation);
+			void set(const _Joint& joint, const _JointOrientation& jointOrientation);
+			JointType getType() const;
+			ofVec3f getPosition() const;
+			ofVec2f getProjected(ICoordinateMapper * coordinateMapper, ProjectionCoordinates proj = ColorCamera) const;
+			ofQuaternion getOrientation() const;
+			TrackingState getTrackingState() const;
 
-			void set(const _Joint& joint, const _JointOrientation& jointOrientation) {
-				this->joint = joint;
-				this->position.set(joint.Position.X, joint.Position.Y, joint.Position.Z);
-				this->type = joint.JointType;
-				this->trackingState = joint.TrackingState;
+			_Joint getRawJoint() const;
+			_JointOrientation getRawJointOrientation() const;
 
-				this->jointOrientation = jointOrientation;
-				this->orientation.set(jointOrientation.Orientation.x, jointOrientation.Orientation.y, jointOrientation.Orientation.z, jointOrientation.Orientation.w);
-			}
-
-			JointType getType() const {
-				return type;
-			}
-
-			ofVec3f getPosition() const {
-				return position;
-			}
-
-			ofVec2f getProjected(ICoordinateMapper * coordinateMapper, ProjectionCoordinates proj = ColorCamera) const {
-				switch (proj) {
-				case ColorCamera: {
-					ColorSpacePoint projected = { 0 };
-					coordinateMapper->MapCameraPointToColorSpace(joint.Position, &projected);
-					return ofVec2f(projected.X, projected.Y);
-				}
-				case DepthCamera: {
-					DepthSpacePoint projected = { 0 };
-					coordinateMapper->MapCameraPointToDepthSpace(joint.Position, &projected);
-					return ofVec2f(projected.X, projected.Y);
-				}
-				default:
-					return ofVec2f();
-				}
-			}
-
-			ofQuaternion getOrientation() const {
-				return orientation;
-			}
-
-			TrackingState getTrackingState() const {
-				return trackingState;
-			}
-
-			_Joint getRawJoint() const {
-				return this->joint;
-			}
-
-			_JointOrientation getRawJointOrientation() const {
-				return this->jointOrientation;
-			}
+			Joint operator*(const ofMatrix4x4 &) const;
 
 		protected:
 			ofVec3f position;

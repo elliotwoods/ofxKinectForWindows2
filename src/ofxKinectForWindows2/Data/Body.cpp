@@ -41,6 +41,15 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
+		Body Body::operator*(const ofMatrix4x4 & transform) const {
+			auto copy = *this;
+			for (auto & joint : copy.joints) {
+				joint.second = joint.second * transform;
+			}
+			return copy;
+		}
+
+		//----------
 		const std::vector<pair<JointType, JointType> > & Body::getBonesAtlas() {
 			//if pointer isn't valid, let's initialise the atlas
 			if (!bonesAtlas) {

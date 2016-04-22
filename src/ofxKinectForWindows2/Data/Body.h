@@ -20,8 +20,8 @@ namespace ofxKinectForWindows2 {
 			void drawWorld() const;
 			void clear();
 
+			Body operator*(const ofMatrix4x4 &) const;
 			static const std::vector<pair<JointType, JointType> > & getBonesAtlas();
-
 		protected:
 			static void initBonesAtlas();
 			static vector<pair<JointType, JointType> > * bonesAtlas;

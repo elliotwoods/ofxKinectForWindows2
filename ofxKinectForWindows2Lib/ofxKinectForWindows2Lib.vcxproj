@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ofxKinectForWindows2\Data\Body.cpp" />
+    <ClCompile Include="..\src\ofxKinectForWindows2\Data\Joint.cpp" />
     <ClCompile Include="..\src\ofxKinectForWindows2\Device.cpp" />
     <ClCompile Include="..\src\ofxKinectForWindows2\Source\Body.cpp" />
     <ClCompile Include="..\src\ofxKinectForWindows2\Source\BodyIndex.cpp" />
