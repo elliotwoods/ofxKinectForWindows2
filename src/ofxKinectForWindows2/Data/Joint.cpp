@@ -3,14 +3,30 @@
 namespace ofxKinectForWindows2 {
 	namespace Data {
 		//----------
-		Joint::Joint(const _Joint& joint, const _JointOrientation& jointOrientation) {
-			set(joint, jointOrientation);
+		Joint::Joint(const _Joint& joint, const _JointOrientation& jointOrientation, ICoordinateMapper * coordinateMapper) {
+			this->set(joint, jointOrientation, coordinateMapper);
 		}
 
 		//----------
-		void Joint::set(const _Joint& joint, const _JointOrientation& jointOrientation) {
+		Joint::Joint(const _Joint& joint, const _JointOrientation& jointOrientation, const ofVec2f & jointInDepthSpace) {
+			this->set(joint, jointOrientation, jointInDepthSpace);
+		}
+
+		//----------
+		void Joint::set(const _Joint& joint, const _JointOrientation& jointOrientation, ICoordinateMapper * coordinateMapper) {
+			DepthSpacePoint depthSpacePoint;
+			coordinateMapper->MapCameraPointsToDepthSpace(1, &joint.Position, 1, &depthSpacePoint);
+			ofVec2f positionInDepthMap(depthSpacePoint.X, depthSpacePoint.Y);
+			
+			this->set(joint, jointOrientation, positionInDepthMap);
+		}
+
+		//----------
+		void Joint::set(const _Joint& joint, const _JointOrientation& jointOrientation, const ofVec2f & positionInDepthMap) {
 			this->joint = joint;
-			this->position.set(joint.Position.X, joint.Position.Y, joint.Position.Z);
+			this->positionInWorld.set(joint.Position.X, joint.Position.Y, joint.Position.Z);
+			this->positionInDepthMap = positionInDepthMap;
+
 			this->type = joint.JointType;
 			this->trackingState = joint.TrackingState;
 
@@ -24,8 +40,13 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		ofVec3f Joint::getPosition() const {
-			return position;
+		ofVec3f Joint::getPositionInWorld() const {
+			return positionInWorld;
+		}
+
+		//----------
+		ofVec2f Joint::getPositionInDepthMap() const {
+			return this->positionInDepthMap;
 		}
 
 		//----------
@@ -69,12 +90,11 @@ namespace ofxKinectForWindows2 {
 		//----------
 		Joint Joint::operator*(const ofMatrix4x4 & transform) const {
 			auto copy = *this;
-			copy.position = copy.position * transform;
+			copy.positionInWorld = copy.positionInWorld * transform;
 
 			ofQuaternion rotationTransform;
 			rotationTransform.set(transform);
 			copy.orientation = copy.orientation * rotationTransform;
-
 
 			return copy;
 		}

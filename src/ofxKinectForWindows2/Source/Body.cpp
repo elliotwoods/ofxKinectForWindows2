@@ -124,7 +124,7 @@ namespace ofxKinectForWindows2 {
 							}
 
 							for (int j = 0; j < JointType_Count; ++j) {
-								body.joints[joints[j].JointType] = Data::Joint(joints[j], jointsOrient[j]);
+								body.joints[joints[j].JointType] = Data::Joint(joints[j], jointsOrient[j], this->getCoordinateMapper());
 							}
 
 							// retrieve hand states

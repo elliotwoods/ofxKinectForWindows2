@@ -24,7 +24,9 @@ namespace ofxKinectForWindows2 {
 				try {
 					const auto & firstJoint = this->joints.at(bone.first);
 					const auto & secondJoint = this->joints.at(bone.second);
-					ofLine(firstJoint.getPosition(), secondJoint.getPosition());
+					if (firstJoint.getTrackingState() != TrackingState::TrackingState_NotTracked && secondJoint.getTrackingState() != TrackingState::TrackingState_NotTracked) {
+						ofLine(firstJoint.getPosition(), secondJoint.getPosition());
+					}
 				}
 				catch (...)	{
 

@@ -44,6 +44,30 @@ void ofApp::setup(){
 				style->rangeMaximum = 0.25f;
 				panel->setStyle(style);
 			}
+
+			//if it's the body index panel, let's draw the joints on top
+			auto bodyIndexSource = dynamic_pointer_cast<ofxKFW2::Source::BodyIndex>(source);
+			if(bodyIndexSource) {
+				panel->onDrawImage += [this](ofxCvGui::DrawImageArguments & args) {
+					auto bodySource = this->kinect.getBodySource();
+					const auto & bodies = bodySource->getBodies();
+
+					ofPushStyle();
+					{
+						ofColor color(200, 100, 100);
+						int index = 0;
+						for (const auto & body : bodies) {
+							color.setHueAngle((index * 50) % 360);
+							ofSetColor(color);
+							for (const auto & joint : body.joints) {
+								ofDrawCircle(joint.second.getPositionInDepthMap(), 5);
+							}
+							index++;
+						}
+					}
+					ofPopStyle();
+				};
+			}
 		}
 	}
 

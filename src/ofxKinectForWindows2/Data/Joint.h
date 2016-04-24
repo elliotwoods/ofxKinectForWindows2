@@ -18,10 +18,16 @@ namespace ofxKinectForWindows2 {
 		{
 		public:
 			Joint(){}
-			Joint(const _Joint& joint, const _JointOrientation& jointOrientation);
-			void set(const _Joint& joint, const _JointOrientation& jointOrientation);
+			Joint(const _Joint& joint, const _JointOrientation& jointOrientation, ICoordinateMapper *);
+			Joint(const _Joint& joint, const _JointOrientation& jointOrientation, const ofVec2f & positionInDepthMap);
+			void set(const _Joint& joint, const _JointOrientation& jointOrientation, ICoordinateMapper *);
+			void set(const _Joint& joint, const _JointOrientation& jointOrientation, const ofVec2f & positionInDepthMap);
 			JointType getType() const;
-			ofVec3f getPosition() const;
+			ofVec3f getPositionInWorld() const;
+			ofVec2f getPositionInDepthMap() const;
+			ofVec3f getPosition() const {
+				return this->getPositionInWorld();
+			}
 			ofVec2f getProjected(ICoordinateMapper * coordinateMapper, ProjectionCoordinates proj = ColorCamera) const;
 			ofQuaternion getOrientation() const;
 			TrackingState getTrackingState() const;
@@ -32,7 +38,8 @@ namespace ofxKinectForWindows2 {
 			Joint operator*(const ofMatrix4x4 &) const;
 
 		protected:
-			ofVec3f position;
+			ofVec3f positionInWorld;
+			ofVec2f positionInDepthMap;
 			ofQuaternion orientation;
 			JointType type;
 			TrackingState trackingState;
