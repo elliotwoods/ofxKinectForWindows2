@@ -25,16 +25,16 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Depth::init(IKinectSensor * sensor) {
+		void Depth::initReader(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
 				IDepthFrameSource * source = NULL;
 
-				if (FAILED(sensor->get_DepthFrameSource(& source))) {
+				if (FAILED(sensor->get_DepthFrameSource(&source))) {
 					throw(Exception("Failed to initialise Depth source"));
 				}
 
-				if (FAILED(source->OpenReader(& this->reader))) {
+				if (FAILED(source->OpenReader(&this->reader))) {
 					throw(Exception("Failed to initialise Depth reader"));
 				}
 
@@ -43,10 +43,17 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(sensor->get_CoordinateMapper(&this->coordinateMapper))) {
 					throw(Exception("Failed to acquire coordinate mapper"));
 				}
-			} catch (std::exception & e) {
+			}
+			catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
+		}
+
+		//----------
+		void Depth::init(IKinectSensor * sensor, bool reader) {
+			if (reader)
+				initReader(sensor);
 		}
 
 		//----------

@@ -17,24 +17,31 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Color::init(IKinectSensor * sensor) {
+		void Color::initReader(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
 				IColorFrameSource * source = NULL;
 
-				if (FAILED(sensor->get_ColorFrameSource(& source))) {
+				if (FAILED(sensor->get_ColorFrameSource(&source))) {
 					throw(Exception("Failed to initialise Color source"));
 				}
 
-				if (FAILED(source->OpenReader(& this->reader))) {
+				if (FAILED(source->OpenReader(&this->reader))) {
 					throw(Exception("Failed to initialise Color reader"));
 				}
 
 				SafeRelease(source);
-			} catch (std::exception & e) {
+			}
+			catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
+		}
+
+		//----------
+		void Color::init(IKinectSensor * sensor, bool reader) {
+			if (reader)
+				initReader(sensor);
 		}
 
 		//----------

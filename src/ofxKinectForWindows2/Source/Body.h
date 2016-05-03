@@ -14,7 +14,7 @@ namespace ofxKinectForWindows2 {
 		class Body : public BaseFrame<IBodyFrameReader, IBodyFrame> {
 		public:
 			string getTypeName() const override;
-			void init(IKinectSensor *) override;
+			void init(IKinectSensor *, bool = true) override;
 
 			void update(IBodyFrame *) override;
 			void update(IMultiSourceFrame *) override;
@@ -36,7 +36,7 @@ namespace ofxKinectForWindows2 {
 			static void drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
 			static void drawProjectedHand(HandState handState, ofVec2f & handPos);
 		protected:
-			void initBonesDefinition();
+			void initReader(IKinectSensor *) override;
 
 			ICoordinateMapper * coordinateMapper;
 

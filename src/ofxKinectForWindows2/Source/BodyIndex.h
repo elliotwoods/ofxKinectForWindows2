@@ -7,8 +7,10 @@ namespace ofxKinectForWindows2 {
 		class BodyIndex : public BaseImageSimple<unsigned char, IBodyIndexFrameReader, IBodyIndexFrame> {
 		public:
 			string getTypeName() const override;
-			void init(IKinectSensor *) override;
+			void init(IKinectSensor *, bool = true) override;
 			void update(IMultiSourceFrame *) override;
+		protected:
+			void initReader(IKinectSensor *) override;
 		};
 	}
 }

@@ -23,7 +23,7 @@ namespace ofxKinectForWindows2 {
 			};
 
 			string getTypeName() const override;
-			void init(IKinectSensor *) override;
+			void init(IKinectSensor *, bool = true) override;
 			void update(IMultiSourceFrame *) override;
 
 			ofMesh getMesh(const PointCloudOptions & pointCloudOptions = PointCloudOptions());
@@ -38,6 +38,8 @@ namespace ofxKinectForWindows2 {
 
 			ICoordinateMapper * getCoordinateMapper() const;
 		protected:
+			void initReader(IKinectSensor *) override;
+
 			ICoordinateMapper * coordinateMapper;
 		};
 	}

@@ -23,7 +23,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Body::init(IKinectSensor * sensor) {
+		void Body::initReader(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
 				IBodyFrameSource * source = NULL;
@@ -37,6 +37,18 @@ namespace ofxKinectForWindows2 {
 				}
 
 				SafeRelease(source);
+			}
+			catch (std::exception & e) {
+				SafeRelease(this->reader);
+				throw (e);
+			}
+		}
+
+		//----------
+		void Body::init(IKinectSensor * sensor, bool reader) {
+			try {
+				if (reader)
+					initReader(sensor);
 
 				if (FAILED(sensor->get_CoordinateMapper(&this->coordinateMapper))) {
 					throw(Exception("Failed to acquire coordinate mapper"));

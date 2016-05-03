@@ -9,25 +9,32 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void LongExposureInfrared::init(IKinectSensor * sensor) {
+		void LongExposureInfrared::initReader(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
 				ILongExposureInfraredFrameSource * source = NULL;
-				
-				if (FAILED(sensor->get_LongExposureInfraredFrameSource(& source))) {
+
+				if (FAILED(sensor->get_LongExposureInfraredFrameSource(&source))) {
 					throw(Exception("Failed to initialise LongExposureInfrared source"));
 				}
 
-				if (FAILED(source->OpenReader(& this->reader))) {
+				if (FAILED(source->OpenReader(&this->reader))) {
 					throw(Exception("Failed to initialise LongExposureInfrared reader"));
 				}
 
 				SafeRelease(source);
 
-			} catch (std::exception & e) {
+			}
+			catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
+		}
+
+		//----------
+		void LongExposureInfrared::init(IKinectSensor * sensor, bool reader) {
+			if (reader)
+				initReader(sensor);
 		}
 
 		//----------

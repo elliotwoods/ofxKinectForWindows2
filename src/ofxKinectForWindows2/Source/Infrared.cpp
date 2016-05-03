@@ -9,25 +9,32 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Infrared::init(IKinectSensor * sensor) {
+		void Infrared::initReader(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
 				IInfraredFrameSource * source = NULL;
-				
-				if (FAILED(sensor->get_InfraredFrameSource(& source))) {
+
+				if (FAILED(sensor->get_InfraredFrameSource(&source))) {
 					throw(Exception("Failed to initialise Infrared source"));
 				}
 
-				if (FAILED(source->OpenReader(& this->reader))) {
+				if (FAILED(source->OpenReader(&this->reader))) {
 					throw(Exception("Failed to initialise Infrared reader"));
 				}
 
 				SafeRelease(source);
 
-			} catch (std::exception & e) {
+			}
+			catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
+		}
+
+		//----------
+		void Infrared::init(IKinectSensor * sensor, bool reader) {
+			if (reader)
+				initReader(sensor);
 		}
 
 		//----------

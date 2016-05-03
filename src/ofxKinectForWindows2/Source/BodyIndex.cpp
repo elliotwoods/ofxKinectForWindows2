@@ -9,25 +9,32 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void BodyIndex::init(IKinectSensor * sensor) {
+		void BodyIndex::initReader(IKinectSensor * sensor) {
 			this->reader = NULL;
 			try {
 				IBodyIndexFrameSource * source = NULL;
 
-				if (FAILED(sensor->get_BodyIndexFrameSource(& source))) {
+				if (FAILED(sensor->get_BodyIndexFrameSource(&source))) {
 					throw(Exception("Failed to initialise BodyIndex source"));
 				}
 
-				if (FAILED(source->OpenReader(& this->reader))) {
+				if (FAILED(source->OpenReader(&this->reader))) {
 					throw(Exception("Failed to initialise BodyIndex reader"));
 				}
 
 				SafeRelease(source);
 
-			} catch (std::exception & e) {
+			}
+			catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
+		}
+
+		//----------
+		void BodyIndex::init(IKinectSensor * sensor, bool reader) {
+			if (reader)
+				initReader(sensor);
 		}
 
 		//----------

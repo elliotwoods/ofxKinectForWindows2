@@ -13,7 +13,7 @@ namespace ofxKinectForWindows2 {
 		public:
 			Color();
 			string getTypeName() const override;
-			void init(IKinectSensor *) override;
+			void init(IKinectSensor *, bool = true) override;
 
 			void update(IColorFrame *) override;
 			void update(IMultiSourceFrame *) override;
@@ -26,6 +26,8 @@ namespace ofxKinectForWindows2 {
 			bool getYuvPixelsEnabled() const;
 			const ofPixels & getYuvPixels() const;
 		protected:
+			void initReader(IKinectSensor *) override;
+
 			TIMESPAN exposure;
 			TIMESPAN frameInterval;
 			float gain;

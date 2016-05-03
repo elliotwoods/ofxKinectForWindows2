@@ -24,6 +24,8 @@ namespace ofxKinectForWindows2 {
 			void update() override;
 			bool isFrameNew() const override;
 		protected:
+			virtual void initReader(IKinectSensor *) = 0;
+
 			ReaderType * reader;
 			bool  isFrameNewFlag;
 		};
