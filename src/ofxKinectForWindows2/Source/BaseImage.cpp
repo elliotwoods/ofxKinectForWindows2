@@ -22,12 +22,6 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template <typename ReaderType, typename FrameType>
-		ReaderType * BaseFrame<typename ReaderType, typename FrameType>::getReader() {
-			return this->reader;
-		}
-
-		//----------
-		template <typename ReaderType, typename FrameType>
 			bool BaseFrame <typename ReaderType, typename FrameType>::isFrameNew() const {
 			return this->isFrameNewFlag;
 		}

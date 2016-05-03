@@ -22,7 +22,6 @@ namespace ofxKinectForWindows2 {
 			virtual void update(FrameType *) = 0;
 			
 			void update() override;
-			ReaderType * getReader();
 			bool isFrameNew() const override;
 		protected:
 			ReaderType * reader;
