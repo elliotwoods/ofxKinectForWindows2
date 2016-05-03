@@ -13,13 +13,26 @@ namespace ofxKinectForWindows2 {
 #define OFXKFW2_BaseImageSimple_TEMPLATE_ARGS <typename PixelType, typename ReaderType, typename FrameType>
 #define OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM <typename PixelType, typename ReaderType, typename FrameType>
 
+		template <typename ReaderType, typename FrameType>
+		class BaseFrame : public Base {
+		public:
+			BaseFrame();
+			~BaseFrame();
+
+			virtual void update(FrameType *) = 0;
+			
+			void update() override;
+			ReaderType * getReader();
+			bool isFrameNew() const override;
+		protected:
+			ReaderType * reader;
+			bool  isFrameNewFlag;
+		};
+
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		class BaseImage  : public Base, public ofBaseHasTexture, public ofBaseHasPixels_<PixelType>, public ofBaseDraws {
+		class BaseImage : public BaseFrame<ReaderType, FrameType>, public ofBaseHasTexture, public ofBaseHasPixels_<PixelType>, public ofBaseDraws {
 		public:
 			BaseImage();
-			~BaseImage();
-
-			ReaderType * getReader();
 
 			//ofBaseHasTexture
 			ofTexture & getTexture() override;
@@ -45,7 +58,6 @@ namespace ofxKinectForWindows2 {
 		protected:
 			static ofMesh frustumMesh;
 
-			ReaderType * reader;
 			bool useTexture;
 			ofTexture texture;
 			ofPixels_<PixelType> pixels;
@@ -59,11 +71,7 @@ namespace ofxKinectForWindows2 {
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		class BaseImageSimple : public BaseImage<PixelType, ReaderType, FrameType> {
 		public:
-			BaseImageSimple();
-			void update() override;
-			bool isFrameNew() const override;
-		protected:
-			bool  isFrameNewFlag;
+			void update(FrameType *) override;
 		};
 	};
 }

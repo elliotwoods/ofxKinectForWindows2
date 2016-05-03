@@ -50,6 +50,28 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
+		void Depth::update(IMultiSourceFrame * multiFrame) {
+			this->isFrameNewFlag = false;
+			IDepthFrame * frame = NULL;
+			IDepthFrameReference * reference;
+			try {
+				//acquire frame
+				if (FAILED(multiFrame->get_DepthFrameReference(&reference))) {
+					return; // we often throw here when no new frame is available
+				}
+				if (FAILED(reference->AcquireFrame(&frame))) {
+					return; // we often throw here when no new frame is available
+				}
+				BaseImageSimple::update(frame);
+			}
+			catch (std::exception & e) {
+				OFXKINECTFORWINDOWS2_ERROR << e.what();
+			}
+			SafeRelease(reference);
+			SafeRelease(frame);
+		}
+
+		//----------
 		ofMesh Depth::getMesh(const PointCloudOptions &opts) {
 			const int width = this->getWidth();
 			const int height = this->getHeight();

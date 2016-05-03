@@ -29,5 +29,27 @@ namespace ofxKinectForWindows2 {
 				throw (e);
 			}
 		}
+
+		//----------
+		void BodyIndex::update(IMultiSourceFrame * multiFrame) {
+			this->isFrameNewFlag = false;
+			IBodyIndexFrame * frame = NULL;
+			IBodyIndexFrameReference * reference;
+			try {
+				//acquire frame
+				if (FAILED(multiFrame->get_BodyIndexFrameReference(&reference))) {
+					return; // we often throw here when no new frame is available
+				}
+				if (FAILED(reference->AcquireFrame(&frame))) {
+					return; // we often throw here when no new frame is available
+				}
+				BaseImageSimple::update(frame);
+			}
+			catch (std::exception & e) {
+				OFXKINECTFORWINDOWS2_ERROR << e.what();
+			}
+			SafeRelease(reference);
+			SafeRelease(frame);
+		}
 	}
 }

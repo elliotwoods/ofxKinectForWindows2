@@ -1,8 +1,6 @@
 #include "Color.h"
 #include "ofMain.h"
 
-#define CHECK_OPEN if(!this->reader) { OFXKINECTFORWINDOWS2_ERROR << "Failed : Reader is not open"; }
-
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
@@ -11,7 +9,6 @@ namespace ofxKinectForWindows2 {
 			this->frameInterval = 0;
 			this->gain = 0;
 			this->gamma = 0;
-			this->isFrameNewFlag = false;
 		}
 
 		//----------
@@ -41,19 +38,10 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Color::update() {
-			CHECK_OPEN
-
-			this->isFrameNewFlag = false;
-			IColorFrame * frame = NULL;
+		void Color::update(IColorFrame * frame) {
+			this->isFrameNewFlag = true;
 			IFrameDescription * frameDescription = NULL;
 			try {
-				//acquire frame
-				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
-					return; // we often throw here when no new frame is available
-				}
-				this->isFrameNewFlag = true;
-
 				//allocate pixels and texture if we need to
 				if (FAILED(frame->get_FrameDescription(&frameDescription))) {
 					throw Exception("Failed to get frame description");
@@ -109,14 +97,30 @@ namespace ofxKinectForWindows2 {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(frameDescription);
-			SafeRelease(frame);
 		}
 
 		//----------
-		bool Color::isFrameNew() const {
-			return this->isFrameNewFlag;
+		void Color::update(IMultiSourceFrame * multiFrame) {
+			this->isFrameNewFlag = false;
+			IColorFrame * frame = NULL;
+			IColorFrameReference * reference;
+			try {
+				//acquire frame
+				if (FAILED(multiFrame->get_ColorFrameReference(&reference))) {
+					return; // we often throw here when no new frame is available
+				}
+				if (FAILED(reference->AcquireFrame(&frame))) {
+					return; // we often throw here when no new frame is available
+				}
+				update(frame);
+			}
+			catch (std::exception & e) {
+				OFXKINECTFORWINDOWS2_ERROR << e.what();
+			}
+			SafeRelease(reference);
+			SafeRelease(frame);
 		}
-		
+
 		//----------
 		long int Color::getExposure() const {
 			return this->exposure;

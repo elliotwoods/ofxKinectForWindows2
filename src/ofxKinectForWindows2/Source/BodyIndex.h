@@ -8,6 +8,7 @@ namespace ofxKinectForWindows2 {
 		public:
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;
+			void update(IMultiSourceFrame *) override;
 		};
 	}
 }

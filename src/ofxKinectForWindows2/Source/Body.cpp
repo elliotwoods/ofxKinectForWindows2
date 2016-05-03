@@ -1,15 +1,8 @@
 #include "Body.h"
 #include "ofMain.h"
 
-#define CHECK_OPEN if(!this->reader) { OFXKINECTFORWINDOWS2_ERROR << "Failed : Reader is not open"; }
-
 namespace ofxKinectForWindows2 {
 	namespace Source {
-		//----------
-		Body::Body() {
-			this->isFrameNewFlag = false;
-		}
-
 		//----------
 		string Body::getTypeName() const {
 			return "Body";
@@ -58,19 +51,32 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Body::update() {
-			CHECK_OPEN
-			
-				this->isFrameNewFlag = false;
+		void Body::update(IMultiSourceFrame * multiFrame) {
+			this->isFrameNewFlag = false;
 			IBodyFrame * frame = NULL;
-			IFrameDescription * frameDescription = NULL;
+			IBodyFrameReference * reference;
 			try {
 				//acquire frame
-				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
+				if (FAILED(multiFrame->get_BodyFrameReference(&reference))) {
 					return; // we often throw here when no new frame is available
 				}
-				this->isFrameNewFlag = true;
+				if (FAILED(reference->AcquireFrame(&frame))) {
+					return; // we often throw here when no new frame is available
+				}
+				update(frame);
+			}
+			catch (std::exception & e) {
+				OFXKINECTFORWINDOWS2_ERROR << e.what();
+			}
+			SafeRelease(reference);
+			SafeRelease(frame);
+		}
 
+		//----------
+		void Body::update(IBodyFrame * frame) {
+			this->isFrameNewFlag = true;
+			IFrameDescription * frameDescription = NULL;
+			try {
 				INT64 nTime = 0;
 				if (FAILED(frame->get_RelativeTime(&nTime))) {
 					throw Exception("Failed to get relative time");
@@ -158,11 +164,6 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		bool Body::isFrameNew() const {
-			return this->isFrameNewFlag;
-		}
-
-		//----------
 		map<JointType, ofVec2f> Body::getProjectedJoints(int bodyIdx, ProjectionCoordinates proj) {
 			map<JointType, ofVec2f> result;
 
@@ -247,11 +248,6 @@ namespace ofxKinectForWindows2 {
 
 				bodyIndex++;
 			}
-		}
-
-		//----------
-		IBodyFrameReader * Body::getReader() {
-			return this->reader;
 		}
 
 		//----------

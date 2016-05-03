@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 
-#include "Base.h"
+#include "BaseImage.h"
 #include "../Utils.h"
 
 #include "../Data/Body.h"
@@ -11,19 +11,17 @@
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		// -------
-		class Body : public Base {
+		class Body : public BaseFrame<IBodyFrameReader, IBodyFrame> {
 		public:
-			Body();
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;
 
-			void update();
-			bool isFrameNew() const override;
+			void update(IBodyFrame *) override;
+			void update(IMultiSourceFrame *) override;
 
 			void drawProjected(int x, int y, int width, int height, ProjectionCoordinates proj = ColorCamera);
 			void drawWorld();
 
-			IBodyFrameReader * getReader();
 			ICoordinateMapper * getCoordinateMapper();
 
 			const vector<Data::Body> & getBodies() const;
@@ -40,14 +38,11 @@ namespace ofxKinectForWindows2 {
 		protected:
 			void initBonesDefinition();
 
-			IBodyFrameReader * reader;
 			ICoordinateMapper * coordinateMapper;
 
 			Vector4 floorClipPlane;
 
 			vector<Data::Body> bodies;
-
-			bool isFrameNewFlag;
 		};
 	}
 }

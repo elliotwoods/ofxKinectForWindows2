@@ -24,6 +24,7 @@ namespace ofxKinectForWindows2 {
 
 			string getTypeName() const override;
 			void init(IKinectSensor *) override;
+			void update(IMultiSourceFrame *) override;
 
 			ofMesh getMesh(const PointCloudOptions & pointCloudOptions = PointCloudOptions());
 			ofMesh getMesh(bool stitchFaces, PointCloudOptions::TextureCoordinates textureCoordinates);

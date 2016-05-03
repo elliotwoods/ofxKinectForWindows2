@@ -5,6 +5,53 @@
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
+
+#pragma mark BaseFrame
+		//----------
+		template <typename ReaderType, typename FrameType>
+		BaseFrame<typename ReaderType, typename FrameType>::BaseFrame() {
+			this->reader = NULL;
+			this->isFrameNewFlag = false;
+		}
+
+		//----------
+		template <typename ReaderType, typename FrameType>
+		BaseFrame<typename ReaderType, typename FrameType>::~BaseFrame() {
+			SafeRelease(this->reader);
+		}
+
+		//----------
+		template <typename ReaderType, typename FrameType>
+		ReaderType * BaseFrame<typename ReaderType, typename FrameType>::getReader() {
+			return this->reader;
+		}
+
+		//----------
+		template <typename ReaderType, typename FrameType>
+			bool BaseFrame <typename ReaderType, typename FrameType>::isFrameNew() const {
+			return this->isFrameNewFlag;
+		}
+
+		//----------
+		template <typename ReaderType, typename FrameType>
+		void BaseFrame<typename ReaderType, typename FrameType>::update() {
+			CHECK_OPEN
+
+			this->isFrameNewFlag = false;
+			FrameType * frame = NULL;
+			try {
+				//acquire frame
+				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
+					return; // we often throw here when no new frame is available
+				}
+				update(frame);
+			}
+			catch (std::exception & e) {
+				OFXKINECTFORWINDOWS2_ERROR << e.what();
+			}
+			SafeRelease(frame);
+		}
+
 #pragma mark BaseImage
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
@@ -13,7 +60,6 @@ namespace ofxKinectForWindows2 {
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
 		BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::BaseImage() {
-			this->reader = NULL;
 			this->useTexture = true;
 			this->diagonalFieldOfView = 0.0f;
 			this->horizontalFieldOfView = 0.0f;
@@ -30,18 +76,6 @@ namespace ofxKinectForWindows2 {
 				this->frustumMesh.addIndices(indices, 6);
 				this->frustumMesh.setMode(ofPrimitiveMode::OF_PRIMITIVE_TRIANGLE_FAN);
 			}
-		}
-
-		//----------
-		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::~BaseImage() {
-			SafeRelease(this->reader);
-		}
-
-		//----------
-		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		ReaderType * BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::getReader() {
-			return this->reader;
 		}
 
 		//----------
@@ -136,23 +170,10 @@ namespace ofxKinectForWindows2 {
 #pragma mark BaseImageSimple
 		//----------
 		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::BaseImageSimple() {
-			this->isFrameNewFlag = false;
-		}
-		//----------
-		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		void BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::update() {
-			CHECK_OPEN
-			this->isFrameNewFlag = false;
-			FrameType * frame = NULL;
+		void BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::update(FrameType * frame) {
+			this->isFrameNewFlag = true;
 			IFrameDescription * frameDescription = NULL;
 			try {
-				//acquire frame
-				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
-					return; // we often throw here when no new frame is available
-				}
-				this->isFrameNewFlag = true;
-
 				INT64 relativeTime = 0;
 				if (FAILED(frame->get_RelativeTime(&relativeTime))) {
 					throw Exception("Failed to get relative time");
@@ -204,12 +225,6 @@ namespace ofxKinectForWindows2 {
 			SafeRelease(frame);
 		}
 
-		//----------
-		template OFXKFW2_BaseImageSimple_TEMPLATE_ARGS
-		bool BaseImageSimple OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM::isFrameNew() const {
-			return this->isFrameNewFlag;
-		}
-
 		//---------
 		template class BaseImageSimple<unsigned short, IDepthFrameReader, IDepthFrame>;
 		template class BaseImageSimple<unsigned short, IInfraredFrameReader, IInfraredFrame>;
@@ -220,5 +235,6 @@ namespace ofxKinectForWindows2 {
 		template class BaseImage<unsigned short, ILongExposureInfraredFrameReader, ILongExposureInfraredFrame>;
 		template class BaseImage<unsigned char, IBodyIndexFrameReader, IBodyIndexFrame>;
 		template class BaseImage<unsigned char, IColorFrameReader, IColorFrame>;
+		template class BaseFrame<IBodyFrameReader, IBodyFrame>;
 	}
 }
