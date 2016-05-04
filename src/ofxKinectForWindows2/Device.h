@@ -21,7 +21,7 @@ namespace ofxKinectForWindows2 {
 		void close();
 		bool isOpen() const;
 
-		void initSources(std::initializer_list<FrameSourceTypes> a_args);
+		void initMultiSource(std::initializer_list<FrameSourceTypes> a_args);
 
 		template<typename SourceType>
 		shared_ptr<SourceType> initSource(bool initReader);

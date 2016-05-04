@@ -12,6 +12,7 @@ namespace ofxKinectForWindows2 {
 			virtual void update() = 0;
 			virtual void update(IMultiSourceFrame *) = 0;
 			virtual bool isFrameNew() const = 0;
+			virtual bool hasReader() const = 0;
 		};
 	}
 }

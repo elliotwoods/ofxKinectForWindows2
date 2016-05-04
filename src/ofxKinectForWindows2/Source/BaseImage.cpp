@@ -28,6 +28,15 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template <typename ReaderType, typename FrameType>
+		bool BaseFrame <typename ReaderType, typename FrameType>::hasReader() const {
+			if (this->reader)
+				return true;
+			else
+				return false;
+		}
+
+		//----------
+		template <typename ReaderType, typename FrameType>
 		void BaseFrame<typename ReaderType, typename FrameType>::update() {
 			CHECK_OPEN
 

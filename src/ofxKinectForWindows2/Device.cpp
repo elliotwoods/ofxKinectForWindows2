@@ -56,10 +56,10 @@ namespace ofxKinectForWindows2 {
 		}
 	}
 	
-	void Device::initSources(std::initializer_list<FrameSourceTypes> a_args) {
+	void Device::initMultiSource(std::initializer_list<FrameSourceTypes> a_args) {
 		CHECK_OPEN;
 
-		if (!reader) {
+		if (!this->reader) {
 			DWORD enabledFrameSourceTypes = 0;
 			for (auto f : a_args) enabledFrameSourceTypes |= f;
 			try {
@@ -106,10 +106,10 @@ namespace ofxKinectForWindows2 {
 
 		//if not then open it
 		try {
-			auto depthSource = MAKE(SourceType);
-			depthSource->init(this->sensor, initReader);
-			this->sources.push_back(depthSource);
-			return depthSource;
+			auto source = MAKE(SourceType);
+			source->init(this->sensor, initReader);
+			this->sources.push_back(source);
+			return source;
 		} catch (std::exception & e) {
 			OFXKINECTFORWINDOWS2_ERROR << e.what();
 			return shared_ptr<SourceType>();
@@ -150,7 +150,7 @@ namespace ofxKinectForWindows2 {
 	void Device::update() {
 		this->isFrameNewFlag = false;
 		IMultiSourceFrame * frame = NULL;
-		if (reader) {
+		if (this->reader) {
 			try {
 				//acquire frame
 				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
@@ -162,7 +162,7 @@ namespace ofxKinectForWindows2 {
 			}
 		}
 		for (auto source : this->sources) {
-			if (frame)
+			if (frame && !source->hasReader())
 				source->update(frame);
 			else
 				source->update();
