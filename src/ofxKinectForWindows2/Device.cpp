@@ -36,6 +36,8 @@ namespace ofxKinectForWindows2 {
 
 	//----------
 	void Device::close() {
+		SafeRelease(this->reader);
+
 		if (!this->sensor) {
 			return;
 		}
