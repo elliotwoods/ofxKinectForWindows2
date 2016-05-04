@@ -14,7 +14,7 @@ namespace ofxKinectForWindows2 {
 		class Body : public BaseFrame<IBodyFrameReader, IBodyFrame> {
 		public:
 			string getTypeName() const override;
-			void init(IKinectSensor *, bool = true) override;
+			void init(IKinectSensor *, bool) override;
 
 			void update(IBodyFrame *) override;
 			void update(IMultiSourceFrame *) override;

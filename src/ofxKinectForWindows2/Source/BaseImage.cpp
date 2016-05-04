@@ -177,7 +177,6 @@ namespace ofxKinectForWindows2 {
 					relativeTime = this->lastFrameTime;
 				} 
 				else {
-					SafeRelease(frame);
 					return;
 				}
 
@@ -216,7 +215,6 @@ namespace ofxKinectForWindows2 {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(frameDescription);
-			SafeRelease(frame);
 		}
 
 		//---------

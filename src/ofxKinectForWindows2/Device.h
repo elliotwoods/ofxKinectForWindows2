@@ -21,8 +21,10 @@ namespace ofxKinectForWindows2 {
 		void close();
 		bool isOpen() const;
 
+		void initSources(std::initializer_list<FrameSourceTypes> a_args);
+
 		template<typename SourceType>
-		shared_ptr<SourceType> initSource();
+		shared_ptr<SourceType> initSource(bool initReader);
 
 		shared_ptr<Source::Depth> initDepthSource();
 		shared_ptr<Source::Color> initColorSource();
@@ -70,6 +72,8 @@ namespace ofxKinectForWindows2 {
 		void setUseTextures(bool);
 	protected: 
 		IKinectSensor * sensor;
+		IMultiSourceFrameReader * reader;
+
 		vector<shared_ptr<Source::Base>> sources;
 		bool isFrameNewFlag;
 	};

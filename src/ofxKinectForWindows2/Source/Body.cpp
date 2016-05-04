@@ -172,7 +172,6 @@ namespace ofxKinectForWindows2 {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(frameDescription);
-			SafeRelease(frame);
 		}
 
 		//----------

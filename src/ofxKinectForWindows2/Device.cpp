@@ -7,6 +7,7 @@ namespace ofxKinectForWindows2 {
 	//----------
 	Device::Device() {
 		this->sensor = nullptr;
+		this->reader = nullptr;
 		this->isFrameNewFlag = false;
 	}
 
@@ -55,9 +56,43 @@ namespace ofxKinectForWindows2 {
 		}
 	}
 	
+	void Device::initSources(std::initializer_list<FrameSourceTypes> a_args) {
+		CHECK_OPEN;
+
+		if (!reader) {
+			DWORD enabledFrameSourceTypes = 0;
+			for (auto f : a_args) enabledFrameSourceTypes |= f;
+			try {
+				if (!FAILED(this->sensor->OpenMultiSourceFrameReader(enabledFrameSourceTypes, &reader))) {
+					if (enabledFrameSourceTypes & FrameSourceTypes_Color) {
+						this->initSource<Source::Color>(false);
+					}
+					if (enabledFrameSourceTypes & FrameSourceTypes_Infrared) {
+						this->initSource<Source::Infrared>(false);
+					}
+					if (enabledFrameSourceTypes & FrameSourceTypes_LongExposureInfrared) {
+						this->initSource<Source::LongExposureInfrared>(false);
+					}
+					if (enabledFrameSourceTypes & FrameSourceTypes_Depth) {
+						this->initSource<Source::Depth>(false);
+					}
+					if (enabledFrameSourceTypes & FrameSourceTypes_BodyIndex) {
+						this->initSource<Source::BodyIndex>(false);
+					}
+					if (enabledFrameSourceTypes & FrameSourceTypes_Body) {
+						this->initSource<Source::Body>(false);
+					}
+				}
+			}
+			catch (std::exception & e) {
+				OFXKINECTFORWINDOWS2_ERROR << e.what();
+			}
+		}
+	}
+
 	//----------
 	template<typename SourceType>
-	shared_ptr<SourceType> Device::initSource() {
+	shared_ptr<SourceType> Device::initSource(bool initReader) {
 		CHECK_OPEN;
 
 		//first check if it already exists
@@ -72,7 +107,7 @@ namespace ofxKinectForWindows2 {
 		//if not then open it
 		try {
 			auto depthSource = MAKE(SourceType);
-			depthSource->init(this->sensor);
+			depthSource->init(this->sensor, initReader);
 			this->sources.push_back(depthSource);
 			return depthSource;
 		} catch (std::exception & e) {
@@ -83,41 +118,57 @@ namespace ofxKinectForWindows2 {
 
 	//----------
 	shared_ptr<Source::Depth> Device::initDepthSource() {
-		return this->initSource<Source::Depth>();
+		return this->initSource<Source::Depth>(true);
 	}
 
 	//----------
 	shared_ptr<Source::Color> Device::initColorSource() {
-		return this->initSource<Source::Color>();
+		return this->initSource<Source::Color>(true);
 	}
 	
 	//----------
 	shared_ptr<Source::Infrared> Device::initInfraredSource() {
-		return this->initSource<Source::Infrared>();
+		return this->initSource<Source::Infrared>(true);
 	}
 
 	//----------
 	shared_ptr<Source::LongExposureInfrared> Device::initLongExposureInfraredSource() {
-		return this->initSource<Source::LongExposureInfrared>();
+		return this->initSource<Source::LongExposureInfrared>(true);
 	}
 
 	//----------
 	shared_ptr<Source::BodyIndex> Device::initBodyIndexSource() {
-		return this->initSource<Source::BodyIndex>();
+		return this->initSource<Source::BodyIndex>(true);
 	}
 
 	//----------
 	shared_ptr<Source::Body> Device::initBodySource() {
-		return this->initSource<Source::Body>();
+		return this->initSource<Source::Body>(true);
 	}
 
 	//----------
 	void Device::update() {
 		this->isFrameNewFlag = false;
-		for(auto source : this->sources) {
-			source->update();
+		IMultiSourceFrame * frame = NULL;
+		if (reader) {
+			try {
+				//acquire frame
+				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
+					return; // we often throw here when no new frame is available
+				}
+			}
+			catch (std::exception & e) {
+				OFXKINECTFORWINDOWS2_ERROR << e.what();
+			}
+		}
+		for (auto source : this->sources) {
+			if (frame)
+				source->update(frame);
+			else
+				source->update();
 			this->isFrameNewFlag |= source->isFrameNew();
 		}
+		SafeRelease(frame);
 	}
 
 	//----------
