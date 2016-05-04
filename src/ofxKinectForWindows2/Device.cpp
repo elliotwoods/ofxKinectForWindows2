@@ -1,6 +1,8 @@
 #include "Device.h"
 #include "ofMain.h"
 
+#include "ofConstants.h"
+
 #define CHECK_OPEN if(!this->sensor) { OFXKINECTFORWINDOWS2_ERROR << "Failed : Sensor is not open"; }
 
 namespace ofxKinectForWindows2 {
@@ -230,8 +232,15 @@ namespace ofxKinectForWindows2 {
 		//point cloud
 		{
 			//setup some point cloud properties for kicks
+			bool usePointSize = true;
+
+#if OF_VERSION_MAJOR > 0 || OF_VERSION_MINOR >= 10
 			auto mainWindow = std::static_pointer_cast<ofAppGLFWWindow>(ofGetCurrentWindow());
-			bool usePointSize = mainWindow ? mainWindow->getSettings().glVersionMajor <= 2 : false;
+			usePointSize = mainWindow ? mainWindow->getSettings().glVersionMajor <= 2 : false;
+#endif
+
+			usePointSize = false;
+
 			if (usePointSize) {
 				glPushAttrib(GL_POINT_BIT);
 				glPointSize(5.0f);
