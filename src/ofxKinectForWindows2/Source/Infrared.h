@@ -7,7 +7,7 @@ namespace ofxKinectForWindows2 {
 		class Infrared : public BaseImageSimple<unsigned short, IInfraredFrameReader, IInfraredFrame> {
 		public:
 			string getTypeName() const override;
-			void init(IKinectSensor *, bool) override;
+
 			void update(IMultiSourceFrame *) override;
 		protected:
 			void initReader(IKinectSensor *) override;

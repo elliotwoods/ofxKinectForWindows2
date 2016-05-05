@@ -23,7 +23,7 @@ namespace ofxKinectForWindows2 {
 			};
 
 			string getTypeName() const override;
-			void init(IKinectSensor *, bool) override;
+
 			void update(IMultiSourceFrame *) override;
 
 			ofMesh getMesh(const PointCloudOptions & pointCloudOptions = PointCloudOptions());

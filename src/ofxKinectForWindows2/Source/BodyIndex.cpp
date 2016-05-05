@@ -24,17 +24,10 @@ namespace ofxKinectForWindows2 {
 
 				SafeRelease(source);
 
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
-		}
-
-		//----------
-		void BodyIndex::init(IKinectSensor * sensor, bool reader) {
-			if (reader)
-				initReader(sensor);
 		}
 
 		//----------
@@ -51,8 +44,7 @@ namespace ofxKinectForWindows2 {
 					return; // we often throw here when no new frame is available
 				}
 				BaseImageSimple::update(frame);
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(reference);

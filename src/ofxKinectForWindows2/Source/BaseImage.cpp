@@ -22,6 +22,13 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		template <typename ReaderType, typename FrameType>
+		void BaseFrame <typename ReaderType, typename FrameType>::init(IKinectSensor * sensor, bool reader) {
+			if (reader)
+				initReader(sensor);
+		}
+
+		//----------
+		template <typename ReaderType, typename FrameType>
 			bool BaseFrame <typename ReaderType, typename FrameType>::isFrameNew() const {
 			return this->isFrameNewFlag;
 		}
@@ -48,8 +55,7 @@ namespace ofxKinectForWindows2 {
 					return; // we often throw here when no new frame is available
 				}
 				update(frame);
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(frame);

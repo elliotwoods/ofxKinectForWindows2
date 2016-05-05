@@ -13,7 +13,6 @@ namespace ofxKinectForWindows2 {
 		public:
 			Color();
 			string getTypeName() const override;
-			void init(IKinectSensor *, bool) override;
 
 			void update(IColorFrame *) override;
 			void update(IMultiSourceFrame *) override;

@@ -87,8 +87,7 @@ namespace ofxKinectForWindows2 {
 						this->initSource<Source::Body>(false);
 					}
 				}
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 		}
@@ -160,8 +159,7 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
 					return; // we often throw here when no new frame is available
 				}
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 		}

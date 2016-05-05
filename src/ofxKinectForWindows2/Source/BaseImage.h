@@ -21,6 +21,7 @@ namespace ofxKinectForWindows2 {
 
 			virtual void update(FrameType *) = 0;
 			
+			void init(IKinectSensor *, bool) override;
 			void update() override;
 			bool isFrameNew() const override;
 			bool hasReader() const override;

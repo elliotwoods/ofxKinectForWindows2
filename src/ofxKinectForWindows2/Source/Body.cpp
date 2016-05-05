@@ -37,8 +37,7 @@ namespace ofxKinectForWindows2 {
 				}
 
 				SafeRelease(source);
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
@@ -47,16 +46,14 @@ namespace ofxKinectForWindows2 {
 		//----------
 		void Body::init(IKinectSensor * sensor, bool reader) {
 			try {
-				if (reader)
-					initReader(sensor);
+				BaseFrame::init(sensor, reader);
 
 				if (FAILED(sensor->get_CoordinateMapper(&this->coordinateMapper))) {
 					throw(Exception("Failed to acquire coordinate mapper"));
 				}
 
 				bodies.resize(BODY_COUNT);
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
@@ -76,8 +73,7 @@ namespace ofxKinectForWindows2 {
 					return; // we often throw here when no new frame is available
 				}
 				update(frame);
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(reference);
@@ -167,8 +163,7 @@ namespace ofxKinectForWindows2 {
 				{
 					SafeRelease(ppBodies[i]);
 				}
-			}
-			catch (std::exception & e) {
+			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(frameDescription);
