@@ -23,7 +23,6 @@ namespace ofxKinectForWindows2 {
 				}
 
 				SafeRelease(source);
-
 			} catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);

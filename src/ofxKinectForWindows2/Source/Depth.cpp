@@ -39,6 +39,16 @@ namespace ofxKinectForWindows2 {
 				}
 
 				SafeRelease(source);
+			} catch (std::exception & e) {
+				SafeRelease(this->reader);
+				throw (e);
+			}
+		}
+
+		//----------
+		void Depth::init(IKinectSensor * sensor, bool reader) {
+			try {
+				BaseFrame::init(sensor, reader);
 
 				if (FAILED(sensor->get_CoordinateMapper(&this->coordinateMapper))) {
 					throw(Exception("Failed to acquire coordinate mapper"));
