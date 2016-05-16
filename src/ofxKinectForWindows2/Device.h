@@ -31,6 +31,16 @@ namespace ofxKinectForWindows2 {
 		shared_ptr<Source::BodyIndex> initBodyIndexSource();
 		shared_ptr<Source::Body> initBodySource();
 
+        template<typename SourceType>
+        bool releaseSource();
+
+        bool releaseDepthSource();
+        bool releaseColorSource();
+        bool releaseInfraredSource();
+        bool releaseLongExposureInfraredSource();
+        bool releaseBodyIndexSource();
+        bool releaseBodySource();
+
 		void update();
 		bool isFrameNew() const;
 
