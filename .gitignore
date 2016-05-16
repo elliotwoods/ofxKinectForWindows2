@@ -20,6 +20,8 @@ ipch/
 *.suo
 *.opensdf
 *.vcxproj.user
+*.db
+*.opendb
 
 *.obj
 *.tlog
