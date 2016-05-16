@@ -53,6 +53,28 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(sensor->get_CoordinateMapper(&this->coordinateMapper))) {
 					throw(Exception("Failed to acquire coordinate mapper"));
 				}
+
+				IColorFrameSource * source = NULL;
+
+				if (FAILED(sensor->get_ColorFrameSource(&source))) {
+					throw(Exception("Failed to initialise Color source"));
+				}
+
+				IFrameDescription * frameDescription = NULL;
+
+				if (FAILED(source->get_FrameDescription(&frameDescription))) {
+					throw(Exception("Failed to get color frame description"));
+				}
+
+				if (FAILED(frameDescription->get_Width(&this->colorFrameWidth)) || 
+					FAILED(frameDescription->get_Height(&this->colorFrameHeight))) {
+					throw Exception("Failed to get width and height of color frame");
+				}
+
+				this->colorFrameSize = this->colorFrameWidth * this->colorFrameHeight;
+
+				SafeRelease(frameDescription);
+				SafeRelease(source);
 			} catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
@@ -171,7 +193,7 @@ namespace ofxKinectForWindows2 {
 			world.allocate(colorImageWidth, colorImageHeight, ofPixelFormat::OF_PIXELS_RGB);
 			this->coordinateMapper->MapColorFrameToCameraSpace(
 				this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(),
-				colorImageWidth * colorImageHeight, (CameraSpacePoint*)world.getData());
+				colorImageWidth * colorImageHeight, reinterpret_cast<CameraSpacePoint*>(world.getData()));
 		}
 
 		//----------
@@ -179,7 +201,7 @@ namespace ofxKinectForWindows2 {
 			world.allocate(this->getWidth(), this->getHeight(), ofPixelFormat::OF_PIXELS_RGB);
 			this->coordinateMapper->MapDepthFrameToCameraSpace(
 				this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(),
-				this->getWidth() * this->getHeight(), (CameraSpacePoint*)world.getData());
+				this->getWidth() * this->getHeight(), reinterpret_cast<CameraSpacePoint*>(world.getData()));
 		}
 
 		//----------
@@ -187,15 +209,15 @@ namespace ofxKinectForWindows2 {
 			colorInDepthFrameMapping.allocate(this->getWidth(), this->getHeight(), OF_PIXELS_RG);
 			this->coordinateMapper->MapDepthFrameToColorSpace(
 				this->getWidth() * this->getHeight(), this->pixels.getData(),
-				this->getWidth() * this->getHeight(), (ColorSpacePoint*) colorInDepthFrameMapping.getData());
+				this->getWidth() * this->getHeight(), reinterpret_cast<ColorSpacePoint*>(colorInDepthFrameMapping.getData()));
 		}
 
 		//----------
 		void Depth::getDepthInColorFrameMapping(ofFloatPixels & depthInColorFrameMapping) const {
-			depthInColorFrameMapping.allocate(1920, 1080, OF_PIXELS_RG);
+			depthInColorFrameMapping.allocate(this->colorFrameWidth, this->colorFrameHeight, OF_PIXELS_RG);
 			this->coordinateMapper->MapColorFrameToDepthSpace(
 				this->pixels.size(), this->pixels.getData(),
-				depthInColorFrameMapping.size(), (DepthSpacePoint*)depthInColorFrameMapping.getData());
+				this->colorFrameSize, reinterpret_cast<DepthSpacePoint*>(depthInColorFrameMapping.getData()));
 		}
 
 		//----------

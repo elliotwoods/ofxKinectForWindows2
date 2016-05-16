@@ -42,6 +42,10 @@ namespace ofxKinectForWindows2 {
 			void initReader(IKinectSensor *) override;
 
 			ICoordinateMapper * coordinateMapper;
+
+			int colorFrameWidth;
+			int colorFrameHeight;
+			int colorFrameSize;
 		};
 	}
 }
