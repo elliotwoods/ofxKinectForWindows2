@@ -189,27 +189,27 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Depth::getWorldInColorFrame(ofFloatPixels & world, int colorImageWidth, int colorImageHeight) const {
-			world.allocate(colorImageWidth, colorImageHeight, ofPixelFormat::OF_PIXELS_RGB);
+		void Depth::getWorldInColorFrame(ofFloatPixels & world) const {
+			world.allocate(this->colorFrameWidth, this->colorFrameHeight, ofPixelFormat::OF_PIXELS_RGB);
 			this->coordinateMapper->MapColorFrameToCameraSpace(
-				this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(),
-				colorImageWidth * colorImageHeight, reinterpret_cast<CameraSpacePoint*>(world.getData()));
+				this->pixels.size(), this->pixels.getPixels(),
+				this->colorFrameSize, reinterpret_cast<CameraSpacePoint*>(world.getData()));
 		}
 
 		//----------
 		void Depth::getWorldInDepthFrame(ofFloatPixels & world) const {
 			world.allocate(this->getWidth(), this->getHeight(), ofPixelFormat::OF_PIXELS_RGB);
 			this->coordinateMapper->MapDepthFrameToCameraSpace(
-				this->pixels.getWidth() * this->pixels.getHeight(), this->pixels.getPixels(),
-				this->getWidth() * this->getHeight(), reinterpret_cast<CameraSpacePoint*>(world.getData()));
+				this->pixels.size(), this->pixels.getPixels(),
+				this->pixels.size(), reinterpret_cast<CameraSpacePoint*>(world.getData()));
 		}
 
 		//----------
 		void Depth::getColorInDepthFrameMapping(ofFloatPixels & colorInDepthFrameMapping) const {
 			colorInDepthFrameMapping.allocate(this->getWidth(), this->getHeight(), OF_PIXELS_RG);
 			this->coordinateMapper->MapDepthFrameToColorSpace(
-				this->getWidth() * this->getHeight(), this->pixels.getData(),
-				this->getWidth() * this->getHeight(), reinterpret_cast<ColorSpacePoint*>(colorInDepthFrameMapping.getData()));
+				this->pixels.size(), this->pixels.getData(),
+				this->pixels.size(), reinterpret_cast<ColorSpacePoint*>(colorInDepthFrameMapping.getData()));
 		}
 
 		//----------
