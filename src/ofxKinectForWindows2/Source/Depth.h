@@ -43,9 +43,9 @@ namespace ofxKinectForWindows2 {
 
 			ICoordinateMapper * coordinateMapper;
 
-			int colorFrameWidth;
-			int colorFrameHeight;
-			int colorFrameSize;
+			const int colorFrameWidth = 1920;
+			const int colorFrameHeight = 1080;
+			const int colorFrameSize = colorFrameWidth * colorFrameHeight;
 		};
 	}
 }

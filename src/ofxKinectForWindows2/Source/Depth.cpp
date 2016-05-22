@@ -53,28 +53,6 @@ namespace ofxKinectForWindows2 {
 				if (FAILED(sensor->get_CoordinateMapper(&this->coordinateMapper))) {
 					throw(Exception("Failed to acquire coordinate mapper"));
 				}
-
-				IColorFrameSource * source = NULL;
-
-				if (FAILED(sensor->get_ColorFrameSource(&source))) {
-					throw(Exception("Failed to initialise Color source"));
-				}
-
-				IFrameDescription * frameDescription = NULL;
-
-				if (FAILED(source->get_FrameDescription(&frameDescription))) {
-					throw(Exception("Failed to get color frame description"));
-				}
-
-				if (FAILED(frameDescription->get_Width(&this->colorFrameWidth)) || 
-					FAILED(frameDescription->get_Height(&this->colorFrameHeight))) {
-					throw Exception("Failed to get width and height of color frame");
-				}
-
-				this->colorFrameSize = this->colorFrameWidth * this->colorFrameHeight;
-
-				SafeRelease(frameDescription);
-				SafeRelease(source);
 			} catch (std::exception & e) {
 				SafeRelease(this->reader);
 				throw (e);
