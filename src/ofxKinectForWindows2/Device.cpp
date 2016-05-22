@@ -302,7 +302,12 @@ namespace ofxKinectForWindows2 {
 
 			ofPushStyle();
 
-			if (colorSource) {
+			bool useColor = colorSource.get();
+			if (useColor) {
+				useColor &= colorSource->getTexture().isAllocated();
+			}
+
+			if (useColor) {
 				//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
 				colorSource->getTexture().bind();
 			}
@@ -321,7 +326,7 @@ namespace ofxKinectForWindows2 {
 			ofSetColor(255, 50);
 			mesh.drawFaces();
 
-			if (colorSource) {
+			if (useColor) {
 				//unbind colour camera
 				colorSource->getTexture().unbind();
 			}
