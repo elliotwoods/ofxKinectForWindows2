@@ -24,6 +24,14 @@ namespace ofxKinectForWindows2 {
 			return "Depth";
 		}
 
+		UINT16 Depth::getMinDepthReliableDistance() const {
+			return minDepthReliableDistance;
+		}
+
+		UINT16 Depth::getMaxDepthReliableDistance() const {
+			return maxDepthReliableDistance;
+		}
+
 		//----------
 		void Depth::init(IKinectSensor * sensor) {
 			this->reader = NULL;
@@ -36,6 +44,14 @@ namespace ofxKinectForWindows2 {
 
 				if (FAILED(source->OpenReader(& this->reader))) {
 					throw(Exception("Failed to initialise Depth reader"));
+				}
+				
+				if (FAILED(source->get_DepthMinReliableDistance(&this->minDepthReliableDistance))) {
+					throw(Exception("Failed to get min depth reliable distance"));
+				}
+
+				if (FAILED(source->get_DepthMaxReliableDistance(& this->maxDepthReliableDistance))) {
+					throw(Exception("Failed to get max depth reliable distance"));
 				}
 
 				SafeRelease(source);
