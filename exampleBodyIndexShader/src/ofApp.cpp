@@ -11,7 +11,12 @@ void ofApp::setup(){
 	bStitchFaces = false;
 	bDrawBodies = true;
 
-	shader.load("shaders/bodyIndex");
+	if (ofIsGLProgrammableRenderer()) {
+		shader.load("shaders_gl3/bodyIndex");
+	}
+	else {
+		shader.load("shaders/bodyIndex");
+	}
 }
 
 //--------------------------------------------------------------
@@ -27,19 +32,27 @@ void ofApp::draw(){
 
 	shader.begin();
 	shader.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
-	//shader.setUniformTexture("uBodyIndexTex", kinect.getBodyIndexSource()->getTexture(), 1);
-	shader.setUniform1i("uBodyIndexTex", 1);
-    kinect.getBodyIndexSource()->getTexture().bind(1);
-	//shader.setUniformTexture("uColorTex", kinect.getColorSource()->getTexture(), 2);
-	shader.setUniform1i("uColorTex", 2);
-	kinect.getColorSource()->getTexture().bind(2);
-
+	if (ofIsGLProgrammableRenderer()) {
+		shader.setUniformTexture("uBodyIndexTex", kinect.getBodyIndexSource()->getTexture(), 1);
+		shader.setUniformTexture("uColorTex", kinect.getColorSource()->getTexture(), 2);
+	}
+	else {
+		// TEMP: Until OF master fixes texture binding for old pipeline.
+		shader.setUniform1i("uBodyIndexTex", 1);
+		kinect.getBodyIndexSource()->getTexture().bind(1);
+		shader.setUniform1i("uColorTex", 2);
+		kinect.getColorSource()->getTexture().bind(2);
+	}
+	
 	ofSetColor(255);
 	ofMesh mesh = kinect.getDepthSource()->getMesh(bStitchFaces, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	mesh.draw();
 
-	kinect.getColorSource()->getTexture().unbind(2);
-	kinect.getBodyIndexSource()->getTexture().unbind(1);
+	if (!ofIsGLProgrammableRenderer()) {
+		// TEMP: Until OF master fixes texture binding for old pipeline.
+		kinect.getColorSource()->getTexture().unbind(2);
+		kinect.getBodyIndexSource()->getTexture().unbind(1);
+	}
 	shader.end();
 
 	if (bDrawBodies) {
