@@ -15,6 +15,9 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{8112424a-9e0b-4e75-931f-a6d5cdf47e1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders_gl3">
+      <UniqueIdentifier>{2875c5c0-c98f-40e0-bd5a-23769bd78f9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -30,6 +33,12 @@
     </None>
     <None Include="bin\data\shaders\bodyIndex.frag">
       <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders_gl3\bodyIndex.frag">
+      <Filter>shaders_gl3</Filter>
+    </None>
+    <None Include="bin\data\shaders_gl3\bodyIndex.vert">
+      <Filter>shaders_gl3</Filter>
     </None>
   </ItemGroup>
 </Project>

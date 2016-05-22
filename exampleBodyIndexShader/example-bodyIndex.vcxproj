@@ -191,6 +191,8 @@
   <ItemGroup>
     <None Include="bin\data\shaders\bodyIndex.frag" />
     <None Include="bin\data\shaders\bodyIndex.vert" />
+    <None Include="bin\data\shaders_gl3\bodyIndex.frag" />
+    <None Include="bin\data\shaders_gl3\bodyIndex.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
