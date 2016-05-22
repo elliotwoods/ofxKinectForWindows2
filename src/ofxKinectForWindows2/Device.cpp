@@ -42,6 +42,9 @@ namespace ofxKinectForWindows2 {
 			return;
 		}
 
+		//release all sources.
+		this->sources.clear();
+
 		this->sensor->Close();
 		this->sensor = nullptr;
 	}
@@ -60,12 +63,15 @@ namespace ofxKinectForWindows2 {
 		}
 	}
 	
-	void Device::initMultiSource(std::initializer_list<FrameSourceTypes> a_args) {
+	//----------
+	void Device::initMultiSource(std::initializer_list<FrameSourceTypes> frameSourceTypes) {
 		CHECK_OPEN;
 
 		if (!this->reader) {
 			DWORD enabledFrameSourceTypes = 0;
-			for (auto f : a_args) enabledFrameSourceTypes |= f;
+			for (auto frameSourceType : frameSourceTypes) {
+				enabledFrameSourceTypes |= frameSourceType;
+			}
 			try {
 				if (!FAILED(this->sensor->OpenMultiSourceFrameReader(enabledFrameSourceTypes, &reader))) {
 					if (enabledFrameSourceTypes & FrameSourceTypes_Color) {
@@ -147,6 +153,53 @@ namespace ofxKinectForWindows2 {
 	//----------
 	shared_ptr<Source::Body> Device::initBodySource() {
 		return this->initSource<Source::Body>(true);
+	}
+
+	//----------
+	template<typename SourceType>
+	bool Device::releaseSource() {
+		CHECK_OPEN;
+
+		//check if it already exists
+		auto source = this->getSource<SourceType>();
+		if (source) {
+			this->sources.erase(std::remove(this->sources.begin(), this->sources.end(), source), this->sources.end());
+			return true;
+		}
+
+		//does not exist
+		OFXKINECTFORWINDOWS2_WARNING << "Source of type " << typeid(SourceType).name() << " not initialised.";
+		return false;
+	}
+
+	//----------
+	bool Device::releaseDepthSource() {
+		return this->releaseSource<Source::Depth>();
+	}
+
+	//----------
+	bool Device::releaseColorSource() {
+		return this->releaseSource<Source::Color>();
+	}
+
+	//----------
+	bool Device::releaseInfraredSource() {
+		return this->releaseSource<Source::Infrared>();
+	}
+
+	//----------
+	bool Device::releaseLongExposureInfraredSource() {
+		return this->releaseSource<Source::LongExposureInfrared>();
+	}
+
+	//----------
+	bool Device::releaseBodyIndexSource() {
+		return this->releaseSource<Source::BodyIndex>();
+	}
+
+	//----------
+	bool Device::releaseBodySource() {
+		return this->releaseSource<Source::Body>();
 	}
 
 	//----------
@@ -249,7 +302,12 @@ namespace ofxKinectForWindows2 {
 
 			ofPushStyle();
 
-			if (colorSource) {
+			bool useColor = colorSource.get();
+			if (useColor) {
+				useColor &= colorSource->getTexture().isAllocated();
+			}
+
+			if (useColor) {
 				//bind kinect color camera texture and draw mesh from depth (which has texture coordinates)
 				colorSource->getTexture().bind();
 			}
@@ -268,7 +326,7 @@ namespace ofxKinectForWindows2 {
 			ofSetColor(255, 50);
 			mesh.drawFaces();
 
-			if (colorSource) {
+			if (useColor) {
 				//unbind colour camera
 				colorSource->getTexture().unbind();
 			}

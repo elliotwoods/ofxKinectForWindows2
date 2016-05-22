@@ -1,5 +1,7 @@
 #pragma once
 
+#define USE_PROGRAMMABLE_PIPELINE 1
+
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
 
