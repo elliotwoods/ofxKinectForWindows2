@@ -39,6 +39,9 @@ namespace ofxKinectForWindows2 {
 			return;
 		}
 
+		//release all sources.
+		this->sources.clear();
+
 		this->sensor->Close();
 		this->sensor = nullptr;
 	}
@@ -111,6 +114,53 @@ namespace ofxKinectForWindows2 {
 	//----------
 	shared_ptr<Source::Body> Device::initBodySource() {
 		return this->initSource<Source::Body>();
+	}
+
+	//----------
+	template<typename SourceType>
+	bool Device::releaseSource() {
+		CHECK_OPEN;
+
+		//check if it already exists
+		auto source = this->getSource<SourceType>();
+		if (source) {
+			this->sources.erase(std::remove(this->sources.begin(), this->sources.end(), source), this->sources.end());
+			return true;
+		}
+
+		//does not exist
+		OFXKINECTFORWINDOWS2_WARNING << "Source of type " << typeid(SourceType).name() << " not initialised.";
+		return false;
+	}
+
+	//----------
+	bool Device::releaseDepthSource() {
+		return this->releaseSource<Source::Depth>();
+	}
+
+	//----------
+	bool Device::releaseColorSource() {
+		return this->releaseSource<Source::Color>();
+	}
+
+	//----------
+	bool Device::releaseInfraredSource() {
+		return this->releaseSource<Source::Infrared>();
+	}
+
+	//----------
+	bool Device::releaseLongExposureInfraredSource() {
+		return this->releaseSource<Source::LongExposureInfrared>();
+	}
+
+	//----------
+	bool Device::releaseBodyIndexSource() {
+		return this->releaseSource<Source::BodyIndex>();
+	}
+
+	//----------
+	bool Device::releaseBodySource() {
+		return this->releaseSource<Source::Body>();
 	}
 
 	//----------
