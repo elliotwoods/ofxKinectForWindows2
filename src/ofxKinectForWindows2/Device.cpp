@@ -63,12 +63,15 @@ namespace ofxKinectForWindows2 {
 		}
 	}
 	
-	void Device::initMultiSource(std::initializer_list<FrameSourceTypes> a_args) {
+	//----------
+	void Device::initMultiSource(std::initializer_list<FrameSourceTypes> frameSourceTypes) {
 		CHECK_OPEN;
 
 		if (!this->reader) {
 			DWORD enabledFrameSourceTypes = 0;
-			for (auto f : a_args) enabledFrameSourceTypes |= f;
+			for (auto frameSourceType : frameSourceTypes) {
+				enabledFrameSourceTypes |= frameSourceType;
+			}
 			try {
 				if (!FAILED(this->sensor->OpenMultiSourceFrameReader(enabledFrameSourceTypes, &reader))) {
 					if (enabledFrameSourceTypes & FrameSourceTypes_Color) {

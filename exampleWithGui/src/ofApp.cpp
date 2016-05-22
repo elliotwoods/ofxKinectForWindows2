@@ -11,6 +11,12 @@ void ofApp::setup(){
 
 	gui.init();
 
+	//setup a gui panel for the widgets at top-left
+	auto widgets = gui.addWidgets();
+	widgets->addTitle("ofxKinectForWindows2");
+	widgets->addFps();
+	widgets->addMemoryUsage();
+
 	//setup a gui panel for the 3D view
 	auto worldView = gui.addWorld("World");
 	worldView->onDrawWorld += [this](ofCamera &) {
@@ -69,6 +75,11 @@ void ofApp::setup(){
 				};
 			}
 		}
+
+		//add an 'isFrameNew' widget to the panel
+		widgets->addIndicatorBool(source->getTypeName() + " frame new", [source]() {
+			return source->isFrameNew();
+		});
 	}
 
 	//if we press the 'c' key on the World panel, then toggle the camera's cursor. This works best when you fullscreen that panel

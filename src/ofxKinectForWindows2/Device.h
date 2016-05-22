@@ -21,7 +21,7 @@ namespace ofxKinectForWindows2 {
 		void close();
 		bool isOpen() const;
 
-		void initMultiSource(std::initializer_list<FrameSourceTypes> a_args);
+		void initMultiSource(std::initializer_list<FrameSourceTypes> frameSourceTypes);
 
 		shared_ptr<Source::Depth> initDepthSource();
 		shared_ptr<Source::Color> initColorSource();
