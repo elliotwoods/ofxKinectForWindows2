@@ -58,11 +58,11 @@ namespace ofxKinectForWindows2 {
 				// Quietly ignore any possible error, but correctly release any
 				// resource already acquired. In this case default values are kept
 				IColorFrameSource * source = NULL;
-				if (!FAILED(sensor->get_ColorFrameSource(&source))) {
+				if (SUCCEEDED(sensor->get_ColorFrameSource(&source))) {
 					IFrameDescription * frameDescription = NULL;
-					if (!FAILED(source->get_FrameDescription(&frameDescription))) {
-						if (!FAILED(frameDescription->get_Width(&this->colorFrameWidth)) &&
-							!FAILED(frameDescription->get_Height(&this->colorFrameHeight))) {
+					if (SUCCEEDED(source->get_FrameDescription(&frameDescription))) {
+						if (SUCCEEDED(frameDescription->get_Width(&this->colorFrameWidth)) &&
+							SUCCEEDED(frameDescription->get_Height(&this->colorFrameHeight))) {
 							this->colorFrameSize = this->colorFrameWidth * this->colorFrameHeight;
 						}
 						else {
