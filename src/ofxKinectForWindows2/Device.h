@@ -30,8 +30,7 @@ namespace ofxKinectForWindows2 {
 		shared_ptr<Source::BodyIndex> initBodyIndexSource();
 		shared_ptr<Source::Body> initBodySource();
 
-		template<typename SourceType>
-		bool releaseSource();
+		bool releaseMultiSource();
 
 		bool releaseDepthSource();
 		bool releaseColorSource();
@@ -80,6 +79,9 @@ namespace ofxKinectForWindows2 {
 	protected: 
 		template<typename SourceType>
 		shared_ptr<SourceType> initSource(bool initReader);
+
+		template<typename SourceType>
+		bool releaseSource();
 
 		IKinectSensor * sensor;
 		IMultiSourceFrameReader * reader;
