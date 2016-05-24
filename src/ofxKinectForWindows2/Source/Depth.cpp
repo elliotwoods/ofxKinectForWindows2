@@ -221,14 +221,19 @@ namespace ofxKinectForWindows2 {
 		void Depth::getDepthToWorldTable(ofFloatPixels & world) const {
 			UINT32 tableEntryCount;
 			PointF * tableEntries;
-			this->coordinateMapper->GetDepthFrameToCameraSpaceTable(&tableEntryCount, &tableEntries);
+			if (FAILED(this->coordinateMapper->GetDepthFrameToCameraSpaceTable(&tableEntryCount, &tableEntries))) {
+				OFXKINECTFORWINDOWS2_ERROR << "GetDepthFrameToCameraSpaceTable failed";
+				return;
+			}
 
 			if (tableEntryCount != this->getWidth() * this->getHeight()) {
-				ofLogError("ofxKinectForWindows2::Depth::getDepthToWorldTable") << "failed";
+				OFXKINECTFORWINDOWS2_ERROR << "wrong tableEntryCount";
 			}
 			else {
 				world.setFromPixels((float*) tableEntries, this->getWidth(), this->getHeight(), 2);
 			}
+			// The table of camera space points must be released with a call to CoTaskMemFree
+			CoTaskMemFree(tableEntries);
 		}
 
 		//----------
