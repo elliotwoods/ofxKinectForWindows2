@@ -54,34 +54,23 @@ namespace ofxKinectForWindows2 {
 					throw(Exception("Failed to acquire coordinate mapper"));
 				}
 
-				//get color frame resolution
-				{
-					try {
-						IColorFrameSource * source = NULL;
-
-						if (FAILED(sensor->get_ColorFrameSource(&source))) {
-							throw(Exception("Failed to initialise Color source"));
+				// Try and get color frame size from frame description.
+				// Quietly ignore any possible error, but correctly release any
+				// resource already acquired. In this case default values are kept
+				IColorFrameSource * source = NULL;
+				if (SUCCEEDED(sensor->get_ColorFrameSource(&source))) {
+					IFrameDescription * frameDescription = NULL;
+					if (SUCCEEDED(source->get_FrameDescription(&frameDescription))) {
+						if (SUCCEEDED(frameDescription->get_Width(&this->colorFrameWidth)) &&
+							SUCCEEDED(frameDescription->get_Height(&this->colorFrameHeight))) {
+							this->colorFrameSize = this->colorFrameWidth * this->colorFrameHeight;
 						}
-
-						IFrameDescription * frameDescription = NULL;
-
-						if (FAILED(source->get_FrameDescription(&frameDescription))) {
-							throw(Exception("Failed to get color frame description"));
+						else {
+							OFXKINECTFORWINDOWS2_WARNING << "Failed to get color frame size during depth frame init";
 						}
-
-						if (FAILED(frameDescription->get_Width(&this->colorFrameWidth)) ||
-							FAILED(frameDescription->get_Height(&this->colorFrameHeight))) {
-							throw Exception("Failed to get width and height of color frame");
-						}
-
-						this->colorFrameSize = this->colorFrameWidth * this->colorFrameHeight;
-
 						SafeRelease(frameDescription);
-						SafeRelease(source);
 					}
-					catch (std::exception & e) {
-						cout << "Failed to get color frame size : " << e.what();
-					}
+					SafeRelease(source);
 				}
 			} catch (std::exception & e) {
 				SafeRelease(this->reader);
@@ -232,14 +221,19 @@ namespace ofxKinectForWindows2 {
 		void Depth::getDepthToWorldTable(ofFloatPixels & world) const {
 			UINT32 tableEntryCount;
 			PointF * tableEntries;
-			this->coordinateMapper->GetDepthFrameToCameraSpaceTable(&tableEntryCount, &tableEntries);
+			if (FAILED(this->coordinateMapper->GetDepthFrameToCameraSpaceTable(&tableEntryCount, &tableEntries))) {
+				OFXKINECTFORWINDOWS2_ERROR << "GetDepthFrameToCameraSpaceTable failed";
+				return;
+			}
 
 			if (tableEntryCount != this->getWidth() * this->getHeight()) {
-				ofLogError("ofxKinectForWindows2::Depth::getDepthToWorldTable") << "failed";
+				OFXKINECTFORWINDOWS2_ERROR << "wrong tableEntryCount";
 			}
 			else {
 				world.setFromPixels((float*) tableEntries, this->getWidth(), this->getHeight(), 2);
 			}
+			// The table of camera space points must be released with a call to CoTaskMemFree
+			CoTaskMemFree(tableEntries);
 		}
 
 		//----------

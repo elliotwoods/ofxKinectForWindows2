@@ -46,7 +46,7 @@ namespace ofxKinectForWindows2 {
 		this->sources.clear();
 
 		this->sensor->Close();
-		this->sensor = nullptr;
+		SafeRelease(this->sensor);
 	}
 
 	//----------
@@ -156,19 +156,41 @@ namespace ofxKinectForWindows2 {
 	}
 
 	//----------
+	bool Device::releaseMultiSource() {
+		// look for sources initialized with MultiSource (those without their own reader)
+		// and erase them. They are consecutive in the vector
+		auto first = this->sources.begin();
+		while (first != this->sources.end() && (*first)->hasReader())
+			first++;
+
+		if (first == this->sources.end()) {
+			OFXKINECTFORWINDOWS2_WARNING << "No sources initialized with MultiSource.";
+			return false;
+		}
+
+		auto last = first;
+		while (last != this->sources.end() && !(*last)->hasReader())
+			last++;
+
+		this->sources.erase(first, last);
+
+		return true;
+	}
+
+	//----------
 	template<typename SourceType>
 	bool Device::releaseSource() {
 		CHECK_OPEN;
 
 		//check if it already exists
 		auto source = this->getSource<SourceType>();
-		if (source) {
+		if (source && source->hasReader()) {
 			this->sources.erase(std::remove(this->sources.begin(), this->sources.end(), source), this->sources.end());
 			return true;
 		}
 
 		//does not exist
-		OFXKINECTFORWINDOWS2_WARNING << "Source of type " << typeid(SourceType).name() << " not initialised.";
+		OFXKINECTFORWINDOWS2_WARNING << "Source of type " << typeid(SourceType).name() << " not initialised, or in a MultiSource.";
 		return false;
 	}
 
