@@ -21,18 +21,22 @@ namespace ofxKinectForWindows2 {
 			float getGain() const;
 			float getGamma() const;
 
+			void setRgbaPixelsEnabled(bool rgbaPixelsEnabled);
+			bool getRgbaPixelsEnabled() const;
+
 			void setYuvPixelsEnabled(bool yuvPixelsEnabled);
 			bool getYuvPixelsEnabled() const;
 			const ofPixels & getYuvPixels() const;
 		protected:
 			void initReader(IKinectSensor *) override;
 
-			TIMESPAN exposure;
-			TIMESPAN frameInterval;
-			float gain;
-			float gamma;
+			TIMESPAN exposure = 0;
+			TIMESPAN frameInterval = 0;
+			float gain = 0;
+			float gamma = 0;
 
-			bool yuvPixelsEnabled;
+			bool rgbaPixelsEnabled = true;
+			bool yuvPixelsEnabled = false;
 			ofPixels yuvPixels;
 		};
 	}

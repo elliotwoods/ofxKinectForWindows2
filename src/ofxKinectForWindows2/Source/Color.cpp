@@ -5,10 +5,7 @@ namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
 		Color::Color() {
-			this->exposure = 0;
-			this->frameInterval = 0;
-			this->gain = 0;
-			this->gamma = 0;
+
 		}
 
 		//----------
@@ -57,11 +54,13 @@ namespace ofxKinectForWindows2 {
 				}
 
 				//update local rgba image
-				if (FAILED(frame->CopyConvertedFrameDataToArray(this->pixels.size(), this->pixels.getPixels(), ColorImageFormat_Rgba))) {
-					throw Exception("Couldn't pull pixel buffer");
-				}
-				if (this->useTexture) {
-					this->texture.loadData(this->pixels);
+				if (this->rgbaPixelsEnabled) {
+					if (FAILED(frame->CopyConvertedFrameDataToArray(this->pixels.size(), this->pixels.getPixels(), ColorImageFormat_Rgba))) {
+						throw Exception("Couldn't pull pixel buffer to converted rgba pixels");
+					}
+					if (this->useTexture) {
+						this->texture.loadData(this->pixels);
+					}
 				}
 
 				//update yuv
@@ -76,7 +75,7 @@ namespace ofxKinectForWindows2 {
 
 				//update field of view
 				if (FAILED(frameDescription->get_HorizontalFieldOfView(&this->horizontalFieldOfView))) {
-					throw Exception("Failed to get horizonal field of view");
+					throw Exception("Failed to get horizontal field of view");
 				}
 				if (FAILED(frameDescription->get_VerticalFieldOfView(&this->verticalFieldOfView))) {
 					throw Exception("Failed to get vertical field of view");
@@ -141,6 +140,16 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
+		void Color::setRgbaPixelsEnabled(bool rgbPixelsEnabled) {
+			this->rgbaPixelsEnabled = rgbPixelsEnabled;
+		}
+
+		//----------
+		bool Color::getRgbaPixelsEnabled() const {
+			return this->rgbaPixelsEnabled;
+		}
+
+		//----------
 		void Color::setYuvPixelsEnabled(bool yuvPixelsEnabled) {
 			this->yuvPixelsEnabled = yuvPixelsEnabled;
 		}
@@ -154,5 +163,5 @@ namespace ofxKinectForWindows2 {
 		const ofPixels & Color::getYuvPixels() const {
 			return this->yuvPixels;
 		}
-	}
+}
 }
