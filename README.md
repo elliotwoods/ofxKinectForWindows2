@@ -1,13 +1,13 @@
 ofxKinectForWindows2
 ====================
 
-<img src="https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshot.png" />
+![exampleWithGui](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/exampleWithGui.png)
 
 Implementation of Kinect For Windows v2 API using COM (not KinectCommonBridge)
 
 ## Important notes
 
-The current version is designed for oF 0.9.0. If you are working with 0.8.4 or earlier, please use the previous version : https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4
+The current version is designed for oF 0.9.0. If you are working with 0.8.4 or earlier, please use the previous version : https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4 . This addon works with Visual Studio 2015 (it is not compatible with non-windows platforms).
 
 ## Features
 
@@ -30,12 +30,45 @@ http://en.wikipedia.org/wiki/MIT_License
 
 ## Usage
 
-1. Add the ofxKinectForWindows2Lib.vcxproj to your solution
-2. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxKinectForWindows2.props` file
-3. Right click on your project (e.g. 'mySketch') and select 'Add Reference...', and add a reference to `ofxKinectForWindows2Lib`.
+First install the [Kinect for Windows SDK 2.0](https://www.microsoft.com/en-gb/download/details.aspx?id=44561) installed __(you will need to restart after installing this before all system paths are correctly set)__.
+
+Try the examples to see if they build and run. Then try with your own project:
+
+1. Make your project with Project Generator, but do __not__ select ofxKinectForWindows2 as an addon at this stage
+2. Open the solution, and add the ofxKinectForWindows2Lib.vcxproj to your solution (right click on the Solution and choose `Add > Existing Project...`)
+3. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxKinectForWindows2.props` file.
+4. Go back to `Solution Explorer`, right click on your project (e.g. 'mySketch') and select 'Add Reference...', and add a reference to `ofxKinectForWindows2Lib`.
 
 ## Notes
 
-0. The depth image comes in as RAW (i'm not rescaling it), so it may appear dark. Look closely :)
-1. This addon does not ship with any libraries, it'll look locally on your system for them (and hence should work with VS2012, VS2013, etc)
+0. The depth image comes in as 'RAW' mm values (i'm not amplifying the values), so it may appear dark. Look closely :)
+1. This addon does not ship with any libraries, it'll look locally on your system for them
 2. You'll need to get a copy of the Kinect v2 SDK (i'm testing with v1404 April release)
+
+# Troubleshooting
+
+## Can't find `Kinect.h` or `ofxKinectForWindows2.h`
+
+First, please check that you have the Kinect SDK installed. The `Kinect.h` file should be here on your drive:
+
+![Kinect SDK includes](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/KinectSDKIncludes.png)
+
+Second check that one of the examples shipped with ofxKinectForWindows2 builds and runs.
+
+Third please make sure you're using standard paths, e.g.:
+
+```
+addons/ofxKinectForWindows2
+apps/myAppFolder/myApp/myApp.sln
+```
+
+If you're using your own path structure then ofxKinectForWindows2 may not work.
+
+Check that your Solution Explorer has the right settings, e.g.:
+
+![Solution Explorer](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/SolutionExplorer.png)
+
+Check that the `.props` file has been added correctly, e.g.:
+
+![Property Manager](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/PropertyManager.png)
+
