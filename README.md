@@ -51,7 +51,7 @@ Try the examples to see if they build and run. Then try with your own project:
 
 First, please check that you have the Kinect SDK installed. The `Kinect.h` file should be here on your drive:
 
-![Kinect SDK includes](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/KinectSDKIncludes.png)
+![Kinect SDK includes](https://github.com/elliotwoods/ofxKinectForWindows2/blob/master/screenshots/KinectSDKIncludes.PNG?raw=true)
 
 Second check that one of the examples shipped with ofxKinectForWindows2 builds and runs.
 
@@ -66,9 +66,9 @@ If you're using your own path structure then ofxKinectForWindows2 may not work.
 
 Check that your Solution Explorer has the right settings, e.g.:
 
-![Solution Explorer](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/SolutionExplorer.png)
+![Solution Explorer](https://github.com/elliotwoods/ofxKinectForWindows2/blob/master/screenshots/SolutionExplorer.PNG?raw=true)
 
 Check that the `.props` file has been added correctly, e.g.:
 
-![Property Manager](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/PropertyManager.png)
+![Property Manager](https://github.com/elliotwoods/ofxKinectForWindows2/blob/master/screenshots/PropertyManager.PNG?raw=true)
 
