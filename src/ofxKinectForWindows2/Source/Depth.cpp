@@ -110,7 +110,7 @@ namespace ofxKinectForWindows2 {
 			mesh.getVertices().resize(frameSize);
 			auto vertices = mesh.getVerticesPointer();
 			
-			this->coordinateMapper->MapDepthFrameToCameraSpace(frameSize, this->pixels.getPixels(), frameSize, (CameraSpacePoint*) mesh.getVerticesPointer());
+			this->coordinateMapper->MapDepthFrameToCameraSpace(frameSize, this->pixels.getData(), frameSize, (CameraSpacePoint*) mesh.getVerticesPointer());
 
 			if (opts.stitchFaces) {
 				int steps = opts.steps;
@@ -149,7 +149,7 @@ namespace ofxKinectForWindows2 {
 			case PointCloudOptions::TextureCoordinates::ColorCamera:
 				{
 					mesh.getTexCoords().resize(frameSize);
-					this->coordinateMapper->MapDepthFrameToColorSpace(frameSize, this->pixels.getPixels(), frameSize, (ColorSpacePoint*) mesh.getTexCoordsPointer());
+					this->coordinateMapper->MapDepthFrameToColorSpace(frameSize, this->pixels.getData(), frameSize, (ColorSpacePoint*) mesh.getTexCoordsPointer());
 				}
 				break;
 			case PointCloudOptions::TextureCoordinates::DepthCamera:
@@ -189,7 +189,7 @@ namespace ofxKinectForWindows2 {
 		void Depth::getWorldInColorFrame(ofFloatPixels & world) const {
 			world.allocate(this->colorFrameWidth, this->colorFrameHeight, ofPixelFormat::OF_PIXELS_RGB);
 			this->coordinateMapper->MapColorFrameToCameraSpace(
-				this->pixels.size(), this->pixels.getPixels(),
+				this->pixels.size(), this->pixels.getData(),
 				this->colorFrameSize, reinterpret_cast<CameraSpacePoint*>(world.getData()));
 		}
 
@@ -197,7 +197,7 @@ namespace ofxKinectForWindows2 {
 		void Depth::getWorldInDepthFrame(ofFloatPixels & world) const {
 			world.allocate(this->getWidth(), this->getHeight(), ofPixelFormat::OF_PIXELS_RGB);
 			this->coordinateMapper->MapDepthFrameToCameraSpace(
-				this->pixels.size(), this->pixels.getPixels(),
+				this->pixels.size(), this->pixels.getData(),
 				this->pixels.size(), reinterpret_cast<CameraSpacePoint*>(world.getData()));
 		}
 
