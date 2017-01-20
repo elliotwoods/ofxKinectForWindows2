@@ -62,7 +62,7 @@ addons/ofxKinectForWindows2
 apps/myAppFolder/myApp/myApp.sln
 ```
 
-If you're using your own path structure then ofxKinectForWindows2 may not work.
+**If you're using your own path structure then ofxKinectForWindows2 may not work.**
 
 Check that your Solution Explorer has the right settings, e.g.:
 
@@ -72,3 +72,6 @@ Check that the `.props` file has been added correctly, e.g.:
 
 ![Property Manager](https://github.com/elliotwoods/ofxKinectForWindows2/blob/master/screenshots/PropertyManager.PNG?raw=true)
 
+## Make sure the file path to your project isn't too long.
+
+If you encounter errors like `The specified task executable CL.exe could not be run` (or similarly ambiguous errors) it may be that the path to your project is too long for Visual Studio to compile (e.g. if your `openFrameworks` folder is in a subfolder on your Desktop).  While there are many solutions to making a shorter path, one easy solution is to move your openFrameworks root directory to something like `C:\of`. [reference](https://github.com/elliotwoods/ofxKinectForWindows2/issues/72).
