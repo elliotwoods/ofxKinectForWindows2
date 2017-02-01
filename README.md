@@ -43,7 +43,7 @@ Try the examples to see if they build and run. Then try with your own project:
 
 This method requires the [OF nightly build](http://ci.openframeworks.cc/nightlybuilds.html) of Project Generator.  It will not work with the Project Generator from OF 0.9.8 or earlier.
 
-1. Make your project with Project Generator, **including** the ofxKinectForWindows2 addon, and open in IDE
+1. Make your project with Project Generator, **including** the ofxKinectForWindows2 addon, and open in IDE (Visual Studio 2015)
 2. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxKinectForWindows2.props` file.
 
 
