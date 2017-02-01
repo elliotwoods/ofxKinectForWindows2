@@ -39,6 +39,14 @@ Try the examples to see if they build and run. Then try with your own project:
 3. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxKinectForWindows2.props` file.
 4. Go back to `Solution Explorer`, right click on your project (e.g. 'mySketch') and select 'Add Reference...', and add a reference to `ofxKinectForWindows2Lib`.
 
+### Alternative Usage with OF Project Generator 
+
+This method requires the [OF nightly build](http://ci.openframeworks.cc/nightlybuilds.html) of Project Generator.  It will not work with the Project Generator from OF 0.9.8 or earlier.
+
+1. Make your project with Project Generator, **including** the ofxKinectForWindows2 addon, and open in IDE
+2. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxKinectForWindows2.props` file.
+
+
 ## Notes
 
 0. The depth image comes in as 'RAW' mm values (i'm not amplifying the values), so it may appear dark. Look closely :)
