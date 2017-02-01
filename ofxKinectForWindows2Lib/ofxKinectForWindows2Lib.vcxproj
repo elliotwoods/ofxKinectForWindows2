@@ -82,7 +82,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <MinimalRebuild>false</MinimalRebuild>
-      <ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName>
+      <!-- ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName -->
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -99,7 +99,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <MinimalRebuild>false</MinimalRebuild>
-      <ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName>
+      <!-- ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName -->
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -116,7 +116,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName>
+      <!-- ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName -->
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -136,7 +136,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName>
+      <!-- ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName -->
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
