@@ -52,6 +52,7 @@ namespace ofxKinectForWindows2 {
 			try {
 				//acquire frame
 				if (FAILED(this->reader->AcquireLatestFrame(&frame))) {
+					SafeRelease(frame);
 					return; // we often throw here when no new frame is available
 				}
 				update(frame);
