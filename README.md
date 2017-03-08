@@ -39,6 +39,14 @@ Try the examples to see if they build and run. Then try with your own project:
 3. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxKinectForWindows2.props` file.
 4. Go back to `Solution Explorer`, right click on your project (e.g. 'mySketch') and select 'Add Reference...', and add a reference to `ofxKinectForWindows2Lib`.
 
+### Alternative Usage with OF Project Generator 
+
+This method requires the [OF nightly build](http://ci.openframeworks.cc/nightlybuilds.html) of Project Generator.  It will not work with the Project Generator from OF 0.9.8 or earlier.
+
+1. Make your project with Project Generator, **including** the ofxKinectForWindows2 addon, and open in IDE (Visual Studio 2015)
+2. In `Property Manager` (open it from `View -> Other Windows -> Property Manager`), right click on your project to select `Add Existing Property Sheet...` and select the `ofxKinectForWindows2.props` file.
+
+
 ## Notes
 
 0. The depth image comes in as 'RAW' mm values (i'm not amplifying the values), so it may appear dark. Look closely :)
@@ -51,7 +59,7 @@ Try the examples to see if they build and run. Then try with your own project:
 
 First, please check that you have the Kinect SDK installed. The `Kinect.h` file should be here on your drive:
 
-![Kinect SDK includes](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/KinectSDKIncludes.png)
+![Kinect SDK includes](https://github.com/elliotwoods/ofxKinectForWindows2/blob/master/screenshots/KinectSDKIncludes.PNG?raw=true)
 
 Second check that one of the examples shipped with ofxKinectForWindows2 builds and runs.
 
@@ -62,13 +70,16 @@ addons/ofxKinectForWindows2
 apps/myAppFolder/myApp/myApp.sln
 ```
 
-If you're using your own path structure then ofxKinectForWindows2 may not work.
+**If you're using your own path structure then ofxKinectForWindows2 may not work.**
 
 Check that your Solution Explorer has the right settings, e.g.:
 
-![Solution Explorer](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/SolutionExplorer.png)
+![Solution Explorer](https://github.com/elliotwoods/ofxKinectForWindows2/blob/master/screenshots/SolutionExplorer.PNG?raw=true)
 
 Check that the `.props` file has been added correctly, e.g.:
 
-![Property Manager](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/PropertyManager.png)
+![Property Manager](https://github.com/elliotwoods/ofxKinectForWindows2/blob/master/screenshots/PropertyManager.PNG?raw=true)
 
+## Make sure the file path to your project isn't too long.
+
+If you encounter errors like `The specified task executable CL.exe could not be run` (or similarly ambiguous errors) it may be that the path to your project is too long for Visual Studio to compile (e.g. if your `openFrameworks` folder is in a subfolder on your Desktop).  While there are many solutions to making a shorter path, one easy solution is to move your openFrameworks root directory to something like `C:\of`. [reference](https://github.com/elliotwoods/ofxKinectForWindows2/issues/72).

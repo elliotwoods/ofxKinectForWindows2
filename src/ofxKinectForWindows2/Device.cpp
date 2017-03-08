@@ -367,7 +367,7 @@ namespace ofxKinectForWindows2 {
 			bodySource->drawWorld();
 
 			ofPushMatrix();
-			ofRotate(90, 0, 0, 1);
+			ofRotateDeg(90, 0, 0, 1);
 			ofMultMatrix(bodySource->getFloorTransform());
 			ofDrawGridPlane(5.0f);
 			ofPopMatrix();

@@ -55,7 +55,7 @@ namespace ofxKinectForWindows2 {
 
 				//update local rgba image
 				if (this->rgbaPixelsEnabled) {
-					if (FAILED(frame->CopyConvertedFrameDataToArray(this->pixels.size(), this->pixels.getPixels(), ColorImageFormat_Rgba))) {
+					if (FAILED(frame->CopyConvertedFrameDataToArray(this->pixels.size(), this->pixels.getData(), ColorImageFormat_Rgba))) {
 						throw Exception("Couldn't pull pixel buffer to converted rgba pixels");
 					}
 					if (this->useTexture) {
@@ -68,7 +68,7 @@ namespace ofxKinectForWindows2 {
 					if (width != this->yuvPixels.getWidth() || height != this->yuvPixels.getHeight()) {
 						this->yuvPixels.allocate(width, height, OF_PIXELS_YUY2);
 					}
-					if (FAILED(frame->CopyRawFrameDataToArray(this->yuvPixels.size(), this->yuvPixels.getPixels()))) {
+					if (FAILED(frame->CopyRawFrameDataToArray(this->yuvPixels.size(), this->yuvPixels.getData()))) {
 						throw Exception("Couldn't pull raw YUV pixel buffer");
 					}
 				}

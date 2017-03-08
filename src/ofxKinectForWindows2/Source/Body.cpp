@@ -18,7 +18,7 @@ namespace ofxKinectForWindows2 {
 			ofNode helper;
 			helper.lookAt(ofVec3f(floorClipPlane.x, floorClipPlane.z, -floorClipPlane.y));
 			helper.boom(-floorClipPlane.w);
-			ofMatrix4x4 transform = helper.getGlobalTransformMatrix().getInverse();
+			ofMatrix4x4 transform = glm::inverse(helper.getGlobalTransformMatrix());
 			return transform;
 		}
 
@@ -218,7 +218,7 @@ namespace ofxKinectForWindows2 {
 
 					int radius = (state == TrackingState_Inferred) ? 2 : 8;
 					ofSetColor(0, 255, 0);
-					ofCircle(p.x, p.y, radius);
+					ofDrawCircle(p.x, p.y, radius);
 				}
 				
 				for (auto & bone : bonesAtlas) {
@@ -275,7 +275,7 @@ namespace ofxKinectForWindows2 {
 				ofSetColor(0, 128, 0);
 			}
 			ofSetLineWidth(thickness);
-			ofLine(pJointPoints[joint0], pJointPoints[joint1]);
+			ofDrawLine(pJointPoints[joint0], pJointPoints[joint1]);
 		}
 
 		//----------
@@ -297,7 +297,7 @@ namespace ofxKinectForWindows2 {
 			}
 			ofEnableAlphaBlending();
 			ofSetColor(color);
-			ofCircle(handPos, 50);
+			ofDrawCircle(handPos, 50);
 			ofDisableAlphaBlending();
 		}
 	}
