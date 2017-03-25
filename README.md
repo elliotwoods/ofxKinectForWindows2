@@ -7,7 +7,10 @@ Implementation of Kinect For Windows v2 API using COM (not KinectCommonBridge)
 
 ## Important notes
 
-The current version is designed for oF 0.9.0. If you are working with 0.8.4 or earlier, please use the previous version : https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4 . This addon works with Visual Studio 2015 (it is not compatible with non-windows platforms).
+The current version is designed for the upcoming oF 0.10.0 available from GitHub, and works with Visual Studio 2015 (it is not compatible with non-windows platforms).
+
+- If you are working with an 0.9.x release, please use the [`0.9.0` tag](https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.9.0)
+- If you are working with an 0.8.x release, please use the [`0.8.4` branch](https://github.com/elliotwoods/ofxKinectForWindows2/tree/0.8.4)
 
 ## Features
 
