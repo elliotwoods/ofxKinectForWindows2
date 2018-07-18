@@ -86,3 +86,7 @@ Check that the `.props` file has been added correctly, e.g.:
 ## Make sure the file path to your project isn't too long.
 
 If you encounter errors like `The specified task executable CL.exe could not be run` (or similarly ambiguous errors) it may be that the path to your project is too long for Visual Studio to compile (e.g. if your `openFrameworks` folder is in a subfolder on your Desktop).  While there are many solutions to making a shorter path, one easy solution is to move your openFrameworks root directory to something like `C:\of`. [reference](https://github.com/elliotwoods/ofxKinectForWindows2/issues/72).
+
+## Platform
+
+This addon should work with both x86 and x64 platform settings. However, I'm mostly testing with x64 so I'd suggest you use that if you're having issues. Try changing the platfrom setting near the top of the Visual Studio window if you are having troubles.
