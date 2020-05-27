@@ -32,5 +32,8 @@ ipch/
 Debug/
 Release/
 
-
 *~.xml
+
+!exampleDepthMeshShader/bin
+exampleDepthMeshShader/bin/*
+!exampleDepthMeshShader/bin/data/

@@ -36,7 +36,7 @@ void ofApp::setup()
 
 	// init cam
 	cam.setNearClip(0.001f);
-	cam.setFarClip(10.0f);
+	cam.setFarClip(1000.0f);
 	cam.setPosition(0, 0, -.01f);
 	cam.lookAt(glm::vec3(0));
 	cam.setUpAxis(glm::vec3(0, 1, 0));
