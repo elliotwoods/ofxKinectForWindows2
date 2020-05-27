@@ -7,7 +7,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ofxGrabCam\src\ofxGrabCam.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -24,7 +23,6 @@
     <ClInclude Include="src\MeshUtils.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ofxGrabCam\src\ofxGrabCam.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
