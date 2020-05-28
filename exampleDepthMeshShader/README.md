@@ -1,9 +1,9 @@
-ofxKinectForWindows2 -- exampleDepthMeshShader
+ofxKinectForWindows2 (exampleDepthMeshShader)
 ====================
 
-![exampleDepthMeshShader](https://raw.github.com/elliotwoods/ofxKinectForWindows2/master/screenshots/exampleDepthMeshShader.png)
+![exampleDepthMeshShader](screenshots/exampleDepthMeshShader.png)
 
-The author of this addon is @lshoek
+The author of this example and the accompanying shaders are made by Lesley van Hoek\
 https://github.com/lshoek
 
 ## Description
