@@ -30,13 +30,13 @@ void ofApp::setup()
 
 	// pointcloud options
 	pointCloudOpts.textureCoordinates = ofxKFW2::Source::Depth::PointCloudOptions::TextureCoordinates::ColorCamera;
-	pointCloudOpts.facesMaxLength = 0.0025f;
+	pointCloudOpts.facesMaxLength = 0.0003f;
 	pointCloudOpts.stitchFaces = true;
 	pointCloudOpts.steps = 1;
 
 	// init cam
-	cam.setNearClip(0.001f);
-	cam.setFarClip(1000.0f);
+	cam.setNearClip(0.0001f);
+	cam.setFarClip(10.0f);
 	cam.setPosition(0, 0, -.01f);
 	cam.lookAt(glm::vec3(0));
 	cam.setUpAxis(glm::vec3(0, 1, 0));
@@ -155,10 +155,16 @@ void ofApp::draw()
 
 	// with texture
 	if (bFull) {
-		colorTexture.setTextureWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
-		colorTexture.bind();
+		bool bTex = colorTexture.isAllocated();
+		if (bTex) {
+			colorTexture.setTextureWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
+			colorTexture.bind();
+		}
 		depthVboMesh.draw();
-		colorTexture.unbind();
+
+		if (bTex) {
+			colorTexture.unbind();
+		}
 	}
 	// wireframe and points
 	if (bWireFrame) {
