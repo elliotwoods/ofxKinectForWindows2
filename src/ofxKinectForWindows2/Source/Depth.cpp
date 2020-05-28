@@ -128,17 +128,17 @@ namespace ofxKinectForWindows2 {
 
 						//upper left triangle
 						if (vTL.z > 0 && vTR.z > 0 && vBL.z > 0
-							&& abs(vTL.z - vTR.z) < opts.facesMaxLength
+							&& abs(vTL.z - vBR.z) < opts.facesMaxLength
 							&& abs(vTL.z - vBL.z) < opts.facesMaxLength) {
-							const ofIndexType indices[3] = {topLeft, bottomLeft, topRight};
+							const ofIndexType indices[3] = {topLeft, bottomRight, bottomLeft};
 							mesh.addIndices(indices, 3);
 						}
 
 						//bottom right triangle
 						if (vBR.z > 0 && vTR.z > 0 && vBL.z > 0
-							&& abs(vBR.z - vTR.z) < opts.facesMaxLength
-							&& abs(vBR.z - vBL.z) < opts.facesMaxLength) {
-							const ofIndexType indices[3] = {topRight, bottomRight, bottomLeft};
+							&& abs(vBR.z - vTL.z) < opts.facesMaxLength
+							&& abs(vBR.z - vTR.z) < opts.facesMaxLength) {
+							const ofIndexType indices[3] = {topLeft, topRight, bottomRight};
 							mesh.addIndices(indices, 3);
 						}
 					}
