@@ -1,10 +1,9 @@
 #include "Infrared.h"
-#include "ofMain.h"
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
-		string Infrared::getTypeName() const {
+		std::string Infrared::getTypeName() const {
 			return "Infrared";
 		}
 

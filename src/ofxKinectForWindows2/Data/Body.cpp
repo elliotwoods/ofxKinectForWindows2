@@ -1,9 +1,11 @@
 #include "Body.h"
 
+#include "ofGraphics.h"
+
 namespace ofxKinectForWindows2 {
 	namespace Data {
 		//----------
-		vector<pair<JointType, JointType> > * Body::bonesAtlas = 0;
+		std::vector<std::pair<JointType, JointType> > * Body::bonesAtlas = 0;
 		
 		//----------
 		Body::Body() {
@@ -52,7 +54,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		const std::vector<pair<JointType, JointType> > & Body::getBonesAtlas() {
+		const std::vector<std::pair<JointType, JointType> > & Body::getBonesAtlas() {
 			//if pointer isn't valid, let's initialise the atlas
 			if (!bonesAtlas) {
 				initBonesAtlas();
@@ -62,9 +64,9 @@ namespace ofxKinectForWindows2 {
 
 		//----------
 		void Body::initBonesAtlas() {
-			Body::bonesAtlas = new vector<pair<JointType, JointType> >();
+			Body::bonesAtlas = new std::vector<std::pair<JointType, JointType> >();
 
-#define BONEDEF_ADD(J1, J2) Body::bonesAtlas->push_back( make_pair<JointType, JointType>(JointType_ ## J1, JointType_ ## J2) )
+#define BONEDEF_ADD(J1, J2) Body::bonesAtlas->push_back( std::make_pair<JointType, JointType>(JointType_ ## J1, JointType_ ## J2) )
 			// Torso
 			BONEDEF_ADD	(Head,			Neck);
 			BONEDEF_ADD	(Neck,			SpineShoulder);

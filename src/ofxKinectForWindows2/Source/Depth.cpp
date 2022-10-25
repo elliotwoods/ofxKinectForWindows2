@@ -1,5 +1,4 @@
 #include "Depth.h"
-#include "ofMain.h"
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
@@ -20,7 +19,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		string Depth::getTypeName() const {
+		std::string Depth::getTypeName() const {
 			return "Depth";
 		}
 

@@ -1,18 +1,17 @@
 #include "LongExposureInfrared.h"
-#include "ofMain.h"
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
-		string LongExposureInfrared::getTypeName() const {
+		std::string LongExposureInfrared::getTypeName() const {
 			return "LongExposureInfrared";
 		}
 
 		//----------
-		void LongExposureInfrared::initReader(IKinectSensor * sensor) {
+		void LongExposureInfrared::initReader(IKinectSensor* sensor) {
 			this->reader = NULL;
 			try {
-				ILongExposureInfraredFrameSource * source = NULL;
+				ILongExposureInfraredFrameSource* source = NULL;
 
 				if (FAILED(sensor->get_LongExposureInfraredFrameSource(&source))) {
 					throw(Exception("Failed to initialise LongExposureInfrared source"));
@@ -23,17 +22,18 @@ namespace ofxKinectForWindows2 {
 				}
 
 				SafeRelease(source);
-			} catch (std::exception & e) {
+			}
+			catch (std::exception& e) {
 				SafeRelease(this->reader);
 				throw (e);
 			}
 		}
 
 		//----------
-		void LongExposureInfrared::update(IMultiSourceFrame * multiFrame) {
+		void LongExposureInfrared::update(IMultiSourceFrame* multiFrame) {
 			this->isFrameNewFlag = false;
-			ILongExposureInfraredFrame * frame = NULL;
-			ILongExposureInfraredFrameReference * reference;
+			ILongExposureInfraredFrame* frame = NULL;
+			ILongExposureInfraredFrameReference* reference;
 			try {
 				//acquire frame
 				if (FAILED(multiFrame->get_LongExposureInfraredFrameReference(&reference))) {
@@ -43,7 +43,8 @@ namespace ofxKinectForWindows2 {
 					return; // we often throw here when no new frame is available
 				}
 				BaseImageSimple::update(frame);
-			} catch (std::exception & e) {
+			}
+			catch (std::exception& e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();
 			}
 			SafeRelease(reference);

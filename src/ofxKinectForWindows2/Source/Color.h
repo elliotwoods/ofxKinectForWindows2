@@ -12,7 +12,7 @@ namespace ofxKinectForWindows2 {
 		class Color : public BaseImage<unsigned char, IColorFrameReader, IColorFrame> {
 		public:
 			Color();
-			string getTypeName() const override;
+			std::string getTypeName() const override;
 
 			void update(IColorFrame *) override;
 			void update(IMultiSourceFrame *) override;
