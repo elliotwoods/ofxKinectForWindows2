@@ -1,5 +1,4 @@
 #include "Color.h"
-#include "ofMain.h"
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
@@ -9,7 +8,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		string Color::getTypeName() const {
+		std::string Color::getTypeName() const {
 			return "Color";
 		}
 

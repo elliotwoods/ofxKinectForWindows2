@@ -1,15 +1,17 @@
 #include "Body.h"
-#include "ofMain.h"
+
+#include "ofGraphics.h"
+#include "ofNode.h"
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
-		string Body::getTypeName() const {
+		std::string Body::getTypeName() const {
 			return "Body";
 		}
 
 		//----------
-		const vector<Data::Body> & Body::getBodies() const {
+		const std::vector<Data::Body> & Body::getBodies() const {
 			return bodies;
 		}
 
@@ -170,8 +172,8 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		map<JointType, ofVec2f> Body::getProjectedJoints(int bodyIdx, ProjectionCoordinates proj) {
-			map<JointType, ofVec2f> result;
+		std::map<JointType, ofVec2f> Body::getProjectedJoints(int bodyIdx, ProjectionCoordinates proj) {
+			std::map<JointType, ofVec2f> result;
 
 			const auto & body = bodies[bodyIdx];
 			if (!body.tracked) return result;
@@ -204,7 +206,7 @@ namespace ofxKinectForWindows2 {
 			for (auto & body : bodies) {
 				if (!body.tracked) continue;
 
-				map<JointType, ofVec2f> jntsProj;
+				std::map<JointType, ofVec2f> jntsProj;
 
 				for (auto & j : body.joints) {
 					ofVec2f & p = jntsProj[j.second.getType()] = ofVec2f();
@@ -262,7 +264,7 @@ namespace ofxKinectForWindows2 {
 		}
 
 		//----------
-		void Body::drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1){
+		void Body::drawProjectedBone(std::map<JointType, Data::Joint> & pJoints, std::map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1){
 			TrackingState ts1 = pJoints[joint0].getTrackingState();
 			TrackingState ts2 = pJoints[joint1].getTrackingState();
 			if (ts1 == TrackingState_NotTracked || ts2 == TrackingState_NotTracked) return;

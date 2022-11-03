@@ -6,7 +6,7 @@ namespace ofxKinectForWindows2 {
 	namespace Source {
 		class LongExposureInfrared : public BaseImageSimple<unsigned short, ILongExposureInfraredFrameReader, ILongExposureInfraredFrame> {
 		public:
-			string getTypeName() const override;
+			std::string getTypeName() const override;
 
 			void update(IMultiSourceFrame *) override;
 		protected:

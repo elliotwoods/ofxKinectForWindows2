@@ -1,10 +1,9 @@
 #include "BodyIndex.h"
-#include "ofMain.h"
 
 namespace ofxKinectForWindows2 {
 	namespace Source {
 		//----------
-		string BodyIndex::getTypeName() const {
+		std::string BodyIndex::getTypeName() const {
 			return "BodyIndex";
 		}
 

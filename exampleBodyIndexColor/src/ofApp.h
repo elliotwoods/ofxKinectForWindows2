@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ofMain.h"
 #include "ofxKinectForWindows2.h"
+#include "ofMain.h"
 
 class ofApp : public ofBaseApp{
 

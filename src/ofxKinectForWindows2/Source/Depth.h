@@ -1,5 +1,9 @@
 #pragma once
 
+#include "ofMesh.h"
+#include "ofPixels.h"
+#include "ofVbo.h"
+
 #include "BaseImage.h"
 
 namespace ofxKinectForWindows2 {
@@ -22,7 +26,7 @@ namespace ofxKinectForWindows2 {
 				TextureCoordinates textureCoordinates;
 			};
 
-			string getTypeName() const override;
+			std::string getTypeName() const override;
 			void init(IKinectSensor *, bool) override;
 
 			void update(IMultiSourceFrame *) override;

@@ -1,5 +1,7 @@
 #include "BaseImage.h"
-#include "ofMain.h"
+
+#include "ofGraphics.h"
+#include "ofMesh.h"
 
 #define CHECK_OPEN if(!this->reader) { OFXKINECTFORWINDOWS2_ERROR << "Failed : Reader is not open"; }
 

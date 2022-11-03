@@ -1,7 +1,11 @@
 #include "Device.h"
-#include "ofMain.h"
 
+#include "of3dUtils.h"
 #include "ofConstants.h"
+#include "ofGraphics.h"
+#if OF_VERSION_MAJOR > 0 || OF_VERSION_MINOR >= 10
+#include "ofAppGLFWWindow.h"
+#endif
 
 #define CHECK_OPEN if(!this->sensor) { OFXKINECTFORWINDOWS2_ERROR << "Failed : Sensor is not open"; }
 
@@ -101,7 +105,7 @@ namespace ofxKinectForWindows2 {
 
 	//----------
 	template<typename SourceType>
-	shared_ptr<SourceType> Device::initSource(bool initReader) {
+	std::shared_ptr<SourceType> Device::initSource(bool initReader) {
 		CHECK_OPEN;
 
 		//first check if it already exists
@@ -121,37 +125,37 @@ namespace ofxKinectForWindows2 {
 			return source;
 		} catch (std::exception & e) {
 			OFXKINECTFORWINDOWS2_ERROR << e.what();
-			return shared_ptr<SourceType>();
+			return std::shared_ptr<SourceType>();
 		}
 	}
 
 	//----------
-	shared_ptr<Source::Depth> Device::initDepthSource() {
+	std::shared_ptr<Source::Depth> Device::initDepthSource() {
 		return this->initSource<Source::Depth>(true);
 	}
 
 	//----------
-	shared_ptr<Source::Color> Device::initColorSource() {
+	std::shared_ptr<Source::Color> Device::initColorSource() {
 		return this->initSource<Source::Color>(true);
 	}
 	
 	//----------
-	shared_ptr<Source::Infrared> Device::initInfraredSource() {
+	std::shared_ptr<Source::Infrared> Device::initInfraredSource() {
 		return this->initSource<Source::Infrared>(true);
 	}
 
 	//----------
-	shared_ptr<Source::LongExposureInfrared> Device::initLongExposureInfraredSource() {
+	std::shared_ptr<Source::LongExposureInfrared> Device::initLongExposureInfraredSource() {
 		return this->initSource<Source::LongExposureInfrared>(true);
 	}
 
 	//----------
-	shared_ptr<Source::BodyIndex> Device::initBodyIndexSource() {
+	std::shared_ptr<Source::BodyIndex> Device::initBodyIndexSource() {
 		return this->initSource<Source::BodyIndex>(true);
 	}
 
 	//----------
-	shared_ptr<Source::Body> Device::initBodySource() {
+	std::shared_ptr<Source::Body> Device::initBodySource() {
 		return this->initSource<Source::Body>(true);
 	}
 
@@ -255,37 +259,37 @@ namespace ofxKinectForWindows2 {
 	}
 
 	//----------
-	const vector<shared_ptr<Source::Base>> & Device::getSources() const {
+	const std::vector<std::shared_ptr<Source::Base>> & Device::getSources() const {
 		return this->sources;
 	}
 
 	//----------
-	shared_ptr<Source::Depth> Device::getDepthSource() const {
+	std::shared_ptr<Source::Depth> Device::getDepthSource() const {
 		return this->getSource<Source::Depth>();
 	}
 
 	//----------
-	shared_ptr<Source::Color> Device::getColorSource() const {
+	std::shared_ptr<Source::Color> Device::getColorSource() const {
 		return this->getSource<Source::Color>();
 	}
 	
 	//----------
-	shared_ptr<Source::Infrared> Device::getInfraredSource() const {
+	std::shared_ptr<Source::Infrared> Device::getInfraredSource() const {
 		return this->getSource<Source::Infrared>();
 	}
 
 	//----------
-	shared_ptr<Source::LongExposureInfrared> Device::getLongExposureInfraredSource() const {
+	std::shared_ptr<Source::LongExposureInfrared> Device::getLongExposureInfraredSource() const {
 		return this->getSource<Source::LongExposureInfrared>();
 	}
 
 	//----------
-	shared_ptr<Source::BodyIndex> Device::getBodyIndexSource() const {
+	std::shared_ptr<Source::BodyIndex> Device::getBodyIndexSource() const {
 		return this->getSource<Source::BodyIndex>();
 	}
 
 	//----------
-	shared_ptr<Source::Body> Device::getBodySource() const {
+	std::shared_ptr<Source::Body> Device::getBodySource() const {
 		return this->getSource<Source::Body>();
 	}
 
@@ -390,7 +394,7 @@ namespace ofxKinectForWindows2 {
 	void Device::setUseTextures(bool useTexture) {
 		auto sources = this->getSources();
 		for (auto source : sources) {
-			auto imageSource = dynamic_pointer_cast<ofBaseHasTexture>(source);
+			auto imageSource = std::dynamic_pointer_cast<ofBaseHasTexture>(source);
 			if (imageSource) {
 				imageSource->setUseTexture(useTexture);
 			}

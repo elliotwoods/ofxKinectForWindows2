@@ -2,6 +2,7 @@
 
 #include "Joint.h"
 
+#include <map>
 #include <Kinect.h>
 
 namespace ofxKinectForWindows2 {
@@ -21,10 +22,10 @@ namespace ofxKinectForWindows2 {
 			void clear();
 
 			Body operator*(const ofMatrix4x4 &) const;
-			static const std::vector<pair<JointType, JointType> > & getBonesAtlas();
+			static const std::vector<std::pair<JointType, JointType> > & getBonesAtlas();
 		protected:
 			static void initBonesAtlas();
-			static vector<pair<JointType, JointType> > * bonesAtlas;
+			static std::vector<std::pair<JointType, JointType> > * bonesAtlas;
 		};
 	}
 }
