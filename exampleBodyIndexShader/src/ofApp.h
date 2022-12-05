@@ -2,8 +2,8 @@
 
 #define USE_PROGRAMMABLE_PIPELINE 1
 
-#include "ofMain.h"
 #include "ofxKinectForWindows2.h"
+#include "ofMain.h"
 
 class ofApp : public ofBaseApp{
 

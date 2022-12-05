@@ -1,7 +1,7 @@
 #pragma once
 #define _HAS_STD_BYTE 0
 
-#include "ofMain.h"
+#include "ofVectorMath.h"
 
 // If your compiler is complaining that it can't find Kinect.h, then please make sure:
 //	1) You have installed the Kinect SDK (e.g. v2.0_1409 is the latest version as of October 2015)

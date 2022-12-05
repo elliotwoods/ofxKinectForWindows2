@@ -23,12 +23,12 @@ namespace ofxKinectForWindows2 {
 
 		void initMultiSource(std::initializer_list<FrameSourceTypes> frameSourceTypes);
 
-		shared_ptr<Source::Depth> initDepthSource();
-		shared_ptr<Source::Color> initColorSource();
-		shared_ptr<Source::Infrared> initInfraredSource();
-		shared_ptr<Source::LongExposureInfrared> initLongExposureInfraredSource();
-		shared_ptr<Source::BodyIndex> initBodyIndexSource();
-		shared_ptr<Source::Body> initBodySource();
+		std::shared_ptr<Source::Depth> initDepthSource();
+		std::shared_ptr<Source::Color> initColorSource();
+		std::shared_ptr<Source::Infrared> initInfraredSource();
+		std::shared_ptr<Source::LongExposureInfrared> initLongExposureInfraredSource();
+		std::shared_ptr<Source::BodyIndex> initBodyIndexSource();
+		std::shared_ptr<Source::Body> initBodySource();
 
 		bool releaseMultiSource();
 
@@ -53,24 +53,24 @@ namespace ofxKinectForWindows2 {
 		}
 
 		template<typename SourceType>
-		shared_ptr<SourceType> getSource() const {
+		std::shared_ptr<SourceType> getSource() const {
 			for(auto source : this->sources) {
-				auto castSource = dynamic_pointer_cast<SourceType>(source);
+				auto castSource = std::dynamic_pointer_cast<SourceType>(source);
 				if (castSource) {
 					return castSource;
 				}
 			}
-			return shared_ptr<SourceType>();
+			return std::shared_ptr<SourceType>();
 		}
 
-		const vector<shared_ptr<Source::Base>> & getSources() const;
+		const std::vector<std::shared_ptr<Source::Base>> & getSources() const;
 
-		shared_ptr<Source::Depth> getDepthSource() const;
-		shared_ptr<Source::Color> getColorSource() const;
-		shared_ptr<Source::Infrared> getInfraredSource() const;
-		shared_ptr<Source::LongExposureInfrared> getLongExposureInfraredSource() const;
-		shared_ptr<Source::BodyIndex> getBodyIndexSource() const;
-		shared_ptr<Source::Body> getBodySource() const;
+		std::shared_ptr<Source::Depth> getDepthSource() const;
+		std::shared_ptr<Source::Color> getColorSource() const;
+		std::shared_ptr<Source::Infrared> getInfraredSource() const;
+		std::shared_ptr<Source::LongExposureInfrared> getLongExposureInfraredSource() const;
+		std::shared_ptr<Source::BodyIndex> getBodyIndexSource() const;
+		std::shared_ptr<Source::Body> getBodySource() const;
 
 		IKinectSensor * getSensor();
 
@@ -78,7 +78,7 @@ namespace ofxKinectForWindows2 {
 		void setUseTextures(bool);
 	protected: 
 		template<typename SourceType>
-		shared_ptr<SourceType> initSource(bool initReader);
+		std::shared_ptr<SourceType> initSource(bool initReader);
 
 		template<typename SourceType>
 		bool releaseSource();
@@ -86,7 +86,7 @@ namespace ofxKinectForWindows2 {
 		IKinectSensor * sensor;
 		IMultiSourceFrameReader * reader;
 
-		vector<shared_ptr<Source::Base>> sources;
+		std::vector<std::shared_ptr<Source::Base>> sources;
 		bool isFrameNewFlag;
 	};
 }

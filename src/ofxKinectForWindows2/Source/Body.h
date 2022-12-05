@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../Utils.h"
-#include "ofMain.h"
+#include "ofVectorMath.h"
 
 #include "BaseImage.h"
+#include "../Utils.h"
 
 #include "../Data/Body.h"
 #include "../Data/Joint.h"
@@ -13,7 +13,7 @@ namespace ofxKinectForWindows2 {
 		// -------
 		class Body : public BaseFrame<IBodyFrameReader, IBodyFrame> {
 		public:
-			string getTypeName() const override;
+			std::string getTypeName() const override;
 			void init(IKinectSensor *, bool) override;
 
 			void update(IBodyFrame *) override;
@@ -24,8 +24,8 @@ namespace ofxKinectForWindows2 {
 
 			ICoordinateMapper * getCoordinateMapper();
 
-			const vector<Data::Body> & getBodies() const;
-			map<JointType, ofVec2f> getProjectedJoints(int bodyIdx, ProjectionCoordinates proj = ColorCamera);
+			const std::vector<Data::Body> & getBodies() const;
+			std::map<JointType, ofVec2f> getProjectedJoints(int bodyIdx, ProjectionCoordinates proj = ColorCamera);
 
 			const Vector4 getFloorClipPlane() {
 				return floorClipPlane;
@@ -33,7 +33,7 @@ namespace ofxKinectForWindows2 {
 
 			ofMatrix4x4 getFloorTransform();
 
-			static void drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
+			static void drawProjectedBone(std::map<JointType, Data::Joint> & pJoints, std::map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
 			static void drawProjectedHand(HandState handState, ofVec2f & handPos);
 		protected:
 			void initReader(IKinectSensor *) override;
@@ -42,7 +42,7 @@ namespace ofxKinectForWindows2 {
 
 			Vector4 floorClipPlane;
 
-			vector<Data::Body> bodies;
+			std::vector<Data::Body> bodies;
 		};
 	}
 }
