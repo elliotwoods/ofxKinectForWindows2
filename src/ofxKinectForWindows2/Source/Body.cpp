@@ -1,5 +1,4 @@
 #include "Body.h"
-#include "ofMain.h"
 
 namespace ofxKinectForWindows2 {
 	namespace Source {

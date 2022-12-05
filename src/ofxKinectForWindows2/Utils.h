@@ -1,5 +1,8 @@
 #pragma once
 
+// Fix for C++17
+#define _HAS_STD_BYTE 0
+
 #ifndef __func__
 #define __func__ __FUNCTION__
 #endif

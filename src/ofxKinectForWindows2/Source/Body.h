@@ -1,9 +1,9 @@
 #pragma once
 
+#include "../Utils.h"
 #include "ofMain.h"
 
 #include "BaseImage.h"
-#include "../Utils.h"
 
 #include "../Data/Body.h"
 #include "../Data/Joint.h"
