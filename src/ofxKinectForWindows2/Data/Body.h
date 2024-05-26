@@ -4,6 +4,7 @@
 
 #include <map>
 #include <Kinect.h>
+#include <vector>
 
 namespace ofxKinectForWindows2 {
 	namespace Data {
